@@ -12,5 +12,4 @@ public class UnabomberTest extends ActivityInstrumentationTestCase2<Unabomber> {
 	public void testTautology() {
 		assertTrue(true);
 	}
-
 }

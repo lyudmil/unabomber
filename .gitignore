@@ -1,2 +1,4 @@
-client/bin
-client-test/bin
+*.class
+*.apk
+client/bin/
+client-test/bin/

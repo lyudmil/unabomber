@@ -1,12 +1,7 @@
 package unabomber.client;
 
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
@@ -20,12 +15,20 @@ public class Unabomber extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        mapView = (MapView)findViewById(R.id.mapview);
-        myLocationOverlay = new MyLocationOverlay(this, mapView);
-        myLocationOverlay.enableMyLocation();
-        mapView.setBuiltInZoomControls(true);
-        mapView.getOverlays().add(myLocationOverlay);
+        setUpMap();
+        showPlayerLocation();
     }
+
+	private void showPlayerLocation() {
+		myLocationOverlay = new MyLocationOverlay(this, mapView);
+        myLocationOverlay.enableMyLocation();
+        mapView.getOverlays().add(myLocationOverlay);
+	}
+
+	private void setUpMap() {
+		mapView = (MapView)findViewById(R.id.mapview);
+        mapView.setBuiltInZoomControls(true);
+	}
 
 	@Override
 	protected boolean isRouteDisplayed() {

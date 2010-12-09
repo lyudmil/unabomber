@@ -22,11 +22,11 @@ public class GameEngineTest extends TestCase {
 		gameEngine = new GameEngine(httpClient, DEVICE_ID);
 	}
 
-	public void testSendLocationSendsPostRequest() {
+	public void testSendLocationSendsPutRequest() {
 		gameEngine.sendLocation(null);
 		
 		HttpUriRequest request = httpClient.getRequest();
-		assertEquals("POST", request.getMethod());
+		assertEquals("PUT", request.getMethod());
 	}
 	
 	public void testSendLocationRequestContainsCurrentLocation() {
@@ -41,7 +41,7 @@ public class GameEngineTest extends TestCase {
 		gameEngine.sendLocation(null);
 		
 		HttpUriRequest request = httpClient.getRequest();
-		assertEquals("http://localhost:3000/players/" + DEVICE_ID + "/update", request.getURI().toString());
+		assertEquals("http://10.0.2.2:3000/players/" + DEVICE_ID + "/update", request.getURI().toString());
 	}
 	
 	public final class MockHttpClient extends UnabomberHttpClient {

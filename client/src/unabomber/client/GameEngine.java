@@ -1,6 +1,6 @@
 package unabomber.client;
 
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.params.BasicHttpParams;
 
 import android.location.Location;
@@ -20,7 +20,7 @@ public class GameEngine {
 	}
 
 	public void sendLocation(Location currentLocation) {
-		HttpPost request = new HttpPost("http://localhost:3000/players/" + deviceId + "/update");
+		HttpPut request = new HttpPut("http://10.0.2.2:3000/players/" + deviceId + "/update");
 		BasicHttpParams params = new BasicHttpParams();
 		params.setParameter("current_location", currentLocation);
 		request.setParams(params);

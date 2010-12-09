@@ -7,12 +7,13 @@ import android.location.Location;
 
 
 public class GameEngine {
+	private static final String SERVER = "http://10.0.2.2:3000";
 	private UnabomberHttpClient httpClient;
-	private String deviceId;
+	private String playerUrl;
 
 	public GameEngine(UnabomberHttpClient httpClient, String deviceId) {
 		this.httpClient = httpClient;
-		this.deviceId = deviceId;
+		playerUrl = "/players/" + deviceId;
 	}
 	
 	public GameEngine(String deviceId) {
@@ -20,7 +21,7 @@ public class GameEngine {
 	}
 
 	public void sendLocation(Location currentLocation) {
-		HttpPut request = new HttpPut("http://10.0.2.2:3000/players/" + deviceId + "/update");
+		HttpPut request = new HttpPut(SERVER + playerUrl + "/update");
 		BasicHttpParams params = new BasicHttpParams();
 		params.setParameter("current_location", currentLocation);
 		request.setParams(params);

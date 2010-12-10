@@ -1,5 +1,6 @@
-package unabomber.client;
+package unabomber.ui;
 
+import unabomber.client.R;
 import android.os.Bundle;
 
 import com.google.android.maps.MapActivity;

@@ -1,4 +1,7 @@
-package unabomber.client;
+package engine;
+
+import http.PostLocationParameters;
+import http.UnabomberHttpClient;
 
 import org.apache.http.client.methods.HttpPut;
 

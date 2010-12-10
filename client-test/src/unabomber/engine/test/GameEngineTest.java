@@ -1,4 +1,7 @@
-package unabomber.client.test;
+package unabomber.engine.test;
+
+import http.PostLocationParameters;
+import http.UnabomberHttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +14,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import unabomber.client.GameEngine;
-import unabomber.client.PostLocationParameters;
-import unabomber.client.UnabomberHttpClient;
+import engine.GameEngine;
+
 import android.location.Location;
 
 public class GameEngineTest extends TestCase {

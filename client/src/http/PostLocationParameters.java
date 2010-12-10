@@ -1,4 +1,4 @@
-package unabomber.client;
+package http;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

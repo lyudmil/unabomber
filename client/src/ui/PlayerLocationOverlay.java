@@ -1,4 +1,4 @@
-package unabomber.ui;
+package ui;
 
 import android.content.Context;
 import android.location.Location;

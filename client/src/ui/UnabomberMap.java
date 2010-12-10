@@ -1,4 +1,4 @@
-package unabomber.ui;
+package ui;
 
 import unabomber.client.R;
 import android.content.Context;

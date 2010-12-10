@@ -14,10 +14,10 @@ public class UnabomberHttpClient extends DefaultHttpClient {
 			return execute(request);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 

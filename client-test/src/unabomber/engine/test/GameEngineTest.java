@@ -1,5 +1,6 @@
 package unabomber.engine.test;
 
+import http.AuthenticateUserParameters;
 import http.PostLocationParameters;
 import http.UnabomberHttpClient;
 
@@ -11,6 +12,7 @@ import junit.framework.TestCase;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 
@@ -46,8 +48,7 @@ public class GameEngineTest extends TestCase {
 		gameEngine.sendLocation(currentLocation);
 
 		HttpPut request = (HttpPut) httpClient.getRequest();
-		UrlEncodedFormEntity expectedEncodedParameters = new PostLocationParameters(
-				currentLocation).encode();
+		UrlEncodedFormEntity expectedEncodedParameters = new PostLocationParameters(currentLocation).encode();
 		UrlEncodedFormEntity actualEncodedParameters = (UrlEncodedFormEntity) request
 				.getEntity();
 
@@ -55,12 +56,37 @@ public class GameEngineTest extends TestCase {
 				parametersFrom(actualEncodedParameters));
 	}
 
-	public void testSendLocationRequestIsToTheProperUri() {
+	public void testSendLocationRequestIsToTheProperUrl() {
 		gameEngine.sendLocation(currentLocation);
 
 		HttpUriRequest request = httpClient.getRequest();
 		assertEquals("http://10.0.2.2:3000/players/" + DEVICE_ID + "/update",
 				request.getURI().toString());
+	}
+	
+	public void testUserAuthenticationRequestIsToTheProperUrl() {
+		gameEngine.authenticate();
+		
+		HttpUriRequest request = httpClient.getRequest();
+		assertEquals("http://10.0.2.2:3000/players/create",
+				request.getURI().toString());
+	}
+	
+	public void testUserAuthenticationRequestIsAPost() {
+		gameEngine.authenticate();
+		
+		HttpUriRequest request = httpClient.getRequest();
+		assertEquals("POST", request.getMethod());
+	}
+	
+	public void testUserAuthenticationRequestContainsDeviceId() throws Exception {
+		gameEngine.authenticate();
+		
+		HttpPost request = (HttpPost) httpClient.getRequest();
+		UrlEncodedFormEntity expectedEncodedParameters = new AuthenticateUserParameters(DEVICE_ID).encode();
+		UrlEncodedFormEntity actualEncodedParameters = (UrlEncodedFormEntity) request.getEntity();
+		
+		assertEquals(parametersFrom(expectedEncodedParameters), parametersFrom(actualEncodedParameters));
 	}
 
 	private String parametersFrom(UrlEncodedFormEntity encodedParameters) throws IOException {

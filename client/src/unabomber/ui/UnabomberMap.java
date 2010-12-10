@@ -1,15 +1,18 @@
 package unabomber.ui;
 
 import unabomber.client.R;
+import android.content.Context;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
+
+import engine.GameEngine;
 
 public class UnabomberMap extends MapActivity {
     private MapView mapView;
-	private MyLocationOverlay myLocationOverlay;
+	private PlayerLocationOverlay playerLocationOverlay;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,12 +21,18 @@ public class UnabomberMap extends MapActivity {
         
         setUpMap();
         showPlayerLocation();
+        authenticatePlayer();
     }
 
+	protected void authenticatePlayer() {
+		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		new GameEngine(telephonyManager.getDeviceId()).authenticate();
+	}
+
 	private void showPlayerLocation() {
-		myLocationOverlay = new PlayerLocationOverlay(this, mapView);
-        myLocationOverlay.enableMyLocation();
-        mapView.getOverlays().add(myLocationOverlay);
+		playerLocationOverlay = new PlayerLocationOverlay(this, mapView);
+        playerLocationOverlay.enableMyLocation();
+        mapView.getOverlays().add(playerLocationOverlay);
 	}
 
 	private void setUpMap() {

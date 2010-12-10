@@ -13,6 +13,14 @@ class PlayersControllerTest < ActionController::TestCase
     assert_equal new_player, assigns(:player)
   end
   
+  test "does nothing if a player with the same device id already exists" do
+    existing_player = flexmock(:model, Player)
+    flexmock(Player).should_receive(:find_by_device_id).with('abc123').once.and_return(existing_player)
+    flexmock(Player).should_receive(:new).never
+    
+    post :create, :device_id => 'abc123'
+  end
+  
   test "updates player location" do
     put :update, :device_id => 'abc123'
   end

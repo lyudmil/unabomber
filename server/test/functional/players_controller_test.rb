@@ -33,15 +33,31 @@ class PlayersControllerTest < ActionController::TestCase
   end
   
   test "updates player location" do
-    put :update, :device_id => 'abc123'
+    player = set_up_player_with_device_id '111'
+    flexmock(player).should_receive(:save).once
+    
+    put :update, :device_id => '111', :longitude => '45.5', :latitude => '8.5', :altitude => '500'
+    
+    assert_not_nil player.location
+    assert_equal BigDecimal.new('45.5'), player.location.longitude
+    assert_equal BigDecimal.new('8.5'), player.location.latitude
+    assert_equal BigDecimal.new('500'), player.location.altitude
+  end
+  
+  test "redirects to player after location update" do
+    player = set_up_player_with_device_id '123'
+    
+    put :update, :device_id => '123', :longitude => '45.5', :latitude => '8.5', :altitude => '500'
+    
+    assert_redirected_to player
   end
   
   private
   
   def set_up_player_with_device_id device_id
-    existing_player = flexmock(:model, Player, :to_json => nil)
-    flexmock(Player).should_receive(:find_by_device_id).with(device_id).once.and_return(existing_player)
-    existing_player
+    player = Player.new(:device_id => device_id)
+    flexmock(Player).should_receive(:find_by_device_id).with(device_id).once.and_return(player)
+    player
   end
   
 end

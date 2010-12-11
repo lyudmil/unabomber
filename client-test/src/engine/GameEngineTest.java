@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -87,6 +88,15 @@ public class GameEngineTest extends TestCase {
 		UrlEncodedFormEntity actualEncodedParameters = (UrlEncodedFormEntity) request.getEntity();
 		
 		assertEquals(parametersFrom(expectedEncodedParameters), parametersFrom(actualEncodedParameters));
+	}
+	
+	public void testGetLocationsRequestProperlySent() {
+		gameEngine.getLocations();
+		
+		HttpGet request = (HttpGet) httpClient.getRequest();
+		
+		assertEquals("GET", request.getMethod());
+		assertEquals("http://10.0.2.2:3000/locations", request.getURI().toString());
 	}
 
 	private String parametersFrom(UrlEncodedFormEntity encodedParameters) throws IOException {

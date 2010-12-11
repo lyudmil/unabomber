@@ -16,6 +16,8 @@ class PlayersController < ApplicationController
   
   def update
     @player = player_with_specified_device_id
+    @player.location.destroy if @player.location
+    
     @player.location = location_from_params
     @player.save
     

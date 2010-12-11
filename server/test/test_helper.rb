@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'flexmock/test_unit'
 
 unless defined?(Test::Unit::AssertionFailedError)
   class Test::Unit::AssertionFailedError < ActiveSupport::TestCase::Assertion

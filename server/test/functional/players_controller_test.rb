@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'flexmock/test_unit'
 
 class PlayersControllerTest < ActionController::TestCase
   
@@ -42,6 +41,15 @@ class PlayersControllerTest < ActionController::TestCase
     assert_equal BigDecimal.new('45.5'), player.location.longitude
     assert_equal BigDecimal.new('8.5'), player.location.latitude
     assert_equal BigDecimal.new('500'), player.location.altitude
+  end
+  
+  test "destroys previous location of player" do
+    player = set_up_player_with_device_id '123'
+    previous_location = flexmock(:model, Location)
+    flexmock(player).should_receive(:location).and_return(previous_location)
+    previous_location.should_receive(:destroy).once
+    
+    put :update, :device_id => '123'
   end
   
   test "redirects to player after location update" do

@@ -1,4 +1,5 @@
 Server::Application.routes.draw do
-  post 'players/create' => 'players#create'
+  resources :players, :only => [:create, :show]
+  
   put 'players/:device_id/update' => 'players#update'
 end

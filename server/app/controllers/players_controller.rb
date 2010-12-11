@@ -1,17 +1,20 @@
 class PlayersController < ApplicationController
   
+  def show
+    @player = Player.find(params[:id])
+  end
+  
   def create
-    return if existing_player
-    @player = Player.new(:device_id => params[:device_id])
-    @player.save
+    @player = Player.find_by_device_id(params[:device_id])
+    unless @player
+      @player = Player.new(:device_id => params[:device_id])
+      @player.save
+    end
+    
+    redirect_to @player
   end
   
   def update
   end
-  
-  private
-  
-  def existing_player
-    Player.find_by_device_id(params[:device_id])
-  end
+
 end

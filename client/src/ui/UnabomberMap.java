@@ -43,7 +43,7 @@ public class UnabomberMap extends MapActivity {
 	
 	private String deviceId() {
 		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		String deviceId = telephonyManager.getDeviceId();
+		String deviceId = telephonyManager.getDeviceId() + Math.round(Math.random() * 1000);
 		return deviceId;
 	}
 

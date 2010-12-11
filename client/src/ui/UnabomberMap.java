@@ -13,6 +13,7 @@ import engine.GameEngine;
 public class UnabomberMap extends MapActivity {
     private MapView mapView;
 	private PlayerLocationOverlay playerLocationOverlay;
+	private GameEngine gameEngine;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,9 +25,8 @@ public class UnabomberMap extends MapActivity {
         authenticatePlayer();
     }
 
-	protected void authenticatePlayer() {
-		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		new GameEngine(telephonyManager.getDeviceId()).authenticate();
+	private void authenticatePlayer() {
+		gameEngine.authenticate();
 	}
 
 	private void showPlayerLocation() {
@@ -38,8 +38,19 @@ public class UnabomberMap extends MapActivity {
 	private void setUpMap() {
 		mapView = (MapView)findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
+        gameEngine = new GameEngine(deviceId());
+	}
+	
+	private String deviceId() {
+		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		String deviceId = telephonyManager.getDeviceId();
+		return deviceId;
 	}
 
+	public GameEngine getEngine() {
+		return gameEngine;
+	}
+	
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;

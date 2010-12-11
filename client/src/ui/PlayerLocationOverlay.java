@@ -1,6 +1,5 @@
 package ui;
 
-import android.content.Context;
 import android.location.Location;
 
 import com.google.android.maps.MapView;
@@ -11,9 +10,9 @@ import engine.GameEngine;
 public class PlayerLocationOverlay extends MyLocationOverlay {
 	private GameEngine engine;
 
-	public PlayerLocationOverlay(Context context, MapView mapView) {
+	public PlayerLocationOverlay(UnabomberMap context, MapView mapView) {
 		super(context, mapView);
-		engine = new GameEngine("DEVICE--ID");
+		engine = context.getEngine();
 	}
 
 	@Override

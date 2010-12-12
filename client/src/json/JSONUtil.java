@@ -27,6 +27,28 @@ public class JSONUtil {
 		}
 	}
 
+	public static synchronized JSONObject playerDataFrom(HttpResponse response) {
+		try {
+			return playerDataFrom(response.getEntity().getContent());
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static JSONObject playerDataFrom(InputStream responseEntityContent) {
+		String json = IOUtil.convertToString(responseEntityContent);
+		try {
+			return new JSONObject(json).getJSONObject("player");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static synchronized ArrayList<PlayerLocation> locationsFrom(InputStream responseEntityContent) {
 		try {
 			String json = IOUtil.convertToString(responseEntityContent);

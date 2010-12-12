@@ -2,7 +2,10 @@ package json;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import org.json.JSONObject;
 
 import junit.framework.TestCase;
 import engine.PlayerLocation;
@@ -11,7 +14,7 @@ public class JSONUtilTest extends TestCase {
 	
 	public void testConvertsServerLocationsResponseToGeoPoints() throws Exception {
 		String json = "[{\"location\":{\"altitude\":\"30.0\",\"created_at\":\"2010-12-11T19:06:57Z\",\"id\":22,\"latitude\":\"49.1\",\"longitude\":\"9.1\",\"player_id\":11,\"updated_at\":\"2010-12-11T19:06:57Z\"}}]";
-		InputStream responseEntityContent = new ByteArrayInputStream(json.getBytes("UTF-8"));
+		InputStream responseEntityContent = streamFor(json);
 		
 		ArrayList<PlayerLocation> locations = JSONUtil.locationsFrom(responseEntityContent);
 		
@@ -22,5 +25,20 @@ public class JSONUtilTest extends TestCase {
 		assertEquals(9.1, playerLocation.getLocation().getLongitude());
 		assertEquals(30.0, playerLocation.getLocation().getAltitude());
 		assertEquals(11, playerLocation.getPlayerId());
+	}
+
+	private InputStream streamFor(String json)
+			throws UnsupportedEncodingException {
+		InputStream responseEntityContent = new ByteArrayInputStream(json.getBytes("UTF-8"));
+		return responseEntityContent;
+	}
+	
+	public void testConvertsPlayerResponseToData() throws Exception {
+		String json = "{\"player\":{\"created_at\":\"2010-12-12T08:47:17Z\",\"device_id\":\"000000000000000451\",\"id\":66,\"updated_at\":\"2010-12-12T08:47:17Z\"}}";
+		InputStream responseEntityContent = streamFor(json);
+		
+		JSONObject playerData = JSONUtil.playerDataFrom(responseEntityContent);
+		assertEquals("000000000000000451", playerData.getString("device_id"));
+		assertEquals(66, playerData.getInt("id"));
 	}
 }

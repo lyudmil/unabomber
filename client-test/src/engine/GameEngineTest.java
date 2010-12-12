@@ -22,6 +22,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.message.BasicHttpResponse;
+import org.json.JSONObject;
 
 import engine.GameEngine;
 
@@ -35,23 +36,31 @@ public class GameEngineTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		httpClient = new MockHttpClient(new MockHttpResponse("[]"));
-		gameEngine = new GameEngine(httpClient, DEVICE_ID);
-
 		currentLocation = new Location("GPS");
 		currentLocation.setLatitude(9);
 		currentLocation.setLongitude(49);
 	}
 
 	public void testSendLocationSendsPutRequest() {
+		setUpLocationsResponse();
 		gameEngine.sendLocation(currentLocation);
 
 		HttpUriRequest request = httpClient.getRequest();
 		assertEquals("PUT", request.getMethod());
 	}
 
-	public void testSendLocationRequestContainsCurrentLocation()
-			throws Exception {
+	public void testGetLocationsRequestProperlySent() {
+		setUpLocationsResponse();
+		gameEngine.getLocations();
+		
+		HttpGet request = (HttpGet) httpClient.getRequest();
+		
+		assertEquals("GET", request.getMethod());
+		assertEquals("http://10.0.2.2:3000/locations", request.getURI().toString());
+	}
+	
+	public void testSendLocationRequestContainsCurrentLocation() throws Exception {
+		setUpLocationsResponse();
 		gameEngine.sendLocation(currentLocation);
 
 		HttpPut request = (HttpPut) httpClient.getRequest();
@@ -64,6 +73,7 @@ public class GameEngineTest extends TestCase {
 	}
 
 	public void testSendLocationRequestIsToTheProperUrl() {
+		setUpLocationsResponse();
 		gameEngine.sendLocation(currentLocation);
 
 		HttpUriRequest request = httpClient.getRequest();
@@ -72,6 +82,7 @@ public class GameEngineTest extends TestCase {
 	}
 	
 	public void testUserAuthenticationRequestIsToTheProperUrl() {
+		setUpAuthenticationResponse();
 		gameEngine.authenticate();
 		
 		HttpUriRequest request = httpClient.getRequest();
@@ -80,6 +91,7 @@ public class GameEngineTest extends TestCase {
 	}
 	
 	public void testUserAuthenticationRequestIsAPost() {
+		setUpAuthenticationResponse();
 		gameEngine.authenticate();
 		
 		HttpUriRequest request = httpClient.getRequest();
@@ -87,6 +99,7 @@ public class GameEngineTest extends TestCase {
 	}
 	
 	public void testUserAuthenticationRequestContainsDeviceId() throws Exception {
+		setUpAuthenticationResponse();
 		gameEngine.authenticate();
 		
 		HttpPost request = (HttpPost) httpClient.getRequest();
@@ -96,13 +109,13 @@ public class GameEngineTest extends TestCase {
 		assertEquals(parametersFrom(expectedEncodedParameters), parametersFrom(actualEncodedParameters));
 	}
 	
-	public void testGetLocationsRequestProperlySent() {
-		gameEngine.getLocations();
+	public void testUserAuthenticationRequestRetrievesPlayerData() throws Exception {
+		setUpAuthenticationResponse();
 		
-		HttpGet request = (HttpGet) httpClient.getRequest();
+		JSONObject playerData = gameEngine.authenticate();
 		
-		assertEquals("GET", request.getMethod());
-		assertEquals("http://10.0.2.2:3000/locations", request.getURI().toString());
+		assertEquals(66, playerData.getInt("id"));
+		assertEquals("000000000000000451", playerData.getString("device_id"));
 	}
 
 	private String parametersFrom(UrlEncodedFormEntity encodedParameters) throws IOException {
@@ -110,6 +123,17 @@ public class GameEngineTest extends TestCase {
 		String parameters = expectedParametersReader.readLine();
 		encodedParameters.getContent().close();
 		return parameters;
+	}
+	
+	private void setUpLocationsResponse() {
+		httpClient = new MockHttpClient(new MockHttpResponse("[]"));
+		gameEngine = new GameEngine(httpClient, DEVICE_ID);
+	}
+	
+	private void setUpAuthenticationResponse() {
+		String playerJson = "{\"player\":{\"created_at\":\"2010-12-12T08:47:17Z\",\"device_id\":\"000000000000000451\",\"id\":66,\"updated_at\":\"2010-12-12T08:47:17Z\"}}";
+		httpClient = new MockHttpClient(new MockHttpResponse(playerJson));
+		gameEngine = new GameEngine(httpClient, DEVICE_ID);
 	}
 
 	public final class MockHttpClient extends UnabomberHttpClient {

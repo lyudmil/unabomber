@@ -47,7 +47,7 @@ public class GameEngine {
 		httpClient.executeRequest(request);
 	}
 
-	public ArrayList<Location> getLocations() {
+	public ArrayList<PlayerLocation> getLocations() {
 		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.locationsFrom(response);

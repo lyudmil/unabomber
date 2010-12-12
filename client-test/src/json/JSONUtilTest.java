@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import android.location.Location;
+import engine.PlayerLocation;
 
 public class JSONUtilTest extends TestCase {
 	
@@ -13,11 +13,14 @@ public class JSONUtilTest extends TestCase {
 		String json = "[{\"location\":{\"altitude\":\"30.0\",\"created_at\":\"2010-12-11T19:06:57Z\",\"id\":22,\"latitude\":\"49.1\",\"longitude\":\"9.1\",\"player_id\":11,\"updated_at\":\"2010-12-11T19:06:57Z\"}}]";
 		InputStream responseEntityContent = new ByteArrayInputStream(json.getBytes("UTF-8"));
 		
-		ArrayList<Location> locations = JSONUtil.locationsFrom(responseEntityContent);
+		ArrayList<PlayerLocation> locations = JSONUtil.locationsFrom(responseEntityContent);
 		
 		assertEquals(1, locations.size());
-		assertEquals(49.1, locations.get(0).getLatitude());
-		assertEquals(9.1, locations.get(0).getLongitude());
-		assertEquals(30.0, locations.get(0).getAltitude());
+		
+		PlayerLocation playerLocation = locations.get(0);
+		assertEquals(49.1, playerLocation.getLocation().getLatitude());
+		assertEquals(9.1, playerLocation.getLocation().getLongitude());
+		assertEquals(30.0, playerLocation.getLocation().getAltitude());
+		assertEquals(11, playerLocation.getPlayerId());
 	}
 }

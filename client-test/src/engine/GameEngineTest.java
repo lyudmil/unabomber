@@ -5,17 +5,23 @@ import http.PostLocationParameters;
 import http.UnabomberHttpClient;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import junit.framework.TestCase;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.message.BasicHttpResponse;
 
 import engine.GameEngine;
 
@@ -29,7 +35,7 @@ public class GameEngineTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		httpClient = new MockHttpClient(null);
+		httpClient = new MockHttpClient(new MockHttpResponse("[]"));
 		gameEngine = new GameEngine(httpClient, DEVICE_ID);
 
 		currentLocation = new Location("GPS");
@@ -123,5 +129,36 @@ public class GameEngineTest extends TestCase {
 			this.request = request;
 			return response;
 		}
+	}
+	
+	public final class MockHttpResponse extends BasicHttpResponse {
+
+		private MockEntity entity;
+
+		public MockHttpResponse(String content) {
+			super(new ProtocolVersion("HTTP", 1, 0), 0, "");
+			this.entity = new MockEntity(content);
+		}
+		
+		@Override
+		public HttpEntity getEntity() {
+			return entity;
+		}
+
+		private class MockEntity extends BasicHttpEntity {
+			private String content;
+
+			private MockEntity(String content) {
+				this.content = content;
+			}
+
+			@Override
+			public InputStream getContent() throws IllegalStateException {
+				return new ByteArrayInputStream(content.getBytes());
+			}
+			
+			
+		}
+		
 	}
 }

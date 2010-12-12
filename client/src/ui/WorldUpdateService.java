@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.google.android.maps.Overlay;
-
 import android.app.Service;
 import android.content.Intent;
-import android.location.Location;
 import android.os.IBinder;
+
+import com.google.android.maps.Overlay;
+
+import engine.PlayerLocation;
 
 public class WorldUpdateService extends Service {
 	private Timer timer = new Timer();
@@ -26,7 +27,7 @@ public class WorldUpdateService extends Service {
 		timer.scheduleAtFixedRate(new TimerTask() {		
 			@Override
 			public void run() {
-				final ArrayList<Location> locations = activity.getEngine().getLocations();
+				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				activity.runOnUiThread(new UpdateMap(locations));
 			}
 		}, 0, 4000);
@@ -42,9 +43,9 @@ public class WorldUpdateService extends Service {
 	}
 	
 	private final class UpdateMap implements Runnable {
-		private final ArrayList<Location> locations;
+		private final ArrayList<PlayerLocation> locations;
 
-		private UpdateMap(ArrayList<Location> locations) {
+		private UpdateMap(ArrayList<PlayerLocation> locations) {
 			this.locations = locations;
 		}
 
@@ -59,12 +60,11 @@ public class WorldUpdateService extends Service {
 			overlays.add(otherPlayersOverlay);
 		}
 
-		private OtherPlayersOverlay refreshLocationsUsing(
-				final ArrayList<Location> locations) {
+		private OtherPlayersOverlay refreshLocationsUsing(final ArrayList<PlayerLocation> locations) {
 			OtherPlayersOverlay otherPlayersOverlay = activity.getOtherPlayersOverlay();
 			otherPlayersOverlay.clear();
 			
-			for(Location location : locations) {
+			for(PlayerLocation location : locations) {
 				otherPlayersOverlay.addOverlayFor(location);
 			}
 			otherPlayersOverlay.readyToPopulate();

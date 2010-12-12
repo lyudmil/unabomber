@@ -9,7 +9,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class UnabomberHttpClient extends DefaultHttpClient {
 	
-	public HttpResponse executeRequest(HttpUriRequest request) {
+	public synchronized HttpResponse executeRequest(HttpUriRequest request) {
 		try {
 			return execute(request);
 		} catch (ClientProtocolException e) {

@@ -1,7 +1,11 @@
 package ui;
 
+import java.util.ArrayList;
+
 import unabomber.client.R;
 import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
@@ -14,6 +18,7 @@ public class UnabomberMap extends MapActivity {
     private MapView mapView;
 	private PlayerLocationOverlay playerLocationOverlay;
 	private GameEngine gameEngine;
+	private Intent worldUpdateIntent;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +28,37 @@ public class UnabomberMap extends MapActivity {
         setUpMap();
         showPlayerLocation();
         authenticatePlayer();
+        followPlayers();
     }
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		stopFollowingPlayers();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		stopFollowingPlayers();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		followPlayers();
+	}
+
+
+	private void stopFollowingPlayers() {
+		stopService(worldUpdateIntent);
+	}
+
+	private void followPlayers() {
+		WorldUpdateService.setActivity(this);
+        worldUpdateIntent = new Intent(this, WorldUpdateService.class);
+        startService(worldUpdateIntent);
+	}
 
 	private void authenticatePlayer() {
 		gameEngine.authenticate();
@@ -54,5 +89,9 @@ public class UnabomberMap extends MapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+
+	public void updatePlayerLocations(ArrayList<Location> locations) {
+		
 	}
 }

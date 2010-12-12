@@ -1,6 +1,8 @@
 package ui;
 
+import ui.dialogs.Dialogs;
 import unabomber.client.R;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -25,12 +27,23 @@ public class UnabomberMap extends MapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Dialogs.setActivity(this);
         
         setUpMap();
         showPlayerLocation();
         authenticatePlayer();
         followPlayers();
     }
+	
+	public void createDialog(int id) {
+		showDialog(id);
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog = Dialogs.get(id);
+		return dialog;
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -70,7 +83,7 @@ public class UnabomberMap extends MapActivity {
 	}
 
 	private void showPlayerLocation() {
-		playerLocationOverlay = new PlayerLocationOverlay(this, mapView);
+		playerLocationOverlay = new PlayerLocationOverlay(this);
         playerLocationOverlay.enableMyLocation();
         mapView.getOverlays().add(playerLocationOverlay);
 	}

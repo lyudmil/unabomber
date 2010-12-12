@@ -29,21 +29,25 @@ public class OtherPlayersOverlay extends ItemizedOverlay<OverlayItem> {
 		return locations.size();
 	}
 	
-	public void addOverlayFor(PlayerLocation location) {
-		if(myPlayerId == location.getPlayerId()) return;
-		
-		Double latitude = location.getLocation().getLatitude() * 1E6;
-		Double longitude = location.getLocation().getLongitude() * 1E6;
-		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
-		locations.add(new OverlayItem(point, "", ""));
-	}
-	
 	public void readyToPopulate() {
 		populate();
 	}
 	
 	public void clear() {
 		locations.clear();
+	}
+	
+	public void addOverlayFor(PlayerLocation location) {
+		if(displayingMyself(location)) return;
+		
+		Double latitude = location.getLocation().getLatitude() * 1E6;
+		Double longitude = location.getLocation().getLongitude() * 1E6;
+		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
+		locations.add(new OverlayItem(point, "", ""));
+	}
+
+	private boolean displayingMyself(PlayerLocation location) {
+		return myPlayerId == location.getPlayerId();
 	}
 
 }

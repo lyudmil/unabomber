@@ -1,11 +1,14 @@
 package engine;
 
-import java.util.ArrayList;
-
 import http.AuthenticateUserParameters;
 import http.PostLocationParameters;
 import http.UnabomberHttpClient;
 
+import java.util.ArrayList;
+
+import json.JSONUtil;
+
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -46,7 +49,7 @@ public class GameEngine {
 
 	public ArrayList<Location> getLocations() {
 		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);
-		httpClient.executeRequest(request);
-		return null;
+		HttpResponse response = httpClient.executeRequest(request);
+		return JSONUtil.locationsFrom(response);
 	}
 }

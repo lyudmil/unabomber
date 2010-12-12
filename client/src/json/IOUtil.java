@@ -23,7 +23,6 @@ public class IOUtil {
 		while ((line = reader.readLine()) != null) {
 		    content.append(line);
 		}
-		responseEntityContent.close();
 		return content.toString();
 	}
 

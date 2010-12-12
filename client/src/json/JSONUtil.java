@@ -1,8 +1,10 @@
 package json;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,10 +12,23 @@ import org.json.JSONObject;
 import android.location.Location;
 
 public class JSONUtil {
-
-	public static ArrayList<Location> locationsFrom(InputStream responseEntityContent) {
+	
+	public static synchronized ArrayList<Location> locationsFrom(HttpResponse response) {
 		try {
-			JSONArray locationsJson = new JSONArray(IOUtil.convertToString(responseEntityContent));
+			return locationsFrom(response.getEntity().getContent());
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static synchronized ArrayList<Location> locationsFrom(InputStream responseEntityContent) {
+		try {
+			String json = IOUtil.convertToString(responseEntityContent);
+			JSONArray locationsJson = new JSONArray(json);
 			return locationsFrom(locationsJson);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -40,5 +55,4 @@ public class JSONUtil {
 		location.setAltitude(locationJson.getDouble("altitude"));
 		return location;
 	}
-
 }

@@ -1,11 +1,8 @@
 package ui;
 
-import java.util.ArrayList;
-
 import unabomber.client.R;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
@@ -19,6 +16,7 @@ public class UnabomberMap extends MapActivity {
 	private PlayerLocationOverlay playerLocationOverlay;
 	private GameEngine gameEngine;
 	private Intent worldUpdateIntent;
+	private OtherPlayersOverlay otherPlayersOverlay;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +53,8 @@ public class UnabomberMap extends MapActivity {
 	}
 
 	private void followPlayers() {
+		otherPlayersOverlay = new OtherPlayersOverlay(getResources().getDrawable(R.drawable.androidmarker));
+		
 		WorldUpdateService.setActivity(this);
         worldUpdateIntent = new Intent(this, WorldUpdateService.class);
         startService(worldUpdateIntent);
@@ -91,7 +91,11 @@ public class UnabomberMap extends MapActivity {
 		return false;
 	}
 
-	public void updatePlayerLocations(ArrayList<Location> locations) {
-		
+	public MapView getMapView() {
+		return mapView;
+	}
+	
+	public OtherPlayersOverlay getOtherPlayersOverlay() {
+		return otherPlayersOverlay;
 	}
 }

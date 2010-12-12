@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.PlayerData;
 import engine.PlayerLocation;
 
 import android.location.Location;
@@ -27,7 +28,7 @@ public class JSONUtil {
 		}
 	}
 
-	public static synchronized JSONObject playerDataFrom(HttpResponse response) {
+	public static synchronized PlayerData playerDataFrom(HttpResponse response) {
 		try {
 			return playerDataFrom(response.getEntity().getContent());
 		} catch (IllegalStateException e) {
@@ -39,10 +40,12 @@ public class JSONUtil {
 		}
 	}
 
-	public static JSONObject playerDataFrom(InputStream responseEntityContent) {
+	public static PlayerData playerDataFrom(InputStream responseEntityContent) {
 		String json = IOUtil.convertToString(responseEntityContent);
 		try {
-			return new JSONObject(json).getJSONObject("player");
+			JSONObject jsonObject = new JSONObject(json).getJSONObject("player");
+			PlayerData playerData = new PlayerData(jsonObject);
+			return playerData;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

@@ -12,7 +12,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.json.JSONObject;
 
 import android.location.Location;
 
@@ -42,7 +41,7 @@ public class GameEngine {
 		httpClient.executeRequest(request);
 	}
 
-	public JSONObject authenticate() {
+	public PlayerData authenticate() {
 		HttpPost request = new HttpPost(SERVER + PLAYERS_CONTROLLER + "/create");
 		request.setEntity(new AuthenticateUserParameters(deviceId).encode());
 		HttpResponse response = httpClient.executeRequest(request);

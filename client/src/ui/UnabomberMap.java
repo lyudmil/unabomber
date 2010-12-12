@@ -3,6 +3,7 @@ package ui;
 import unabomber.client.R;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
@@ -10,6 +11,7 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 
 import engine.GameEngine;
+import engine.PlayerData;
 
 public class UnabomberMap extends MapActivity {
     private MapView mapView;
@@ -17,6 +19,7 @@ public class UnabomberMap extends MapActivity {
 	private GameEngine gameEngine;
 	private Intent worldUpdateIntent;
 	private OtherPlayersOverlay otherPlayersOverlay;
+	private PlayerData playerData;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,9 @@ public class UnabomberMap extends MapActivity {
 	}
 
 	private void followPlayers() {
-		otherPlayersOverlay = new OtherPlayersOverlay(getResources().getDrawable(R.drawable.androidmarker));
+		Drawable defaultMarker = getResources().getDrawable(R.drawable.androidmarker);
+		int playerId = playerData.getPlayerId();
+		otherPlayersOverlay = new OtherPlayersOverlay(defaultMarker, playerId);
 		
 		WorldUpdateService.setActivity(this);
         worldUpdateIntent = new Intent(this, WorldUpdateService.class);
@@ -61,7 +66,7 @@ public class UnabomberMap extends MapActivity {
 	}
 
 	private void authenticatePlayer() {
-		gameEngine.authenticate();
+		playerData = gameEngine.authenticate();
 	}
 
 	private void showPlayerLocation() {
@@ -97,5 +102,9 @@ public class UnabomberMap extends MapActivity {
 	
 	public OtherPlayersOverlay getOtherPlayersOverlay() {
 		return otherPlayersOverlay;
+	}
+	
+	public PlayerData getPlayerData() {
+		return playerData;
 	}
 }

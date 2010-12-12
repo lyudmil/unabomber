@@ -12,9 +12,11 @@ import engine.PlayerLocation;
 
 public class OtherPlayersOverlay extends ItemizedOverlay<OverlayItem> {
 	ArrayList<OverlayItem> locations = new ArrayList<OverlayItem>();
+	private int myPlayerId;
 
-	public OtherPlayersOverlay(Drawable defaultMarker) {
+	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId) {
 		super(boundCenterBottom(defaultMarker));
+		this.myPlayerId = myPlayerId;
 	}
 
 	@Override
@@ -28,6 +30,8 @@ public class OtherPlayersOverlay extends ItemizedOverlay<OverlayItem> {
 	}
 	
 	public void addOverlayFor(PlayerLocation location) {
+		if(myPlayerId == location.getPlayerId()) return;
+		
 		Double latitude = location.getLocation().getLatitude() * 1E6;
 		Double longitude = location.getLocation().getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());

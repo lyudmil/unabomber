@@ -22,9 +22,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.message.BasicHttpResponse;
-import org.json.JSONObject;
-
-import engine.GameEngine;
 
 import android.location.Location;
 
@@ -112,10 +109,10 @@ public class GameEngineTest extends TestCase {
 	public void testUserAuthenticationRequestRetrievesPlayerData() throws Exception {
 		setUpAuthenticationResponse();
 		
-		JSONObject playerData = gameEngine.authenticate();
+		PlayerData playerData = gameEngine.authenticate();
 		
-		assertEquals(66, playerData.getInt("id"));
-		assertEquals("000000000000000451", playerData.getString("device_id"));
+		assertEquals(66, playerData.getPlayerId());
+		assertEquals("000000000000000451", playerData.getDeviceId());
 	}
 
 	private String parametersFrom(UrlEncodedFormEntity encodedParameters) throws IOException {

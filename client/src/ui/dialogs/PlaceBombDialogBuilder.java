@@ -28,7 +28,7 @@ public class PlaceBombDialogBuilder {
 		        	   
 		        	   BombsOverlay bombs = activity.getBombsOverlay();
 		        	   bombs.addBombAt(lastKnownLocation);
-		        	   if(!bombs.isShown()) bombs.showOn(activity.getMapView());
+		        	   bombs.showOn(activity.getMapView());
 		        	   dialog.dismiss();
 		           }
 		       })

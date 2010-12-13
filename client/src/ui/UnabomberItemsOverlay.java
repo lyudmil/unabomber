@@ -1,12 +1,15 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem> {
@@ -40,6 +43,13 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		Double longitude = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
 		locations.add(new OverlayItem(point, "", ""));
+	}
+
+	public void showOn(MapView mapView) {
+		List<Overlay> overlays = mapView.getOverlays();
+		if(overlays.contains(this)) return;
+		
+		overlays.add(this);
 	}
 
 }

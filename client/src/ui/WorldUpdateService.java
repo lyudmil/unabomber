@@ -1,16 +1,12 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-
-import com.google.android.maps.Overlay;
-
 import engine.PlayerLocation;
 
 public class WorldUpdateService extends Service {
@@ -51,13 +47,7 @@ public class WorldUpdateService extends Service {
 
 		public void run() {
 			OtherPlayersOverlay otherPlayersOverlay = refreshLocationsUsing(locations);
-			display(otherPlayersOverlay);
-		}
-
-		private void display(OtherPlayersOverlay otherPlayersOverlay) {
-			List<Overlay> overlays = activity.getMapView().getOverlays();
-			if(overlays.contains(otherPlayersOverlay)) return;
-			overlays.add(otherPlayersOverlay);
+			otherPlayersOverlay.showOn(activity.getMapView());
 		}
 
 		private OtherPlayersOverlay refreshLocationsUsing(final ArrayList<PlayerLocation> locations) {

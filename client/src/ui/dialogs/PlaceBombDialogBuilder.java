@@ -1,9 +1,13 @@
 package ui.dialogs;
 
+import ui.BombsOverlay;
 import ui.UnabomberMap;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
+import android.location.LocationManager;
 
 public class PlaceBombDialogBuilder {
 
@@ -19,12 +23,18 @@ public class PlaceBombDialogBuilder {
 		       .setCancelable(false)
 		       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-		        	   dialog.cancel();
+		        	   LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+		        	   Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		        	   
+		        	   BombsOverlay bombs = activity.getBombsOverlay();
+		        	   bombs.addBombAt(lastKnownLocation);
+		        	   if(!bombs.isShown()) bombs.showOn(activity.getMapView());
+		        	   dialog.dismiss();
 		           }
 		       })
 		       .setNegativeButton("No", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-		                dialog.cancel();
+		               dialog.cancel();
 		           }
 		       });
 		AlertDialog alert = builder.create();

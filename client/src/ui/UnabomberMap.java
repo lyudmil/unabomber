@@ -22,23 +22,22 @@ public class UnabomberMap extends MapActivity {
 	private Intent worldUpdateIntent;
 	private OtherPlayersOverlay otherPlayersOverlay;
 	private PlayerData playerData;
+	private BombsOverlay bombsOverlay;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Dialogs.setActivity(this);
-        
+               
         setUpMap();
         showPlayerLocation();
         authenticatePlayer();
         followPlayers();
+        
+        bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
     }
 	
-	public void createDialog(int id) {
-		showDialog(id);
-	}
-
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = Dialogs.get(id);
@@ -62,7 +61,6 @@ public class UnabomberMap extends MapActivity {
 		super.onResume();
 		followPlayers();
 	}
-
 
 	private void stopFollowingPlayers() {
 		stopService(worldUpdateIntent);
@@ -115,6 +113,10 @@ public class UnabomberMap extends MapActivity {
 	
 	public OtherPlayersOverlay getOtherPlayersOverlay() {
 		return otherPlayersOverlay;
+	}
+	
+	public BombsOverlay getBombsOverlay() {
+		return bombsOverlay;
 	}
 	
 	public PlayerData getPlayerData() {

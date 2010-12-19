@@ -18,6 +18,7 @@ public class Dialogs {
 		return dialog;
 	}
 	
+	@SuppressWarnings("serial")
 	public static void setActivity(final UnabomberMap newActivity) {
 		activity = newActivity;
 		builders = new HashMap<Integer, PlaceBombDialogBuilder>() {

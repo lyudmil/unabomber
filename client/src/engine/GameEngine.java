@@ -1,5 +1,6 @@
 package engine;
 
+import http.ArrestedPlayerParameters;
 import http.AuthenticateUserParameters;
 import http.PostLocationParameters;
 import http.UnabomberHttpClient;
@@ -20,6 +21,7 @@ public class GameEngine {
 	private static final String LOCATIONS_CONTROLLER = "/locations";
 	private static final String PLAYERS_CONTROLLER = "/players";
 	private static final String SERVER = "http://10.0.2.2:3000";
+	private static final String AGENT_ARREST = "/arrest";
 	
 	private UnabomberHttpClient httpClient;
 	private String playerUrl;
@@ -47,6 +49,14 @@ public class GameEngine {
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.playerDataFrom(response);
 	}
+	
+	public void sendPlayerToJail(int agentPlayer, int arrestedPlayer) {
+		String uri = SERVER + "/" + String.valueOf(agentPlayer) + AGENT_ARREST;
+		HttpPost request = new HttpPost(uri);
+		request.setEntity(new ArrestedPlayerParameters(String.valueOf(arrestedPlayer)).encode());
+		httpClient.executeRequest(request);
+	}
+	
 
 	public ArrayList<PlayerLocation> getLocations() {
 		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);

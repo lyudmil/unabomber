@@ -1,9 +1,6 @@
 package ui;
 
-import java.util.List;
-
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 import unabomber.client.R;
@@ -19,16 +16,20 @@ import engine.PlayerLocation;
 public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	private int myPlayerId;
 	private Context mContext;
+	private GameEngine mEngine;
+	
+	
 	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId) {
 		super(defaultMarker);
 		this.myPlayerId = myPlayerId;
 	}
 
-	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId,
+	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId, GameEngine engine,
 			Context context) {
 		super(defaultMarker);
 		this.myPlayerId = myPlayerId;
 		this.mContext = context;
+		this.mEngine = engine;
 	}
 
 	// Handle a tap on other player icons, this is a "system" callback
@@ -64,7 +65,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		switch (optionIndex) {
 		case 0: // send another player to jail
 
-			// TO DO
+			mEngine.sendPlayerToJail(myPlayerId, targetPlayerID);
 
 			//feedback the results
 			Toast.makeText(mContext, R.string.sent_to_jail, Toast.LENGTH_SHORT)

@@ -2,11 +2,15 @@ package ui;
 
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import com.google.android.maps.MapActivity;
@@ -16,7 +20,7 @@ import engine.GameEngine;
 import engine.PlayerData;
 
 public class UnabomberMap extends MapActivity {
-    private MapView mapView;
+	private MapView mapView;
 	private PlayerLocationOverlay playerLocationOverlay;
 	private GameEngine gameEngine;
 	private Intent worldUpdateIntent;
@@ -24,20 +28,73 @@ public class UnabomberMap extends MapActivity {
 	private PlayerData playerData;
 	private BombsOverlay bombsOverlay;
 
+	//gps check variables
+	private LocationManager locman;
+	//
+
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        Dialogs.setActivity(this);
-               
-        setUpMap();
-        showPlayerLocation();
-        authenticatePlayer();
-        followPlayers();
-        
-        bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
-    }
-	
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		Dialogs.setActivity(this);
+
+
+		//gps check code
+		locman=(LocationManager)getSystemService(LOCATION_SERVICE);
+
+		if(!locman.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+			showAlert();
+		}
+		//
+		
+		setUpMap();
+		showPlayerLocation();
+		authenticatePlayer();
+		followPlayers();
+
+		bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
+
+
+
+	}
+
+	//showAlert method shows an alert dialog which allows the user to turn on gps if he wish to do it
+	private void showAlert(){
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
+		builder.setMessage("Your GPS is disabled! Would you like to enable it?")  
+		.setCancelable(false)  
+		.setPositiveButton("Enable GPS",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				showGpsOptions();  
+			}  
+		});  
+		builder.setNegativeButton("Do nothing",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				dialog.cancel();  
+			}  
+		});  
+		AlertDialog alert = builder.create();  
+		alert.show();  
+
+
+
+	}
+
+	//shpwGpsOprtions sends the user to the "Settings" page, where the user can activare GPS
+	private void showGpsOptions(){
+		Intent gpsOptionsIntent = new Intent(  
+				android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		
+		startActivity(gpsOptionsIntent); 
+
+	}
+
+
+
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = Dialogs.get(id);
@@ -49,7 +106,7 @@ public class UnabomberMap extends MapActivity {
 		super.onDestroy();
 		stopFollowingPlayers();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -70,10 +127,10 @@ public class UnabomberMap extends MapActivity {
 		Drawable defaultMarker = getResources().getDrawable(R.drawable.androidmarker);
 		int playerId = playerData.getPlayerId();
 		otherPlayersOverlay = new OtherPlayersOverlay(defaultMarker, playerId, this.gameEngine, this);
-		
+
 		WorldUpdateService.setActivity(this);
-        worldUpdateIntent = new Intent(this, WorldUpdateService.class);
-        startService(worldUpdateIntent);
+		worldUpdateIntent = new Intent(this, WorldUpdateService.class);
+		startService(worldUpdateIntent);
 	}
 
 	private void authenticatePlayer() {
@@ -82,16 +139,16 @@ public class UnabomberMap extends MapActivity {
 
 	private void showPlayerLocation() {
 		playerLocationOverlay = new PlayerLocationOverlay(this);
-        playerLocationOverlay.enableMyLocation();
-        mapView.getOverlays().add(playerLocationOverlay);
+		playerLocationOverlay.enableMyLocation();
+		mapView.getOverlays().add(playerLocationOverlay);
 	}
 
 	private void setUpMap() {
 		mapView = (MapView)findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
-        gameEngine = new GameEngine(deviceId());
+		mapView.setBuiltInZoomControls(true);
+		gameEngine = new GameEngine(deviceId());
 	}
-	
+
 	private String deviceId() {
 		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String deviceId = telephonyManager.getDeviceId() + Math.round(Math.random() * 1000);
@@ -101,7 +158,7 @@ public class UnabomberMap extends MapActivity {
 	public GameEngine getEngine() {
 		return gameEngine;
 	}
-	
+
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
@@ -110,15 +167,15 @@ public class UnabomberMap extends MapActivity {
 	public MapView getMapView() {
 		return mapView;
 	}
-	
+
 	public OtherPlayersOverlay getOtherPlayersOverlay() {
 		return otherPlayersOverlay;
 	}
-	
+
 	public BombsOverlay getBombsOverlay() {
 		return bombsOverlay;
 	}
-	
+
 	public PlayerData getPlayerData() {
 		return playerData;
 	}

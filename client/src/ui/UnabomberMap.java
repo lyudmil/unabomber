@@ -9,8 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import com.google.android.maps.MapActivity;
@@ -28,8 +29,9 @@ public class UnabomberMap extends MapActivity {
 	private PlayerData playerData;
 	private BombsOverlay bombsOverlay;
 
-	//gps check variables
-	private LocationManager locman;
+	//gps&internet check variables
+	private LocationManager loc_man;
+	private NetworkInfo net_info;
 	//
 
 	@Override
@@ -39,12 +41,9 @@ public class UnabomberMap extends MapActivity {
 		Dialogs.setActivity(this);
 
 
-		//gps check code
-		locman=(LocationManager)getSystemService(LOCATION_SERVICE);
-
-		if(!locman.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-			showAlert();
-		}
+		//gps&internet test
+		testGps();
+		testInternet();
 		//
 		
 		setUpMap();
@@ -57,9 +56,25 @@ public class UnabomberMap extends MapActivity {
 
 
 	}
+	
+	//testGps method
+	private void testGps(){
+		loc_man=(LocationManager)getSystemService(LOCATION_SERVICE);
+		if(!loc_man.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+			showGpsAlert();
+		}
+	}
+	
+	//testInternet method
+	private void testInternet(){
+		net_info=((ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE)).getNetworkInfo(0);
+		if(!net_info.isConnectedOrConnecting()){
+			showNetAlert();
+		}
+	}
 
-	//showAlert method shows an alert dialog which allows the user to turn on gps if he wish to do it
-	private void showAlert(){
+	//showGpsAlert method shows an alert dialog which allows the user to turn on gps if he wish to do it
+	private void showGpsAlert(){
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
 		builder.setMessage("Your GPS is disabled! Would you like to enable it?")  
@@ -93,6 +108,43 @@ public class UnabomberMap extends MapActivity {
 	}
 
 
+	
+	//showNetAlert method shows an alert dialog which allows the user to turn on internet connection if he wish to do it
+	private void showNetAlert(){
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
+		builder.setMessage("You are not connected to the internet! Would you like to connect?")  
+		.setCancelable(false)  
+		.setPositiveButton("Connect",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				showNetOptions();  
+			}  
+		});  
+		builder.setNegativeButton("Do nothing",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				dialog.cancel();  
+			}  
+		});  
+		AlertDialog alert = builder.create();  
+		alert.show();  
+
+
+
+	}
+	
+	//shpwNetOprtions sends the user to the "Settings" page, where the user can activare internet connection
+	private void showNetOptions(){
+		Intent gpsOptionsIntent = new Intent(  
+				android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+		
+		startActivity(gpsOptionsIntent); 
+
+	}
+	
+	//
+	
 
 
 	@Override

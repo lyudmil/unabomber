@@ -19,20 +19,10 @@ class PlayersController < ApplicationController
     @player = player_with_specified_device_id
     @player.location.destroy if @player.location
     
-    @player.location = location_from_params
+    @player.location = location_from_parameters
     @player.save
     
     redirect_to @player
   end
   
-  private
-  
-  def player_with_specified_device_id
-    Player.find_by_device_id(params[:device_id])
-  end
-  
-  def location_from_params
-    Location.create(:longitude => params[:longitude], :latitude => params[:latitude], :altitude => params[:altitude])
-  end
-
 end

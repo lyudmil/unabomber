@@ -6,4 +6,6 @@ Server::Application.routes.draw do
   post 'players/create' => 'players#create'
   
   put 'players/:device_id/update' => 'players#update'
+	
+	post ':device_id/bombs/place' => 'bombs#place'
 end

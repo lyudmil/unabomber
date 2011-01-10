@@ -14,6 +14,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 
+import com.google.android.maps.MapActivity;
+
 import android.content.Context;
 import android.location.Location;
 
@@ -34,6 +36,7 @@ public class GameEngine {
 		playerUrl = "/" + deviceId;
 		
 	}
+	
 	public GameEngine(String deviceId) {
 		this(new UnabomberHttpClient(), deviceId);
 	}

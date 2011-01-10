@@ -1,5 +1,20 @@
 package ui;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
 import android.app.AlertDialog;
@@ -7,6 +22,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -33,6 +49,9 @@ public class UnabomberMap extends MapActivity {
 	private LocationManager loc_man;
 	private NetworkInfo net_info;
 	//
+	private URL url;
+	private HttpURLConnection url_con;
+	//
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,36 +60,85 @@ public class UnabomberMap extends MapActivity {
 		Dialogs.setActivity(this);
 
 
-		//gps&internet test
-		testGps();
-		testInternet();
-		//
-		
-		setUpMap();
-		showPlayerLocation();
-		authenticatePlayer();
-		followPlayers();
+		if(testInternet()){
 
-		bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
+			if(testServer()){
+
+				//gps test
+				testGps();
 
 
+				setUpMap();
+				showPlayerLocation();
+				authenticatePlayer();
+				followPlayers();
+
+				bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
+
+			}else{
+				showServerAlert();
+			}
+		}
+	}
+
+
+	//testServer method
+	private Boolean testServer(){
+
+		return true;
 
 	}
-	
+
+	//showAlert() method
+	private void showServerAlert(){
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
+		builder.setMessage("Server not reachable")  
+		.setCancelable(false)  
+		.setPositiveButton("Try again",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				showGpsOptions();  
+			}  
+		});  
+		builder.setNegativeButton("Exit",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				dialog.cancel();  
+			}  
+		});  
+		AlertDialog alert = builder.create();  
+		alert.show();  
+
+	}
+
+
+
 	//testGps method
 	private void testGps(){
-		loc_man=(LocationManager)getSystemService(LOCATION_SERVICE);
+		loc_man=(LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 		if(!loc_man.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 			showGpsAlert();
 		}
 	}
-	
+
 	//testInternet method
-	private void testInternet(){
-		net_info=((ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE)).getNetworkInfo(0);
-		if(!net_info.isConnectedOrConnecting()){
+	private Boolean testInternet(){
+
+
+		ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE); 
+
+		if(   conMgr.getActiveNetworkInfo() != null &&
+				conMgr.getActiveNetworkInfo().isAvailable() &&
+				conMgr.getActiveNetworkInfo().isConnected()   ){
+			//connected
+			return true;
+		}else{
 			showNetAlert();
+			return false;
 		}
+
+
 	}
 
 	//showGpsAlert method shows an alert dialog which allows the user to turn on gps if he wish to do it
@@ -102,13 +170,13 @@ public class UnabomberMap extends MapActivity {
 	private void showGpsOptions(){
 		Intent gpsOptionsIntent = new Intent(  
 				android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-		
+
 		startActivity(gpsOptionsIntent); 
 
 	}
 
 
-	
+
 	//showNetAlert method shows an alert dialog which allows the user to turn on internet connection if he wish to do it
 	private void showNetAlert(){
 
@@ -133,18 +201,18 @@ public class UnabomberMap extends MapActivity {
 
 
 	}
-	
+
 	//shpwNetOprtions sends the user to the "Settings" page, where the user can activare internet connection
 	private void showNetOptions(){
 		Intent gpsOptionsIntent = new Intent(  
 				android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-		
+
 		startActivity(gpsOptionsIntent); 
 
 	}
-	
+
 	//
-	
+
 
 
 	@Override

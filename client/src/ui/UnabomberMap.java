@@ -2,18 +2,9 @@ package ui;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
+import java.net.InetAddress;
 import java.net.URL;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import java.net.UnknownHostException;
 
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
@@ -22,7 +13,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -48,10 +38,9 @@ public class UnabomberMap extends MapActivity {
 	//gps&internet check variables
 	private LocationManager loc_man;
 	private NetworkInfo net_info;
-	//
-	private URL url;
-	private HttpURLConnection url_con;
-	//
+
+	//server check var
+	private Boolean reachable=false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,9 +72,34 @@ public class UnabomberMap extends MapActivity {
 
 
 	//testServer method
+	//I tried a lot of ways to test if server is running, but some doesn't work properly on android,
+	//some are not very reliable. The actual method checks if the machine on which server is running, is reachable.
+	//(change the ip with your machine's ip)
 	private Boolean testServer(){
 
-		return true;
+		try {
+			String ip="192.168.0.2";
+			InetAddress net= InetAddress.getByName(ip);
+			if(net.isReachable(3000)){
+				reachable=true;
+
+			}else{
+				reachable=false;
+			}
+
+
+
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+		return reachable;
 
 	}
 
@@ -224,19 +238,22 @@ public class UnabomberMap extends MapActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		stopFollowingPlayers();
+		if(reachable!=false)
+			stopFollowingPlayers();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		stopFollowingPlayers();
+		if(reachable!=false)
+			stopFollowingPlayers();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		followPlayers();
+		if(reachable!=false)
+			followPlayers();
 	}
 
 	private void stopFollowingPlayers() {

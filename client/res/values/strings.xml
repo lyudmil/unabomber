@@ -8,4 +8,7 @@
 
 <string name="unknown_action">Unknown action, something goes wrong</string>
 
+
+<string name="m_show">Show Players</string>
+<string name="m_options">Options</string>
 </resources>

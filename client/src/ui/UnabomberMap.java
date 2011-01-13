@@ -1,9 +1,7 @@
 package ui;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 
 import ui.dialogs.Dialogs;
@@ -19,9 +17,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+
+import connectivity.GCSTester;
 
 import engine.GameEngine;
 import engine.PlayerData;
@@ -41,6 +44,9 @@ public class UnabomberMap extends MapActivity {
 
 	//server check var
 	private Boolean reachable=false;
+	private GCSTester tester;
+
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,184 +54,48 @@ public class UnabomberMap extends MapActivity {
 		setContentView(R.layout.main);
 		Dialogs.setActivity(this);
 
+		tester=new GCSTester(this);
 
-		if(testInternet()){
+		reachable=tester.testGCS();
+		
+		
+		if(reachable){
+			
+			setUpMap();
+			showPlayerLocation();
+			authenticatePlayer();
+			followPlayers();
+			bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
 
-			if(testServer()){
-
-				//gps test
-				testGps();
-
-
-				setUpMap();
-				showPlayerLocation();
-				authenticatePlayer();
-				followPlayers();
-
-				bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
-
-			}else{
-				showServerAlert();
-			}
 		}
-	}
+		
 
 
-	//testServer method
-	//I tried a lot of ways to test if server is running, but some doesn't work properly on android,
-	//some are not very reliable. The actual method checks if the machine on which server is running, is reachable.
-	//(change the ip with your machine's ip)
-	private Boolean testServer(){
-
-		try {
-			String ip="192.168.0.2";
-			InetAddress net= InetAddress.getByName(ip);
-			if(net.isReachable(3000)){
-				reachable=true;
-
-			}else{
-				reachable=false;
-			}
-
-
-
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-
-		return reachable;
-
-	}
-
-	//showAlert() method
-	private void showServerAlert(){
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
-		builder.setMessage("Server not reachable")  
-		.setCancelable(false)  
-		.setPositiveButton("Try again",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-				showGpsOptions();  
-			}  
-		});  
-		builder.setNegativeButton("Exit",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-				dialog.cancel();  
-			}  
-		});  
-		AlertDialog alert = builder.create();  
-		alert.show();  
 
 	}
 
 
-
-	//testGps method
-	private void testGps(){
-		loc_man=(LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-		if(!loc_man.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-			showGpsAlert();
-		}
+	//menu
+	public boolean onCreateOptionsMenu(Menu menu){
+		MenuInflater inflater=getMenuInflater();
+		inflater.inflate(R.menu.game_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
-	//testInternet method
-	private Boolean testInternet(){
-
-
-		ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE); 
-
-		if(   conMgr.getActiveNetworkInfo() != null &&
-				conMgr.getActiveNetworkInfo().isAvailable() &&
-				conMgr.getActiveNetworkInfo().isConnected()   ){
-			//connected
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// handle item selection
+		switch (item.getItemId()) {
+		case R.id.show:
+			//codice
 			return true;
-		}else{
-			showNetAlert();
-			return false;
+		case R.id.options:
+			//codice
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-
-
 	}
 
-	//showGpsAlert method shows an alert dialog which allows the user to turn on gps if he wish to do it
-	private void showGpsAlert(){
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
-		builder.setMessage("Your GPS is disabled! Would you like to enable it?")  
-		.setCancelable(false)  
-		.setPositiveButton("Enable GPS",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-				showGpsOptions();  
-			}  
-		});  
-		builder.setNegativeButton("Do nothing",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-				dialog.cancel();  
-			}  
-		});  
-		AlertDialog alert = builder.create();  
-		alert.show();  
-
-
-
-	}
-
-	//shpwGpsOprtions sends the user to the "Settings" page, where the user can activare GPS
-	private void showGpsOptions(){
-		Intent gpsOptionsIntent = new Intent(  
-				android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-
-		startActivity(gpsOptionsIntent); 
-
-	}
-
-
-
-	//showNetAlert method shows an alert dialog which allows the user to turn on internet connection if he wish to do it
-	private void showNetAlert(){
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
-		builder.setMessage("You are not connected to the internet! Would you like to connect?")  
-		.setCancelable(false)  
-		.setPositiveButton("Connect",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-				showNetOptions();  
-			}  
-		});  
-		builder.setNegativeButton("Do nothing",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-				dialog.cancel();  
-			}  
-		});  
-		AlertDialog alert = builder.create();  
-		alert.show();  
-
-
-
-	}
-
-	//shpwNetOprtions sends the user to the "Settings" page, where the user can activare internet connection
-	private void showNetOptions(){
-		Intent gpsOptionsIntent = new Intent(  
-				android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-
-		startActivity(gpsOptionsIntent); 
-
-	}
-
-	//
 
 
 

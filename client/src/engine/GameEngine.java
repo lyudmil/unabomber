@@ -1,6 +1,7 @@
 package engine;
 
 import http.AuthenticateUserParameters;
+import http.PlaceBombParameters;
 import http.PostLocationParameters;
 import http.UnabomberHttpClient;
 
@@ -17,6 +18,7 @@ import android.location.Location;
 
 
 public class GameEngine {
+	private static final String PLACE_BOMBS_ACTION = "/bombs/place";
 	private static final String LOCATIONS_CONTROLLER = "/locations";
 	private static final String PLAYERS_CONTROLLER = "/players";
 	private static final String SERVER = "http://10.0.2.2:3000";
@@ -52,5 +54,11 @@ public class GameEngine {
 		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.locationsFrom(response);
+	}
+
+	public void placeBombAt(Location currentLocation) {
+		HttpPost request = new HttpPost(SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
+		request.setEntity(new PlaceBombParameters(currentLocation).encode());
+		httpClient.executeRequest(request);
 	}
 }

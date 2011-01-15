@@ -26,6 +26,8 @@ public class PlaceBombDialogBuilder {
 		        	   LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 		        	   Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		        	   
+		        	   activity.getEngine().placeBombAt(lastKnownLocation);
+		        	   
 		        	   BombsOverlay bombs = activity.getBombsOverlay();
 		        	   bombs.addBombAt(lastKnownLocation);
 		        	   bombs.showOn(activity.getMapView());

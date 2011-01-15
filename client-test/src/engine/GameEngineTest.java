@@ -1,6 +1,7 @@
 package engine;
 
 import http.AuthenticateUserParameters;
+import http.PlaceBombParameters;
 import http.PostLocationParameters;
 import http.UnabomberHttpClient;
 
@@ -113,6 +114,28 @@ public class GameEngineTest extends TestCase {
 		
 		assertEquals(66, playerData.getPlayerId());
 		assertEquals("000000000000000451", playerData.getDeviceId());
+	}
+	
+	public void testSendsProperRequestForPlacingBombs() {
+		setUpAuthenticationResponse();
+		
+		gameEngine.placeBombAt(currentLocation);
+		HttpPost request = (HttpPost) httpClient.getRequest();
+		
+		assertEquals("POST", request.getMethod());
+		assertEquals("http://10.0.2.2:3000/" + DEVICE_ID + "/bombs/place",	request.getURI().toString());
+	}
+	
+	public void testRequestForPlacingABombContainsLocation() throws Exception {
+		setUpAuthenticationResponse();
+		
+		gameEngine.placeBombAt(currentLocation);
+		HttpPost request = (HttpPost) httpClient.getRequest();
+		
+		UrlEncodedFormEntity expectedEncodedParameters = new PlaceBombParameters(currentLocation).encode();
+		UrlEncodedFormEntity actualEncodedParameters = (UrlEncodedFormEntity) request.getEntity();
+		
+		assertEquals(parametersFrom(expectedEncodedParameters), parametersFrom(actualEncodedParameters));
 	}
 
 	private String parametersFrom(UrlEncodedFormEntity encodedParameters) throws IOException {

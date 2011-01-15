@@ -2,4 +2,14 @@
 <resources>
     
     <string name="app_name">Unabomber</string>
+
+<string name="other_player_menu_title">Choose your action</string>
+<string name="sent_to_jail">Player sent to jail.</string>
+
+<string name="unknown_action">Unknown action, something goes wrong</string>
+
+
+<string name="m_show">Show Players</string>
+<string name="m_options">Options</string>
+<string name="bomb_detonated">Bomb detonated.</string>
 </resources>

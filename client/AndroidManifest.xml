@@ -3,7 +3,9 @@
       package="unabomber.client"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true" android:permission="android.permission.ACCESS_NETWORK_STATE">
         <uses-library android:name="com.google.android.maps" />
         <activity android:label="@string/app_name" android:name="ui.UnabomberMap">
             <intent-filter>
@@ -13,6 +15,8 @@
         </activity>
         <service android:name="ui.WorldUpdateService"/>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+
+
 </manifest> 

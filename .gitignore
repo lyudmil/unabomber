@@ -1,2 +1,9 @@
+<<<<<<< HEAD
 client/bin/
 client-test/bin/
+=======
+*.class
+*.apk
+*.ap_
+bin/
+>>>>>>> 9ef45135964ce7b91cacd56e4277e73e36293da1

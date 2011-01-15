@@ -8,16 +8,21 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 public class UnabomberHttpClient extends DefaultHttpClient {
-	
+
+
 	public synchronized HttpResponse executeRequest(HttpUriRequest request) {
 		try {
+
 			return execute(request);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
+
 		}
 	}
 

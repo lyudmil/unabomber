@@ -5,18 +5,13 @@ class Player < ActiveRecord::Base
 	def assign_role
 	  return if self.role
 	  
-	  player_group = Player.count % 10
-	    
-	  if player_group == 0
-	    self.role = :policeman
-    end
-    
-    if player_group == 1
-      self.role = :unabomber
-    end
-    
-    if player_group > 1
-      self.role = :citizen
+	  case Player.count % 10
+	    when 0
+	      self.role = :policeman
+      when 1
+        self.role = :unabomber
+      else
+        self.role = :citizen
     end
   end
 end

@@ -21,4 +21,53 @@ class PlayerTest < ActiveSupport::TestCase
     assert_equal player.location, location
   end
   
+  test "has a role" do
+    player = Player.new(:device_id => "111", :role => :unabomber)
+    
+    assert player.save
+    assert_equal :unabomber, player.role
+  end
+  
+  test "policeman role assigned every 10 players" do
+    player = Player.new(:device_id => "111")
+    flexmock(Player).should_receive(:count).and_return(0)
+    player.assign_role
+    
+    assert_equal :policeman, player.role
+    
+    flexmock(Player).should_receive(:count).and_return(10)
+   
+    player.assign_role 
+    assert_equal :policeman, player.role
+  end
+  
+  test "unabomber role assigned every 10 players" do
+    player = Player.new(:device_id => "111")
+    flexmock(Player).should_receive(:count).and_return(1)
+    
+    player.assign_role
+    assert_equal :unabomber, player.role
+    
+    flexmock(Player).should_receive(:count).and_return(11)
+    
+    player.assign_role
+    assert_equal :unabomber, player.role
+  end
+  
+  test "citizen role assigned to all normal players" do
+    player = Player.new(:device_id => '111')
+    flexmock(Player).should_receive(:count).and_return(2)
+    
+    player.assign_role
+    assert_equal :citizen, player.role
+  end
+  
+  test "assigning a role does not change existing roles" do
+    flexmock(Player).should_receive(:count).and_return(3)
+    player = Player.new(:device_id => '111', :role => :policeman)
+    player.assign_role
+    
+    assert_equal :policeman, player.role
+  end
+  
 end

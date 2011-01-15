@@ -5,6 +5,7 @@ class PlayersControllerTest < ActionController::TestCase
   test "creates a new player" do
     new_player = flexmock(:model, Player)
     new_player.should_receive(:save).once
+    new_player.should_receive(:assign_role).once
     flexmock(Player).should_receive(:new).with(:device_id => 'abc123').once.and_return(new_player)
     
     post :create, :device_id => 'abc123'

@@ -9,6 +9,7 @@ class PlayersController < ApplicationController
     @player = player_with_specified_device_id
     unless @player
       @player = Player.new(:device_id => params[:device_id])
+      @player.assign_role
       @player.save
     end
     

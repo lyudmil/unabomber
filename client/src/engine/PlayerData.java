@@ -27,5 +27,14 @@ public class PlayerData {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public String getRole() {
+		try {
+			return data.getString("role");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
 
 }

@@ -60,6 +60,16 @@ class PlayersControllerTest < ActionController::TestCase
     assert_redirected_to player
   end
   
+  test "arrests a player" do
+    player = set_up_player_with_device_id '1234'
+    suspect = flexmock(:model, Player)
+    Player.should_receive(:find).with(1).and_return(suspect)
+
+    suspect.should_receive(:destroy).once
+    
+    post :arrest, :device_id => '1234', :id => 1
+  end
+  
   private
   
   def set_up_player_with_device_id device_id

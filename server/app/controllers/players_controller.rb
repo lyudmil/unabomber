@@ -25,4 +25,9 @@ class PlayersController < ApplicationController
     redirect_to @player
   end
   
+  def arrest
+    @player = player_with_specified_device_id
+    Player.find(params[:id]).destroy
+  end
+  
 end

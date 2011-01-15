@@ -1,19 +1,12 @@
 package ui;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -25,7 +18,6 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 
 import connectivity.GCSTester;
-
 import engine.GameEngine;
 import engine.PlayerData;
 

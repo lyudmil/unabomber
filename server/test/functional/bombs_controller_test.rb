@@ -3,7 +3,7 @@ require 'test_helper'
 class BombsControllerTest < ActionController::TestCase
   
   test "can place a bomb" do
-		bomb = flexmock(:model, Bomb)
+		bomb = flexmock(:model, Bomb, :to_json => nil)
 		player = flexmock(:model, Player)
 		location = flexmock(:model, Location)
 

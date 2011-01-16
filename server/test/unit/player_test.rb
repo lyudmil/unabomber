@@ -70,4 +70,13 @@ class PlayerTest < ActiveSupport::TestCase
     assert_equal :policeman, player.role
   end
   
+  test "can calculate distance to a location" do
+    location = Location.new(:longitude => 9.0005, :latitude => 39.0001001, :altitude => 400.4)
+    player = Player.new(:device_id => '111', :location => location)
+    
+    explosion = Location.new(:longitude => 9.0006, :latitude => 39.0000991, :altitude => 400.4)
+    
+    assert_equal 5.375730282308196, player.distance_to(explosion)
+  end
+  
 end

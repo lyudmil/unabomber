@@ -2,6 +2,10 @@ class Player < ActiveRecord::Base
   has_one :location
 	has_many :bombs
 	
+	def distance_to point
+	  self.location.distance_to(point) * 1000
+  end
+	
 	def assign_role
 	  return if self.role
 	  

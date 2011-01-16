@@ -70,4 +70,13 @@ class PlayerTest < ActiveSupport::TestCase
     assert_equal :policeman, player.role
   end
   
+  test "can calculate if it is within range of an explosion" do
+    location = Location.new(:longitude => 9.0005, :latitude => 39.0001001, :altitude => 400.4)
+    player = Player.new(:device_id => '111', :location => location)
+    
+    explosion = Location.new(:longitude => 9.0006, :latitude => 39.0000991, :altitude => 400.4)
+    
+    assert_equal true, player.within_range_of(explosion)
+  end
+  
 end

@@ -34,6 +34,10 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     flexmock (0.8.7)
+    geokit (1.5.0)
+    geokit-rails3 (0.1.2)
+      geokit (~> 1.5.0)
+      rails (~> 3.0.0)
     i18n (0.4.2)
     mail (2.2.9)
       activesupport (>= 2.3.6)
@@ -72,5 +76,6 @@ PLATFORMS
 
 DEPENDENCIES
   flexmock
+  geokit-rails3
   rails (= 3.0.1)
   sqlite3-ruby

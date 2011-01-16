@@ -8,4 +8,5 @@ Server::Application.routes.draw do
 	post 'players/:device_id/arrest' => 'players#arrest'
 	
 	post ':device_id/bombs/place' => 'bombs#place'
+	post 'bombs/:id/detonate' => 'bombs#detonate'
 end

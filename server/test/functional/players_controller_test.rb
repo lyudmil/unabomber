@@ -63,10 +63,13 @@ class PlayersControllerTest < ActionController::TestCase
   
   test "arrests a player" do
     player = set_up_player_with_device_id '1234'
-    suspect = flexmock(:model, Player)
-    Player.should_receive(:find).with(1).and_return(suspect)
+    
+    suspect_location = flexmock(:model, Location)
+    suspect = flexmock(:model, Player, :location => suspect_location)
+    flexmock(Player).should_receive(:find).with(1).and_return(suspect)
 
     suspect.should_receive(:destroy).once
+    suspect_location.should_receive(:destroy).once
     
     post :arrest, :device_id => '1234', :id => 1
   end

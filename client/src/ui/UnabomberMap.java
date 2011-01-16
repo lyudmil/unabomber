@@ -2,8 +2,10 @@ package ui;
 
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
@@ -50,6 +52,8 @@ public class UnabomberMap extends MapActivity {
 
 		reachable=tester.testGCS();
 		
+		showDemoAlert(this);
+		
 		
 		if(reachable){
 			
@@ -64,6 +68,31 @@ public class UnabomberMap extends MapActivity {
 
 
 
+	}
+	
+	
+	//demo start code
+	public void showDemoAlert(final UnabomberMap app){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
+		builder.setMessage("Welcome to Unabomber Demo! Press Play Demo to start a new game or Exit to close the application. Enjoy!")  
+		.setCancelable(false)  
+		.setPositiveButton("Play Demo",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){ 
+
+				dialog.cancel();
+			}  
+		});  
+		builder.setNegativeButton("Exit",  
+				new DialogInterface.OnClickListener(){  
+			public void onClick(DialogInterface dialog, int id){  
+				
+				app.finish();
+				
+			}  
+		});  
+		AlertDialog alert = builder.create();  
+		alert.show();  
 	}
 
 

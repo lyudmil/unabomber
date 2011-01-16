@@ -2,10 +2,11 @@ class Player < ActiveRecord::Base
   has_one :location
 	has_many :bombs
 	
-	def distance_to point
-	  self.location.distance_to(point) * 1000
+	def within_range_of explosion
+	  distance = self.location.distance_to(explosion) * 1000
+	  distance <= 20
   end
-	
+  
 	def assign_role
 	  return if self.role
 	  
@@ -17,5 +18,6 @@ class Player < ActiveRecord::Base
       else
         self.role = :citizen
     end
+    
   end
 end

@@ -65,6 +65,17 @@ public class GameEngine {
 		request.setEntity(new ArrestedPlayerParameters(String.valueOf(arrestedPlayer)).encode());
 		httpClient.executeRequest(request);
 	}
+	
+	//
+	public void sendMessageTo(int sender, int receiver, String message){
+		
+		
+		//code to send the message to the player
+		
+	}
+	//
+	
+	
 	//
 	public void detonateBomb(int bomberPlayer, int detonatedBomb){
 		String uri = SERVER + "/" + String.valueOf(bomberPlayer) + DETONATION;

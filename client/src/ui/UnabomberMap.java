@@ -173,7 +173,7 @@ public class UnabomberMap extends MapActivity {
 	private void followPlayers() {
 		Drawable defaultMarker = getResources().getDrawable(R.drawable.androidmarker);
 		int playerId = playerData.getPlayerId();
-		otherPlayersOverlay = new OtherPlayersOverlay(defaultMarker, playerId, this.gameEngine, this);
+		otherPlayersOverlay = new OtherPlayersOverlay(defaultMarker, playerId, this.gameEngine, this, this);
 
 		WorldUpdateService.setActivity(this);
 		worldUpdateIntent = new Intent(this, WorldUpdateService.class);

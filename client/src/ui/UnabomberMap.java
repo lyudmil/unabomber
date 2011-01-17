@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.List;
+
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
 import android.app.AlertDialog;
@@ -7,9 +9,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
@@ -50,10 +55,8 @@ public class UnabomberMap extends MapActivity {
 
 		tester=new GCSTester(this);
 
-		reachable=tester.testGCS();
-		
+		//reachable=tester.testGCS();
 		showDemoAlert(this);
-		
 		
 		if(reachable){
 			
@@ -69,6 +72,16 @@ public class UnabomberMap extends MapActivity {
 
 
 	}
+	
+	//start mixare code
+	public void startMixare(Context c){
+		
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_VIEW);
+		i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
+		startActivity(i);    
+	}
+	
 	
 	
 	//demo start code
@@ -108,6 +121,12 @@ public class UnabomberMap extends MapActivity {
 		switch (item.getItemId()) {
 		case R.id.show:
 			//codice
+			
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_VIEW);
+			i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
+			startActivity(i);
+			
 			return true;
 		case R.id.options:
 			//codice

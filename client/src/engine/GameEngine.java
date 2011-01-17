@@ -60,7 +60,7 @@ public class GameEngine {
 	}
 	
 	public void sendPlayerToJail(int agentPlayer, int arrestedPlayer) {
-		String uri = SERVER + "/" + String.valueOf(agentPlayer) + AGENT_ARREST;
+		String uri = SERVER + PLAYERS_CONTROLLER + "/" + String.valueOf(agentPlayer) + AGENT_ARREST;
 		HttpPost request = new HttpPost(uri);
 		request.setEntity(new ArrestedPlayerParameters(String.valueOf(arrestedPlayer)).encode());
 		httpClient.executeRequest(request);

@@ -18,6 +18,6 @@ class Player < ActiveRecord::Base
       else
         self.role = :citizen
     end
-    
   end
+  
 end

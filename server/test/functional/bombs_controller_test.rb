@@ -29,6 +29,7 @@ class BombsControllerTest < ActionController::TestCase
     
     survivor = flexmock(:model, Player)
     survivor.should_receive(:within_range_of).with(bomb_location).and_return(false)
+    survivor.should_receive(:destroy).never
     
     flexmock(Player).should_receive(:all).and_return([dead_man, survivor])
     

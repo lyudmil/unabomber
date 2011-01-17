@@ -3,6 +3,7 @@ package ui;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 
+import ui.dialogs.Dialogs;
 import unabomber.client.R;
 
 import android.app.AlertDialog;
@@ -17,6 +18,10 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	private int myPlayerId;
 	private Context mContext;
 	private GameEngine mEngine;
+	private UnabomberMap mApp;
+	
+	//
+	private int targetPlayerID;
 	
 	
 	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId) {
@@ -24,21 +29,23 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		this.myPlayerId = myPlayerId;
 	}
 
+	//changed
 	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId, GameEngine engine,
-			Context context) {
+			Context context, UnabomberMap app) {
 		super(defaultMarker);
 		this.myPlayerId = myPlayerId;
 		this.mContext = context;
 		this.mEngine = engine;
+		this.mApp=app;
 	}
 
 	// Handle a tap on other player icons, this is a "system" callback
 	@Override
 	protected boolean onTap(final int index) {
-
+		
 		// option to use as action
-		final CharSequence[] items = { "Send to jail" };
-
+		final CharSequence[] items = { "Send to jail", "Send message" };
+		
 		
 		// if you have added something, change handleMenuOption
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -58,7 +65,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		
 		
 		//get target player ID
-		int targetPlayerID = Integer.parseInt(locations.get(playerIndex).getSnippet());
+		targetPlayerID = Integer.parseInt(locations.get(playerIndex).getSnippet());
 		
 
 		// obtain the user decision
@@ -72,6 +79,10 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 					.show();
 			break;
 
+		case 1: // send a message to player
+		//	mEngine.sendMessageTo(myPlayerId, targetPlayerID, );
+			mApp.showDialog(Dialogs.SEND_MESSAGE);
+			
 		default: // defensive programming
 			Toast.makeText(mContext, R.string.unknown_action,
 					Toast.LENGTH_SHORT).show();
@@ -108,4 +119,12 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		return myPlayerId == location.getPlayerId();
 	}
 
+	//
+	public int getMyId(){
+		return myPlayerId;
+	}
+	
+	public int getTargetPlayerId(){
+		return targetPlayerID;
+	}
 }

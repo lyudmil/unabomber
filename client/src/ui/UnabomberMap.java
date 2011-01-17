@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -52,13 +53,14 @@ public class UnabomberMap extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Dialogs.setActivity(this);
-
+		
+		
 		tester=new GCSTester(this);
 
-		//reachable=tester.testGCS();
+		//reachable=tester.testGCS();  //era commentata
 		showDemoAlert(this);
 		
-		if(reachable){
+		if(!reachable){ 
 			
 			setUpMap();
 			showPlayerLocation();
@@ -66,6 +68,8 @@ public class UnabomberMap extends MapActivity {
 			followPlayers();
 			bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
 
+			
+			
 		}
 		
 

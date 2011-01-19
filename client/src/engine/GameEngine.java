@@ -2,6 +2,7 @@ package engine;
 
 import http.ArrestedPlayerParameters;
 import http.AuthenticateUserParameters;
+import http.PostMessageParameters;
 
 import http.PlaceBombParameters;
 import http.DetonatedBombParameters;
@@ -29,6 +30,7 @@ public class GameEngine {
 	private static final String AGENT_ARREST = "/arrest";
 	//
 	private static final String DETONATION="/detonate";
+	private static final String MESSAGES_CONTROLLER = "/messages";
 	
 	private UnabomberHttpClient httpClient;
 	private String playerUrl;
@@ -69,8 +71,12 @@ public class GameEngine {
 	//
 	public void sendMessageTo(int sender, int receiver, String message){
 		
+		//code to send the message to the player; not sure about using HttpPur or HttpPost
+		HttpPut request = new HttpPut(SERVER + MESSAGES_CONTROLLER +"/update");
+		request.setEntity(new PostMessageParameters(message).encode());
+		httpClient.executeRequest(request);
 		
-		//code to send the message to the player
+		
 		
 	}
 	//

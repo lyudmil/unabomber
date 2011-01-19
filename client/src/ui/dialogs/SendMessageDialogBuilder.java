@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
+import android.widget.EditText;
 import ui.BombsOverlay;
 import ui.OtherPlayersOverlay;
 import ui.UnabomberMap;
@@ -20,21 +21,17 @@ public class SendMessageDialogBuilder {
 	
 	public Dialog build() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		final EditText input = new EditText(activity);
+		builder.setView(input);
+		
 		builder.setMessage("Send message" )
 		       .setCancelable(false)
 		       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		        	  
-		        	   //here goes the code to write a message
-		        	   //a function like
-		        	   //public String writeMessage(){
-		        	   		//code
-		        	   //}
-		        	   //at the moment it uses the following String
-		        	   String message = "this is a try";
+		        	   String message = input.getText().toString().trim();
 		        	   OtherPlayersOverlay others = activity.getOtherPlayersOverlay();
 		        	   activity.getEngine().sendMessageTo(others.getMyId(), others.getTargetPlayerId(), message);
-		        	   
 		        	   dialog.dismiss();
 		           }
 		       })

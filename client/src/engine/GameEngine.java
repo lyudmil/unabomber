@@ -72,15 +72,22 @@ public class GameEngine {
 	public void sendMessageTo(int sender, int receiver, String message){
 		
 		//code to send the message to the player; not sure about using HttpPur or HttpPost
-		HttpPut request = new HttpPut(SERVER + MESSAGES_CONTROLLER +"/update");
+		HttpPut request = new HttpPut(SERVER + MESSAGES_CONTROLLER + playerUrl +"/update");
 		request.setEntity(new PostMessageParameters(message).encode());
 		httpClient.executeRequest(request);
 		
 		
 		
 	}
-	//
-	
+	//JSONUtil:need method to get the array
+	/*  
+	public ArrayList<String> getMessages(){
+		HttpGet request = new HttpGet(SERVER + MESSAGES_CONTROLLER + playerUrl);
+		HttpResponse response = httpClient.executeRequest(request);
+		return ....;
+		
+	}
+	*/
 	
 	//
 	public void detonateBomb(int bomberPlayer, int detonatedBomb){

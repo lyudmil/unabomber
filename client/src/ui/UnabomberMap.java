@@ -128,8 +128,10 @@ public class UnabomberMap extends MapActivity {
 			startActivity(i);
 			
 			return true;
-		case R.id.options:
+		case R.id.messages:
 			//codice
+			
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

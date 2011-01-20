@@ -18,7 +18,7 @@ public final class R {
     public static final class id {
         public static final int mainlayout=0x7f060000;
         public static final int mapview=0x7f060001;
-        public static final int options=0x7f060003;
+        public static final int messages=0x7f060003;
         public static final int show=0x7f060002;
     }
     public static final class layout {
@@ -30,7 +30,7 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int bomb_detonated=0x7f040006;
-        public static final int m_options=0x7f040005;
+        public static final int m_messages=0x7f040005;
         public static final int m_show=0x7f040004;
         public static final int other_player_menu_title=0x7f040001;
         public static final int sent_to_jail=0x7f040002;

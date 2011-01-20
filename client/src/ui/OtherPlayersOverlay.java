@@ -94,14 +94,22 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	public void addOverlayFor(PlayerLocation location) {
 		
 		//if i am the player then return
-		if (displayingMyself(location))
-			return;
+		if (displayingMyself(location)) {
+			if (mEngine.isMyLocationFound()) {
+				return;
+			} else {
+				mEngine.setMyLocationFound(true);
+				return;
+			}
+			
+		}
 
 		
 		//else create the overlay item
 		Double latitude = location.getLocation().getLatitude() * 1E6;
 		Double longitude = location.getLocation().getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
+		
 		
 		//add the playerID as message of the overlay item
 		locations.add(new OverlayItem(point, "Player", String.valueOf(location.getPlayerId())));

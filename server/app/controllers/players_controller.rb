@@ -35,6 +35,7 @@ class PlayersController < ApplicationController
   
   def locations
     @locations = Player.all.collect { |player| player.location }
+    @locations.reject! { |location| location == nil }
     render :text => @locations.to_json
   end
   

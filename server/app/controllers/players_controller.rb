@@ -33,4 +33,9 @@ class PlayersController < ApplicationController
     suspect.destroy
   end
   
+  def locations
+    @locations = Player.all.collect { |player| player.location }
+    render :text => @locations.to_json
+  end
+  
 end

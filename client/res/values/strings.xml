@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">Unabomber</string>
+<string name="app_name">Unabomber</string>
 
 <string name="other_player_menu_title">Choose your action</string>
 <string name="sent_to_jail">Player sent to jail.</string>
@@ -12,4 +12,6 @@
 <string name="m_show">Start Mixare</string>
 <string name="m_messages">Messages</string>
 <string name="bomb_detonated">Bomb detonated.</string>
+
+
 </resources>

@@ -11,7 +11,7 @@ import ui.BombsOverlay;
 import ui.OtherPlayersOverlay;
 import ui.UnabomberMap;
 
-public class SendMessageDialogBuilder {
+public class SendMessageDialogBuilder implements DialogBuilder {
 	
 	private UnabomberMap activity;
 

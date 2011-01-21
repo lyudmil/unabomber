@@ -1,6 +1,6 @@
 package ui;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
@@ -9,8 +9,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.NetworkInfo;
@@ -27,6 +25,7 @@ import com.google.android.maps.MapView;
 import connectivity.GCSTester;
 import engine.GameEngine;
 import engine.PlayerData;
+import engine.PlayerMessage;
 
 public class UnabomberMap extends MapActivity {
 	private MapView mapView;
@@ -44,6 +43,7 @@ public class UnabomberMap extends MapActivity {
 	//server check var
 	private Boolean reachable=false;
 	private GCSTester tester;
+	private ArrayList<PlayerMessage> messages = new ArrayList<PlayerMessage>();
 
 
 
@@ -129,7 +129,14 @@ public class UnabomberMap extends MapActivity {
 			
 			return true;
 		case R.id.messages:
-			//codice
+			//messages
+			try {
+				Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class);
+				message_intent.putExtra("messages", this.messages);
+				UnabomberMap.this.startActivity(message_intent);
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
 			
 			
 			return true;
@@ -227,5 +234,9 @@ public class UnabomberMap extends MapActivity {
 
 	public PlayerData getPlayerData() {
 		return playerData;
+	}
+
+	public void setMessages(ArrayList<PlayerMessage> messages) {
+		this.messages = messages;
 	}
 }

@@ -5,9 +5,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.widget.Toast;
 import engine.PlayerLocation;
+import engine.PlayerMessage;
 
 public class WorldUpdateService extends Service {
 	private Timer timer = new Timer();
@@ -25,6 +28,10 @@ public class WorldUpdateService extends Service {
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				activity.runOnUiThread(new UpdateMap(locations));
+				
+				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
+				activity.setMessages(messages);
+				
 			}
 		}, 0, 4000);
 	}
@@ -59,6 +66,30 @@ public class WorldUpdateService extends Service {
 			}
 			otherPlayersOverlay.readyToPopulate();
 			return otherPlayersOverlay;
+		}
+	}
+	
+	//update messages
+	private final class UpdateMessages{
+		private final ArrayList<String> messages;
+		
+		private UpdateMessages(ArrayList<String> messages){
+			//add some code to check for new messages
+
+			if(this.messages!=messages){
+	
+				CharSequence text = "You have new message/s, check the menu to read it/them";
+				int duration = Toast.LENGTH_SHORT;
+
+				Toast toast = Toast.makeText(activity, text, duration);
+				toast.show();
+			}
+			
+			
+			this.messages=messages;
+			
+			
+			
 		}
 	}
 }

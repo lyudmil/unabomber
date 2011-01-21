@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +28,24 @@ public class WorldUpdateService extends Service {
 			@Override
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
+				
+				int myId = activity.getPlayerData().getPlayerId();
+				
+				Iterator<PlayerLocation> iterator = locations.iterator();
+				boolean imInJail = true;
+				
+				while (iterator.hasNext()) {
+					int idPlayer = ((PlayerLocation) iterator.next()).getPlayerId();
+					
+					if (myId == idPlayer) {
+						imInJail = false;
+					}
+				}
+				
+				if ((imInJail) && (activity.getEngine().isMyLocationFound())) {
+					activity.finish();
+				}
+				
 				activity.runOnUiThread(new UpdateMap(locations));
 				
 				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();

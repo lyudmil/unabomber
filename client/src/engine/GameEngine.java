@@ -36,6 +36,16 @@ public class GameEngine {
 	private String playerUrl;
 	private String deviceId;
 	
+	private boolean myLocationFound = false;
+	
+
+	public boolean isMyLocationFound() {
+		return myLocationFound;
+	}
+
+	public void setMyLocationFound(boolean myLocationFound) {
+		this.myLocationFound = myLocationFound;
+	}
 
 	public GameEngine(UnabomberHttpClient httpClient, String deviceId) {
 		this.httpClient = httpClient;
@@ -103,6 +113,7 @@ public class GameEngine {
 	}
 
 	public void placeBombAt(Location currentLocation) {
+		
 		HttpPost request = new HttpPost(SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
 		request.setEntity(new PlaceBombParameters(currentLocation).encode());
 		httpClient.executeRequest(request);

@@ -8,10 +8,7 @@ import android.app.Dialog;
 public class Dialogs {
 
 	public static UnabomberMap activity;
-	private static HashMap<Integer, PlaceBombDialogBuilder> builders;
-	
-	//added builders2, correct?
-	private static HashMap<Integer, SendMessageDialogBuilder> builders2;
+	private static HashMap<Integer, DialogBuilder> builders;
 	
 	public static final int PLACE_BOMB = 1;
 	
@@ -27,16 +24,9 @@ public class Dialogs {
 	@SuppressWarnings("serial")
 	public static void setActivity(final UnabomberMap newActivity) {
 		activity = newActivity;
-		builders = new HashMap<Integer, PlaceBombDialogBuilder>() {
+		builders = new HashMap<Integer, DialogBuilder>() {
 			{
 				put(PLACE_BOMB, new PlaceBombDialogBuilder(newActivity));
-				
-			}
-		};
-		
-		//builders2
-		builders2 = new HashMap<Integer, SendMessageDialogBuilder>(){
-			{
 				put(SEND_MESSAGE, new SendMessageDialogBuilder(newActivity));
 			}
 		};

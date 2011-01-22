@@ -1,6 +1,6 @@
 package ui;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
@@ -9,12 +9,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -28,6 +23,7 @@ import com.google.android.maps.MapView;
 import connectivity.GCSTester;
 import engine.GameEngine;
 import engine.PlayerData;
+import engine.PlayerMessage;
 
 public class UnabomberMap extends MapActivity {
 	private MapView mapView;
@@ -38,13 +34,11 @@ public class UnabomberMap extends MapActivity {
 	private PlayerData playerData;
 	private BombsOverlay bombsOverlay;
 
-	//gps&internet check variables
-	private LocationManager loc_man;
-	private NetworkInfo net_info;
 
 	//server check var
 	private Boolean reachable=false;
 	private GCSTester tester;
+	private ArrayList<PlayerMessage> messages = new ArrayList<PlayerMessage>();
 
 
 
@@ -53,41 +47,41 @@ public class UnabomberMap extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Dialogs.setActivity(this);
-		
-		
+
+
 		tester=new GCSTester(this);
 
 		//reachable=tester.testGCS();  //era commentata
 		showDemoAlert(this);
-		
-		if(!reachable){ 
-			
+
+		if(reachable){ 
+
 			setUpMap();
 			showPlayerLocation();
 			authenticatePlayer();
 			followPlayers();
 			bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
 
-			
-			
+
+
 		}
-		
+
 
 
 
 	}
-	
+
 	//start mixare code
 	public void startMixare(Context c){
-		
+
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_VIEW);
 		i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
 		startActivity(i);    
 	}
-	
-	
-	
+
+
+
 	//demo start code
 	public void showDemoAlert(final UnabomberMap app){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
@@ -103,9 +97,9 @@ public class UnabomberMap extends MapActivity {
 		builder.setNegativeButton("Exit",  
 				new DialogInterface.OnClickListener(){  
 			public void onClick(DialogInterface dialog, int id){  
-				
+
 				app.finish();
-				
+
 			}  
 		});  
 		AlertDialog alert = builder.create();  
@@ -125,17 +119,21 @@ public class UnabomberMap extends MapActivity {
 		switch (item.getItemId()) {
 		case R.id.show:
 			//codice
-			
+
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_VIEW);
 			i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
 			startActivity(i);
-			
+
 			return true;
 		case R.id.messages:
-			//codice
-			
-			
+			//messages
+
+			Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class );
+			message_intent.putExtra("messages", this.messages);
+			UnabomberMap.this.startActivity(message_intent);
+
+
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -231,5 +229,9 @@ public class UnabomberMap extends MapActivity {
 
 	public PlayerData getPlayerData() {
 		return playerData;
+	}
+
+	public void setMessages(ArrayList<PlayerMessage> messages) {
+		this.messages = messages;
 	}
 }

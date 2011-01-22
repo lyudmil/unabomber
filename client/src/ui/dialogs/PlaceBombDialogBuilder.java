@@ -9,7 +9,7 @@ import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
 
-public class PlaceBombDialogBuilder {
+public class PlaceBombDialogBuilder implements DialogBuilder {
 
 	private UnabomberMap activity;
 
@@ -17,6 +17,9 @@ public class PlaceBombDialogBuilder {
 		this.activity = activity;
 	}
 
+	/* (non-Javadoc)
+	 * @see ui.dialogs.DialogBuilder#build()
+	 */
 	public Dialog build() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setMessage("Place a bomb here?")

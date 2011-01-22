@@ -51,6 +51,8 @@ public class WorldUpdateService extends Service {
 				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
 				activity.setMessages(messages);
 				
+				
+				
 			}
 		}, 0, 4000);
 	}

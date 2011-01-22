@@ -22,12 +22,20 @@ import org.apache.http.client.methods.HttpPut;
 import android.location.Location;
 
 
+
+
 public class GameEngine {
+	
+	//define the enum
+	public enum GameStatus { STARTED, FINISHEDWIN, FINISHEDLOSE, FINISHEDKILLED, FINISHEDJAILED };
+	
 	private static final String PLACE_BOMBS_ACTION = "/bombs/place";
 	private static final String LOCATIONS_CONTROLLER = "/players";
 	private static final String PLAYERS_CONTROLLER = "/players";
 	private static final String SERVER = "http://10.0.2.2:3000";
 	private static final String AGENT_ARREST = "/arrest";
+	private static final String GAME_STATUS = "/gameStatus";
+	
 	//
 	private static final String DETONATION="/detonate";
 	private static final String MESSAGES_CONTROLLER = "/messages";
@@ -38,6 +46,20 @@ public class GameEngine {
 	
 	private boolean myLocationFound = false;
 	
+	GameStatus gameStatus;
+	
+	
+	
+	
+	
+
+	public GameStatus getGameStatus() {
+		return gameStatus;
+	}
+
+	public void setGameStatus(GameStatus gameStatus) {
+		this.gameStatus = gameStatus;
+	}
 
 	public boolean isMyLocationFound() {
 		return myLocationFound;
@@ -50,6 +72,7 @@ public class GameEngine {
 	public GameEngine(UnabomberHttpClient httpClient, String deviceId) {
 		this.httpClient = httpClient;
 		this.deviceId = deviceId;
+		this.gameStatus = GameStatus.STARTED;
 		playerUrl = "/" + deviceId;
 		
 	}
@@ -118,4 +141,15 @@ public class GameEngine {
 		request.setEntity(new PlaceBombParameters(currentLocation).encode());
 		httpClient.executeRequest(request);
 	}
+	
+	
+	public GameStatus getStatusOfTheGame() {
+		HttpGet request = new HttpGet(SERVER + "/" + deviceId + GAME_STATUS);
+		HttpResponse response = httpClient.executeRequest(request);
+		return JSONUtil.gameStatusFrom(response);
+	}
+	
+	
+	
+	
 }

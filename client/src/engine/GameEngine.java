@@ -118,7 +118,6 @@ public class GameEngine {
 	//
 	public void detonateBomb(int detonatedBomb){
 		String uri = R_SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
-
 		HttpPost request = new HttpPost(uri);
 		httpClient.executeRequest(request);
 	}

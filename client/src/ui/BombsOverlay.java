@@ -18,9 +18,6 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 	private GameEngine mEngine;
 
 
-	public BombsOverlay(Drawable marker) {
-		super(marker);
-	}
 	
 	
 	//
@@ -48,15 +45,15 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 
 		
 		// if you have added something, change handleMenuOption
-//		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//		builder.setTitle(R.string.other_player_menu_title);
-//		builder.setItems(items, new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int item) {
-//				handleMenuOption(item, index);
-//			}
-//		});
-//		AlertDialog alert = builder.create();
-//		alert.show();
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		builder.setTitle(R.string.other_player_menu_title);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				handleMenuOption(item, index);
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 		return true;
 	}
 	//

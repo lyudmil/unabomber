@@ -117,7 +117,7 @@ public class GameEngine {
 	
 	//
 	public void detonateBomb(int detonatedBomb){
-		String uri = SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
+		String uri = R_SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
 
 		HttpPost request = new HttpPost(uri);
 		httpClient.executeRequest(request);
@@ -141,7 +141,7 @@ public class GameEngine {
 	
 	
 	public GameStatus getStatusOfTheGame(int playerId) {
-		HttpGet request = new HttpGet(SERVER + "/" + playerId + GAME_STATUS);
+		HttpGet request = new HttpGet(R_SERVER + "/" + playerId + GAME_STATUS);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.gameStatusFrom(response);
 	}

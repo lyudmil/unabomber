@@ -46,8 +46,6 @@ public class GameEngine {
 	private String playerUrl;
 	private String deviceId;
 	
-	private boolean myLocationFound = false;
-	
 	GameStatus gameStatus;
 	
 	
@@ -59,17 +57,11 @@ public class GameEngine {
 		return gameStatus;
 	}
 
-	public void setGameStatus(GameStatus gameStatus) {
-		this.gameStatus = gameStatus;
+	public GameStatus updateGameStatus(int playerId) {
+		this.gameStatus = getStatusOfTheGame(playerId);
+		return this.getGameStatus();
 	}
 
-	public boolean isMyLocationFound() {
-		return myLocationFound;
-	}
-
-	public void setMyLocationFound(boolean myLocationFound) {
-		this.myLocationFound = myLocationFound;
-	}
 
 	public GameEngine(UnabomberHttpClient httpClient, String deviceId) {
 		this.httpClient = httpClient;
@@ -146,8 +138,8 @@ public class GameEngine {
 	}
 	
 	
-	public GameStatus getStatusOfTheGame() {
-		HttpGet request = new HttpGet(SERVER + "/" + deviceId + GAME_STATUS);
+	public GameStatus getStatusOfTheGame(int playerId) {
+		HttpGet request = new HttpGet(SERVER + "/" + playerId + GAME_STATUS);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.gameStatusFrom(response);
 	}

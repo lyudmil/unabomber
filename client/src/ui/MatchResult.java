@@ -58,7 +58,7 @@ public class MatchResult extends Activity {
 	    
 	    
 	    i.setAdjustViewBounds(true); // set the ImageView bounds to match the Drawable's dimensions
-	    i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+	    i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
 	    // Add the ImageView to the layout and set the layout as the content view
 	    mLinearLayout.addView(i);

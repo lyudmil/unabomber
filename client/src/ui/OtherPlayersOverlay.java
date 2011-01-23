@@ -95,13 +95,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		
 		//if i am the player then return
 		if (displayingMyself(location)) {
-			if (mEngine.isMyLocationFound()) {
-				return;
-			} else {
-				mEngine.setMyLocationFound(true);
-				return;
-			}
-			
+			return;
 		}
 
 		

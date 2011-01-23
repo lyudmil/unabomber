@@ -18,9 +18,10 @@ public class PlaceBombParameters extends ParameterList {
 	@Override
 	public ArrayList<NameValuePair> getParameters() {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
-		params.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
-		params.add(new BasicNameValuePair("altitude", String.valueOf(location.getAltitude())));
+			params.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
+			params.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
+			params.add(new BasicNameValuePair("altitude", String.valueOf(location.getAltitude())));
+		
 		return params;
 	}
 

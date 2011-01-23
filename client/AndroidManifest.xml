@@ -18,19 +18,15 @@
 		<activity android:name="ui.MessagesView" android:label="@string/app_name">
 		</activity>
         
-<<<<<<< HEAD
         <activity android:name="ui.VideoIntro" android:label="@string/app_name">
 		</activity>
         
         <service android:name="ui.WorldUpdateService"/>
-    </application>
-=======
+
         <activity android:name="ui.MatchResult" android:label="@string/app_name">
 		</activity>
-        <service android:name="ui.WorldUpdateService"></service>
     
 </application>
->>>>>>> 6926f2a3455b83878da06c50141272ac6439db1e
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
 

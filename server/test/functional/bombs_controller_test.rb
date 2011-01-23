@@ -35,5 +35,5 @@ class BombsControllerTest < ActionController::TestCase
     
     post :detonate, :id => 33    
   end
-  
+
 end

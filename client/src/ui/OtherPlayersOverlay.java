@@ -111,6 +111,11 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
 		
 		
+		
+		
+		
+		
+		
 		//add the playerID as message of the overlay item
 		locations.add(new OverlayItem(point, "Player", String.valueOf(location.getPlayerId())));
 	}

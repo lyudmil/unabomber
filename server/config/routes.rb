@@ -15,4 +15,6 @@ Server::Application.routes.draw do
 	
 	put ':device_id/messages/create' => 'messages#create'
 	get ':device_id/messages' => 'messages#index'
+ 	
+	get ':device_id/status' => 'status#index'
 end

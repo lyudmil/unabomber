@@ -54,6 +54,18 @@ public class JSONUtil {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static int bombIndexFrom(HttpResponse response) {
+		try {
+			return bombIndexFrom(response.getEntity().getContent());
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
 
 	//code to receive messages
 	//it gets all the messages
@@ -115,44 +127,26 @@ public class JSONUtil {
 
 	public static GameStatus gameStatusFrom(InputStream responseEntityContent) {
 		String json = IOUtil.convertToString(responseEntityContent);
-
+		
+		if (json.equals("started")) {return GameStatus.STARTED;}
+		if (json.equals("finished-win")) {return GameStatus.FINISHEDWIN;}
+		if (json.equals("finished-lose")) {return GameStatus.FINISHEDLOSE;}
+		if (json.equals("finished-killed")) {return GameStatus.FINISHEDKILLED;}
+	
+		return GameStatus.FINISHEDJAILED;
+	}
+	
+	public static int bombIndexFrom(InputStream responseEntityContent) {
+		String json = IOUtil.convertToString(responseEntityContent);
 		try {
-			JSONObject jsonObject = new JSONObject(json).getJSONObject("game_status");
-			
-			GameStatus gameStatus;
-			
-			switch (jsonObject.getInt("game_status")) {
-			case 1:
-				gameStatus = GameStatus.STARTED;
-				break;
-				
-			case 2:
-				gameStatus = GameStatus.FINISHEDWIN;
-				break;
-				
-			case 3:
-				gameStatus = GameStatus.FINISHEDLOSE;
-				break;
-
-			case 4:
-				gameStatus = GameStatus.FINISHEDKILLED;
-				break;
-				
-			case 5:
-				gameStatus = GameStatus.FINISHEDJAILED;
-				break;
-				
-			default:
-				gameStatus = GameStatus.STARTED;
-				break;
-			}
-			
-			return gameStatus;
-			
+			JSONObject jsonObject = new JSONObject(json).getJSONObject("bomb");
+			int bombId = jsonObject.getInt("id");
+			return bombId;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+		
 	}
 	
 	
@@ -168,6 +162,8 @@ public class JSONUtil {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
 
 	private static ArrayList<PlayerLocation> locationsFrom(JSONArray locationsJson) throws JSONException {
 		ArrayList<PlayerLocation> locations = new ArrayList<PlayerLocation>();

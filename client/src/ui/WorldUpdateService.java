@@ -30,7 +30,7 @@ public class WorldUpdateService extends Service {
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				
-				final GameStatus gameStatus = activity.getEngine().getGameStatus();
+				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getPlayerId());
 				
 				
 				if (gameStatus != GameStatus.STARTED) {

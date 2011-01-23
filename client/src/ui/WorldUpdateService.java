@@ -30,21 +30,21 @@ public class WorldUpdateService extends Service {
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				
-				final GameStatus gameStatus = activity.getEngine().getGameStatus();
+				//final GameStatus gameStatus = activity.getEngine().getGameStatus();
 				
 				
-				if (gameStatus != GameStatus.STARTED) {
-					
-					//set the status of the match
-					MatchResult.gameStatus = gameStatus;
-					
-					//initiate the new intent
-					Intent myIntent = new Intent(activity, MatchResult.class);
-					
-					activity.startActivity(myIntent);
-					
-				}
-				
+//				if (gameStatus != GameStatus.STARTED) {
+//					
+//					//set the status of the match
+//					MatchResult.gameStatus = gameStatus;
+//					
+//					//initiate the new intent
+//					Intent myIntent = new Intent(activity, MatchResult.class);
+//					
+//					activity.startActivity(myIntent);
+//					
+//				}
+//				
 
 				
 				activity.runOnUiThread(new UpdateMap(locations));

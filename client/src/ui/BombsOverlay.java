@@ -2,6 +2,9 @@ package ui;
 
 
 
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
+
 import engine.GameEngine;
 import unabomber.client.R;
 import android.app.AlertDialog;
@@ -31,8 +34,11 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 	//
 	
 	
-	public void addBombAt(Location location) {
-		addItemAt(location);
+	public void addBombAt(Location location, int bombIndex) {
+		Double latitude = location.getLatitude() * 1E6;
+		Double longitude = location.getLongitude() * 1E6;
+		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
+		locations.add(new OverlayItem(point, "Bomb", String.valueOf(bombIndex)));
 		populate();
 	}
 	
@@ -69,7 +75,7 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		switch (optionIndex) {
 		case 0: // send another player to jail
 
-			mEngine.detonateBomb(myPlayerId, targetBombID);
+			mEngine.detonateBomb(targetBombID);
 
 			//feedback the results
 			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT)

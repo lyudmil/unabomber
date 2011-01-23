@@ -26,13 +26,16 @@ public class PlaceBombDialogBuilder implements DialogBuilder {
 		       .setCancelable(false)
 		       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
+		        	   
+		        	   
+		        	   
 		        	   LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 		        	   Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		        	   
-		        	   activity.getEngine().placeBombAt(lastKnownLocation);
+		        	   int bombId = activity.getEngine().placeBombAt(lastKnownLocation);
 		        	   
 		        	   BombsOverlay bombs = activity.getBombsOverlay();
-		        	   bombs.addBombAt(lastKnownLocation);
+		        	   bombs.addBombAt(lastKnownLocation, bombId);
 		        	   bombs.showOn(activity.getMapView());
 		        	   dialog.dismiss();
 		           }

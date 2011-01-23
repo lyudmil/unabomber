@@ -44,6 +44,8 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
 		locations.add(new OverlayItem(point, "", ""));
 	}
+	
+	
 
 	public void showOn(MapView mapView) {
 		List<Overlay> overlays = mapView.getOverlays();

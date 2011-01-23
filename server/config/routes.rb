@@ -12,6 +12,7 @@ Server::Application.routes.draw do
 	
 	post ':device_id/bombs/place' => 'bombs#place'
 	post 'bombs/:id/detonate' => 'bombs#detonate'
+	get 'bombs' => 'bombs#locations'
 	
 	put ':device_id/messages/create' => 'messages#create'
 	get ':device_id/messages' => 'messages#index'

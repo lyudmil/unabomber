@@ -21,5 +21,12 @@ class BombsController < ApplicationController
       end
     end
   end
+  
+  def locations
+    bombs = Bomb.all
+    @locations = bombs.collect { |bomb| bomb.location }
+    
+    render :text => @locations.to_json
+  end
 
 end

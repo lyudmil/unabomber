@@ -51,10 +51,13 @@ public class UnabomberMap extends MapActivity {
 
 		tester=new GCSTester(this);
 
+		//showVideo();
+		//showVideo in not working at the moment: we need a mp4 video, swf are not supported
+		
 		//reachable=tester.testGCS();  //era commentata
 		showDemoAlert(this);
 
-		if(reachable){ 
+		if(!reachable){ 
 
 			setUpMap();
 			showPlayerLocation();
@@ -70,7 +73,12 @@ public class UnabomberMap extends MapActivity {
 
 
 	}
-
+	
+	public void showVideo(){
+		Intent i = new Intent(UnabomberMap.this, VideoIntro.class);
+		UnabomberMap.this.startActivity(i);
+	}
+	
 	//start mixare code
 	public void startMixare(Context c){
 

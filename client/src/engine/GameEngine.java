@@ -38,6 +38,7 @@ public class GameEngine {
 	
 	//
 	private static final String DETONATION="/detonate";
+	
 	private static final String MESSAGES_CONTROLLER = "/messages";
 	
 	private UnabomberHttpClient httpClient;
@@ -105,15 +106,15 @@ public class GameEngine {
 	public void sendMessageTo(int sender, int receiver, String message){
 		
 		//code to send the message to the player; not sure about using HttpPur or HttpPost
-		HttpPut request = new HttpPut(SERVER + MESSAGES_CONTROLLER + playerUrl +"/create");
-		request.setEntity(new PostMessageParameters(message).encode());
+		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
+		request.setEntity(new PostMessageParameters(message, receiver).encode());
 		httpClient.executeRequest(request);
 		
 		
 		
 	}
 	public ArrayList<PlayerMessage> getMessages(){
-		HttpGet request = new HttpGet(SERVER + MESSAGES_CONTROLLER + playerUrl);
+		HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.messagesFrom(response);
 		

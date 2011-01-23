@@ -93,8 +93,8 @@ public class JSONUtil {
 		return messages;
 	}
 	private static PlayerMessage messageFrom(JSONObject messageJson) throws JSONException {
-		String message = new String(messageJson.getString("message"));
-		int playerId = messageJson.getInt("player_id");
+		String message = new String(messageJson.getString("content"));
+		int playerId = messageJson.getInt("sender_id");
 
 		return new PlayerMessage(message, playerId);
 	}

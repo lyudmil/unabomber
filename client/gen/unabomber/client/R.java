@@ -14,6 +14,11 @@ public final class R {
         public static final int androidmarker=0x7f020000;
         public static final int bomb=0x7f020001;
         public static final int icon=0x7f020002;
+        public static final int matchresult=0x7f020003;
+        public static final int youlose=0x7f020004;
+        public static final int youlosejail=0x7f020005;
+        public static final int youlosekilled=0x7f020006;
+        public static final int youwin=0x7f020007;
     }
     public static final class id {
         public static final int mainlayout=0x7f060000;

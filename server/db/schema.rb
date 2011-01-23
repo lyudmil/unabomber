@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110115170938) do
+ActiveRecord::Schema.define(:version => 20110122230909) do
 
   create_table "bombs", :force => true do |t|
     t.datetime "created_at"
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(:version => 20110115170938) do
     t.decimal  "altitude"
     t.integer  "player_id"
     t.integer  "bomb_id"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "recepient_id"
+    t.integer  "sender_id"
+    t.text     "content"
   end
 
   create_table "players", :force => true do |t|

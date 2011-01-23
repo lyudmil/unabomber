@@ -1,6 +1,8 @@
 class Player < ActiveRecord::Base
   has_one :location
 	has_many :bombs
+	has_many :messages, :foreign_key => 'recepient_id'
+	has_many :sent_messages, :class_name => 'Message', :foreign_key => 'sender_id'
 	
 	def within_range_of explosion
 	  distance = self.location.distance_to(explosion) * 1000

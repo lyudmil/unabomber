@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.GameEngine.GameStatus;
 import engine.PlayerData;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
@@ -32,6 +33,19 @@ public class JSONUtil {
 	public static synchronized PlayerData playerDataFrom(HttpResponse response) {
 		try {
 			return playerDataFrom(response.getEntity().getContent());
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	public static synchronized GameStatus gameStatusFrom(HttpResponse response) {
+		try {
+			return gameStatusFrom(response.getEntity().getContent());
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -99,6 +113,51 @@ public class JSONUtil {
 		}
 	}
 
+	public static GameStatus gameStatusFrom(InputStream responseEntityContent) {
+		String json = IOUtil.convertToString(responseEntityContent);
+
+		try {
+			JSONObject jsonObject = new JSONObject(json).getJSONObject("game_status");
+			
+			GameStatus gameStatus;
+			
+			switch (jsonObject.getInt("game_status")) {
+			case 1:
+				gameStatus = GameStatus.STARTED;
+				break;
+				
+			case 2:
+				gameStatus = GameStatus.FINISHEDWIN;
+				break;
+				
+			case 3:
+				gameStatus = GameStatus.FINISHEDLOSE;
+				break;
+
+			case 4:
+				gameStatus = GameStatus.FINISHEDKILLED;
+				break;
+				
+			case 5:
+				gameStatus = GameStatus.FINISHEDJAILED;
+				break;
+				
+			default:
+				gameStatus = GameStatus.STARTED;
+				break;
+			}
+			
+			return gameStatus;
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	
+	
 	public static synchronized ArrayList<PlayerLocation> locationsFrom(InputStream responseEntityContent) {
 		try {
 			String json = IOUtil.convertToString(responseEntityContent);

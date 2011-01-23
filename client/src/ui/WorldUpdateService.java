@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
+import engine.GameEngine.GameStatus;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
 
@@ -29,27 +30,29 @@ public class WorldUpdateService extends Service {
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				
-				int myId = activity.getPlayerData().getPlayerId();
+				final GameStatus gameStatus = activity.getEngine().getGameStatus();
 				
-				Iterator<PlayerLocation> iterator = locations.iterator();
-				boolean imInJail = true;
 				
-				while (iterator.hasNext()) {
-					int idPlayer = ((PlayerLocation) iterator.next()).getPlayerId();
+				if (gameStatus != GameStatus.STARTED) {
 					
-					if (myId == idPlayer) {
-						imInJail = false;
-					}
+					//set the status of the match
+					MatchResult.gameStatus = gameStatus;
+					
+					//initiate the new intent
+					Intent myIntent = new Intent(activity, MatchResult.class);
+					
+					activity.startActivity(myIntent);
+					
 				}
 				
-				if ((imInJail) && (activity.getEngine().isMyLocationFound())) {
-					activity.finish();
-				}
+
 				
 				activity.runOnUiThread(new UpdateMap(locations));
 				
 				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
 				activity.setMessages(messages);
+				
+				
 				
 			}
 		}, 0, 4000);

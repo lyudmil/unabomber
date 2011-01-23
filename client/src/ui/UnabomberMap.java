@@ -63,10 +63,7 @@ public class UnabomberMap extends MapActivity {
 			showPlayerLocation();
 			authenticatePlayer();
 			followPlayers();
-			bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb));
-
-
-
+			bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb), this.getPlayerData().getPlayerId(), this.getEngine(), this);
 		}
 
 

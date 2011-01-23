@@ -29,7 +29,7 @@ public class WorldUpdateService extends Service {
 			@Override
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
-				
+				/*
 				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getPlayerId());
 				
 				
@@ -43,7 +43,7 @@ public class WorldUpdateService extends Service {
 					
 					activity.startActivity(myIntent);
 					
-				}
+				}*/
 				
 
 				

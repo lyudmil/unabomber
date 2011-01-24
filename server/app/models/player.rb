@@ -22,4 +22,8 @@ class Player < ActiveRecord::Base
     end
   end
   
+  def active?
+    not arrested? and not killed?
+  end
+  
 end

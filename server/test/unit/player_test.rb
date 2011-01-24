@@ -56,6 +56,24 @@ class PlayerTest < ActiveSupport::TestCase
     assert player.arrested?
   end
   
+  test "not active if arrested" do
+    player = Player.new(:arrested => true)
+    
+    assert (not player.active?)
+  end
+  
+  test "not active if killed" do
+    player = Player.new(:killed => true)
+    
+    assert (not player.active?)
+  end
+  
+  test "active if not arrested and not killed" do
+    player = Player.new
+    
+    assert player.active?
+  end
+  
   test "policeman role assigned every 10 players" do
     player = Player.new(:device_id => "111")
     flexmock(Player).should_receive(:count).and_return(0)

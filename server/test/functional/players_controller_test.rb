@@ -69,6 +69,7 @@ class PlayersControllerTest < ActionController::TestCase
     flexmock(Player).should_receive(:find).with(1).and_return(suspect)
 
     suspect.should_receive(:arrested=).with(true).once
+    suspect.should_receive(:save).once
     
     post :arrest, :device_id => '1234', :id => 1
   end

@@ -30,6 +30,7 @@ class PlayersController < ApplicationController
     @player = player_with_specified_device_id
     suspect = Player.find(params[:id])
     suspect.arrested = true
+    suspect.save
   end
   
   def index

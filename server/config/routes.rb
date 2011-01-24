@@ -1,6 +1,5 @@
 Server::Application.routes.draw do
   resources :players, :only => [:create, :show, :index]
-  resources :locations, :only => :index
   resources :bombs, :only => :show
   resources :messages, :only => :show
   

@@ -15,10 +15,7 @@ class BombsController < ApplicationController
 	def detonate
 	  bomb = Bomb.find(params[:id])
 	  Player.all.each do |player|
-	    if player.within_range_of(bomb.location)
-	      player.location.destroy
-	      player.destroy
-      end
+	      player.killed = true if player.within_range_of(bomb.location)
     end
   end
 

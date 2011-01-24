@@ -29,8 +29,7 @@ class PlayersController < ApplicationController
   def arrest
     @player = player_with_specified_device_id
     suspect = Player.find(params[:id])
-    suspect.location.destroy
-    suspect.destroy
+    suspect.arrested = true
   end
   
   def index

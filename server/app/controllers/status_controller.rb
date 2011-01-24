@@ -1,42 +1,43 @@
 class StatusController < ApplicationController
   
   def index
-    @player = player_with_specified_device_id
-    return unless @player
+    @status = 'started'
+    return unless @player = player_with_specified_device_id
     
     @citizens = Player.where(:role => :citizen).select { |citizen| citizen.active? }
     
     if @player.killed?
-      render :text => 'finished-killed'
-      return
+      render :text => 'finished-killed' and return
     end
     
     if @player.arrested?
-      render :text => 'finished-jail'
-      return
+      render :text => 'finished-jail' and return
     end
     
-    if @player.role != :unabomber
-      unabombers = Player.where(:role => :unabomber).select { |unabomber| unabomber.active? }
-      if unabombers.empty?
-        render :text => 'finished-win' 
-        return
-      end
-      
-      if @citizens.empty?
-        render :text => 'finished-lose'
-        return
-      end
-    end  
+    figure_out_status_based_on_role
     
-    if @player.role == :unabomber
-      if @citizens.empty?
-        render :text => 'finished-win'
-        return
-      end
-    end
-    
-    render :text => 'started'
+    render :text => @status
   end
   
+  private
+  
+  def figure_out_status_based_on_role
+    figure_out_status_if_good_guy
+    figure_out_status_if_bad_guy
+  end
+  
+  def figure_out_status_if_good_guy
+    if @player.role != :unabomber
+      @status = 'finished-lose' if @citizens.empty?
+
+      @unabombers = Player.where(:role => :unabomber).select { |unabomber| unabomber.active? }
+      @status = 'finished-win' if @unabombers.empty?
+    end  
+  end
+  
+  def figure_out_status_if_bad_guy
+    if @player.role == :unabomber
+      @status = 'finished-win' if @citizens.empty?
+    end
+  end
 end

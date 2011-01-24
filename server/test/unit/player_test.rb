@@ -28,6 +28,34 @@ class PlayerTest < ActiveSupport::TestCase
     assert_equal :unabomber, player.role
   end
   
+  test "not killed by default" do
+    player = Player.new
+    
+    assert player.save
+    assert (not player.reload.killed?)
+  end
+  
+  test "knows if killed" do
+    player = Player.new(:killed => true)
+    
+    assert player.save
+    assert player.killed?
+  end
+  
+  test "not arrested by default" do
+    player = Player.new
+    
+    assert player.save
+    assert (not player.reload.arrested?)
+  end
+  
+  test "knows if arrested" do
+    player = Player.new(:arrested => true)
+    
+    assert player.save
+    assert player.arrested?
+  end
+  
   test "policeman role assigned every 10 players" do
     player = Player.new(:device_id => "111")
     flexmock(Player).should_receive(:count).and_return(0)

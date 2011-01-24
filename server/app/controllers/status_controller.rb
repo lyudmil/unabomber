@@ -4,7 +4,7 @@ class StatusController < ApplicationController
     @status = 'started'
     return unless @player = player_with_specified_device_id
     
-    @citizens = Player.where(:role => :citizen).select { |citizen| citizen.active? }
+    @citizens = Player.where(:role => 'citizen').select { |citizen| citizen.active? }
     
     if @player.killed?
       render :text => 'finished-killed' and return
@@ -27,16 +27,16 @@ class StatusController < ApplicationController
   end
   
   def figure_out_status_if_good_guy
-    if @player.role != :unabomber
+    if @player.role != 'unabomber'
       @status = 'finished-lose' if @citizens.empty?
 
-      @unabombers = Player.where(:role => :unabomber).select { |unabomber| unabomber.active? }
+      @unabombers = Player.where(:role => 'unabomber').select { |unabomber| unabomber.active? }
       @status = 'finished-win' if @unabombers.empty?
     end  
   end
   
   def figure_out_status_if_bad_guy
-    if @player.role == :unabomber
+    if @player.role == 'unabomber'
       @status = 'finished-win' if @citizens.empty?
     end
   end

@@ -17,7 +17,7 @@ class StatusControllerTest < ActionController::TestCase
   end
   
   test "can tell if a player has been arrested" do
-    player = flexmock(:model, Player, :role => :citizen, :arrested? => true, :killed? => false)
+    player = flexmock(:model, Player, :arrested? => true, :killed? => false)
     flexmock(Player).should_receive(:find_by_device_id).with('222').and_return(player)
     
     get :index, :device_id => '222'
@@ -26,8 +26,8 @@ class StatusControllerTest < ActionController::TestCase
   end
   
   test "can tell if a citizen has won" do
-    @player.should_receive(:role).and_return(:citizen)
-    flexmock(Player).should_receive(:where).with(:role => :citizen).and_return([@player])
+    @player.should_receive(:role).and_return('citizen')
+    flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([@player])
     no_unabombers
     
     get :index, :device_id => '333'
@@ -36,8 +36,8 @@ class StatusControllerTest < ActionController::TestCase
   end
   
   test "can tell if a cop has won" do
-    @player.should_receive(:role).and_return(:policeman)
-    flexmock(Player).should_receive(:where).with(:role => :citizen).and_return([flexmock(:model, Player, :active? => true)])
+    @player.should_receive(:role).and_return('policeman')
+    flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([flexmock(:model, Player, :active? => true)])
     no_unabombers
     
     get :index, :device_id => '333'
@@ -46,9 +46,9 @@ class StatusControllerTest < ActionController::TestCase
   end
   
   test "can tell if a cop has lost" do
-    @player.should_receive(:role).and_return(:policeman)
+    @player.should_receive(:role).and_return('policeman')
     no_citizens
-    flexmock(Player).should_receive(:where).with(:role => :unabomber).and_return([flexmock(:model, Player, :active? => true)])
+    flexmock(Player).should_receive(:where).with(:role => 'unabomber').and_return([flexmock(:model, Player, :active? => true)])
     
     get :index, :device_id => '333'
     
@@ -56,7 +56,7 @@ class StatusControllerTest < ActionController::TestCase
   end
   
   test "can tell if a unabomber has won" do
-    @player.should_receive(:role).and_return(:unabomber)
+    @player.should_receive(:role).and_return('unabomber')
     no_citizens
     
     get :index, :device_id => '333'
@@ -67,8 +67,8 @@ class StatusControllerTest < ActionController::TestCase
   test "can tell if a game is still in progress" do
     @player.should_receive(:killed?).and_return(false)
     @player.should_receive(:role).and_return(:citizen)
-    flexmock(Player).should_receive(:where).with(:role => :citizen).and_return([@player, flexmock(:model, Player, :active? => true)])
-    flexmock(Player).should_receive(:where).with(:role => :unabomber).and_return([flexmock(:model, Player, :active? => true)])
+    flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([@player, flexmock(:model, Player, :active? => true)])
+    flexmock(Player).should_receive(:where).with(:role => 'unabomber').and_return([flexmock(:model, Player, :active? => true)])
     
     get :index, :device_id => '333'
     
@@ -78,13 +78,13 @@ class StatusControllerTest < ActionController::TestCase
   private
   
   def no_unabombers
-    arrested_unabomber = flexmock(:model, Player, :role => :unabomber, :active? => false)
-    flexmock(Player).should_receive(:where).with(:role => :unabomber).and_return([arrested_unabomber, arrested_unabomber])
+    arrested_unabomber = flexmock(:model, Player, :role => 'unabomber', :active? => false)
+    flexmock(Player).should_receive(:where).with(:role => 'unabomber').and_return([arrested_unabomber, arrested_unabomber])
   end
   
   def no_citizens
-    dead_citizen = flexmock(:model, Player, :role => :citizen, :active? => false)
-    flexmock(Player).should_receive(:where).with(:role => :citizen).and_return([dead_citizen, dead_citizen])
+    dead_citizen = flexmock(:model, Player, :role => 'citizen', :active? => false)
+    flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([dead_citizen, dead_citizen])
   end
   
 end

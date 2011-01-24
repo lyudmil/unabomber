@@ -1,12 +1,12 @@
 Server::Application.routes.draw do
-  resources :players, :only => [:create, :show]
+  resources :players, :only => [:create, :show, :index]
   resources :locations, :only => :index
   resources :bombs, :only => :show
   resources :messages, :only => :show
   
   #This makes the client work, so it is necessary. It should be unnecessary and use the resource route defined above.
   post 'players/create' => 'players#create'
-	get 'players' => 'players#locations'
+	get 'players' => 'players#index'
   put 'players/:device_id/update' => 'players#update'
 	post 'players/:device_id/arrest' => 'players#arrest'
 	

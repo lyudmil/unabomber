@@ -33,8 +33,9 @@ class PlayersController < ApplicationController
     suspect.destroy
   end
   
-  def locations
-    @locations = Player.all.collect { |player| player.location }
+  def index
+    @active_players = Player.all.select { |player| player.active? }
+    @locations = @active_players.collect { |player| player.location }
     @locations.reject! { |location| location == nil }
     render :text => @locations.to_json
   end

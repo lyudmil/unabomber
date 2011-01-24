@@ -74,6 +74,16 @@ class PlayersControllerTest < ActionController::TestCase
     post :arrest, :device_id => '1234', :id => 1
   end
   
+  test "does not show inactive players" do
+    active_player = flexmock(:model, Player, :active? => true, :location => nil)
+    inactive_player = flexmock(:model, Player, :active? => false, :location => nil)
+    flexmock(Player).should_receive(:all).and_return([active_player, inactive_player, active_player, inactive_player])
+    
+    get :index
+    
+    assert_equal [active_player, active_player], assigns(:active_players)
+  end
+  
   private
   
   def set_up_player_with_device_id device_id

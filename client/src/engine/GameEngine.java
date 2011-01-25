@@ -133,7 +133,6 @@ public class GameEngine {
 		
 		HttpPost request = new HttpPost(SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
 		request.setEntity(new PlaceBombParameters(currentLocation).encode());
-		//httpClient.executeRequest(request);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.bombIndexFrom(response);
 	}

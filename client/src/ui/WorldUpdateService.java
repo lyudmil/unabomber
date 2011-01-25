@@ -28,9 +28,17 @@ public class WorldUpdateService extends Service {
 		timer.scheduleAtFixedRate(new TimerTask() {		
 			@Override
 			public void run() {
+				
+
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
-				/*
-				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getPlayerId());
+		
+				activity.runOnUiThread(new UpdateMap(locations));
+				
+				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
+				activity.setMessages(messages);
+				
+				
+				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());
 				
 				
 				if (gameStatus != GameStatus.STARTED) {
@@ -43,15 +51,11 @@ public class WorldUpdateService extends Service {
 					
 					activity.startActivity(myIntent);
 					
-				}*/
-				
+					this.cancel();
+					
+					activity.finish();
 
-				
-				activity.runOnUiThread(new UpdateMap(locations));
-				
-				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
-				activity.setMessages(messages);
-				
+				}
 				
 				
 			}

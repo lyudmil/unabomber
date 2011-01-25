@@ -132,8 +132,11 @@ public class JSONUtil {
 		if (json.equals("finished-win")) {return GameStatus.FINISHEDWIN;}
 		if (json.equals("finished-lose")) {return GameStatus.FINISHEDLOSE;}
 		if (json.equals("finished-killed")) {return GameStatus.FINISHEDKILLED;}
-	
-		return GameStatus.FINISHEDJAILED;
+		if (json.equals("finished-jail")) {return GameStatus.FINISHEDKILLED;}
+		
+		System.out.println("Quello che ho " + json);
+		
+		return null;
 	}
 	
 	public static int bombIndexFrom(InputStream responseEntityContent) {

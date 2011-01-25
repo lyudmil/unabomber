@@ -5,7 +5,6 @@ import http.AuthenticateUserParameters;
 import http.PostMessageParameters;
 
 import http.PlaceBombParameters;
-import http.DetonatedBombParameters;
 
 import http.PostLocationParameters;
 import http.UnabomberHttpClient;
@@ -32,8 +31,8 @@ public class GameEngine {
 	private static final String PLACE_BOMBS_ACTION = "/bombs/place";
 	private static final String LOCATIONS_CONTROLLER = "/players";
 	private static final String PLAYERS_CONTROLLER = "/players";
-	private static final String SERVER = "http://10.0.2.2:3000";
-	private static final String R_SERVER = "http://unabomber.heroku.com";
+	private static final String SERVER = "http://unabomber.heroku.com"; //http://10.0.2.2:3000
+	//private static final String R_SERVER = "http://unabomber.heroku.com";
 	private static final String AGENT_ARREST = "/arrest";
 	private static final String GAME_STATUS = "/status";
 	private static final String BOMBS = "/bombs";
@@ -58,8 +57,8 @@ public class GameEngine {
 		return gameStatus;
 	}
 
-	public GameStatus updateGameStatus(int playerId) {
-		this.gameStatus = getStatusOfTheGame(playerId);
+	public GameStatus updateGameStatus(String deviceId) {
+		this.gameStatus = getStatusOfTheGame(deviceId);
 		return this.getGameStatus();
 	}
 
@@ -77,20 +76,20 @@ public class GameEngine {
 	}
 
 	public void sendLocation(Location currentLocation) {
-		HttpPut request = new HttpPut(R_SERVER + PLAYERS_CONTROLLER + playerUrl + "/update");
+		HttpPut request = new HttpPut(SERVER + PLAYERS_CONTROLLER + playerUrl + "/update");
 		request.setEntity(new PostLocationParameters(currentLocation).encode());
 		httpClient.executeRequest(request);
 	}
 
 	public PlayerData authenticate() {
-		HttpPost request = new HttpPost(R_SERVER + PLAYERS_CONTROLLER + "/create");
+		HttpPost request = new HttpPost(SERVER + PLAYERS_CONTROLLER + "/create");
 		request.setEntity(new AuthenticateUserParameters(deviceId).encode());
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.playerDataFrom(response);
 	}
 	
 	public void sendPlayerToJail(int agentPlayer, int arrestedPlayer) {
-		String uri = R_SERVER + PLAYERS_CONTROLLER + "/" + String.valueOf(agentPlayer) + AGENT_ARREST;
+		String uri = SERVER + PLAYERS_CONTROLLER + "/" + String.valueOf(agentPlayer) + AGENT_ARREST;
 		HttpPost request = new HttpPost(uri);
 		request.setEntity(new ArrestedPlayerParameters(String.valueOf(arrestedPlayer)).encode());
 		httpClient.executeRequest(request);
@@ -100,7 +99,7 @@ public class GameEngine {
 	public void sendMessageTo(int sender, int receiver, String message){
 		
 		//code to send the message to the player; not sure about using HttpPur or HttpPost
-		HttpPut request = new HttpPut(R_SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
+		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
 		request.setEntity(new PostMessageParameters(message, receiver).encode());
 		httpClient.executeRequest(request);
 		
@@ -108,7 +107,7 @@ public class GameEngine {
 		
 	}
 	public ArrayList<PlayerMessage> getMessages(){
-		HttpGet request = new HttpGet(R_SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
+		HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.messagesFrom(response);
 		
@@ -117,21 +116,21 @@ public class GameEngine {
 	
 	//
 	public void detonateBomb(int detonatedBomb){
-		String uri = R_SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
+		String uri = SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
 		HttpPost request = new HttpPost(uri);
 		httpClient.executeRequest(request);
 	}
 	//
 
 	public ArrayList<PlayerLocation> getLocations() {
-		HttpGet request = new HttpGet(R_SERVER + LOCATIONS_CONTROLLER);
+		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.locationsFrom(response);
 	}
 
 	public int placeBombAt(Location currentLocation) {
 		
-		HttpPost request = new HttpPost(R_SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
+		HttpPost request = new HttpPost(SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
 		request.setEntity(new PlaceBombParameters(currentLocation).encode());
 		//httpClient.executeRequest(request);
 		HttpResponse response = httpClient.executeRequest(request);
@@ -139,8 +138,8 @@ public class GameEngine {
 	}
 	
 	
-	public GameStatus getStatusOfTheGame(int playerId) {
-		HttpGet request = new HttpGet(R_SERVER + "/" + playerId + GAME_STATUS);
+	public GameStatus getStatusOfTheGame(String deviceId) {
+		HttpGet request = new HttpGet(SERVER + "/" + deviceId + GAME_STATUS);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.gameStatusFrom(response);
 	}

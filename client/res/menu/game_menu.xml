@@ -3,4 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
 <item android:title="@string/m_show" android:id="@+id/show"></item>
 <item android:title="@string/m_messages" android:id="@+id/messages"></item>
+<item android:title="@string/m_info" android:id="@+id/info"></item>
+
 </menu>

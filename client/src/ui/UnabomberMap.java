@@ -123,12 +123,12 @@ public class UnabomberMap extends MapActivity {
 		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.show:
-			//codice
+			//start mixare
 
-			Intent i = new Intent();
-			i.setAction(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
-			startActivity(i);
+			Intent mixare_intent = new Intent();
+			mixare_intent.setAction(Intent.ACTION_VIEW);
+			mixare_intent.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
+			startActivity(mixare_intent);
 
 			return true;
 		case R.id.messages:
@@ -137,8 +137,13 @@ public class UnabomberMap extends MapActivity {
 			Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class );
 			message_intent.putExtra("messages", this.messages);
 			UnabomberMap.this.startActivity(message_intent);
+			return true;
 
-
+		case R.id.info:
+			//help and credits
+			Intent info_intent = new Intent(UnabomberMap.this, InfoView.class);
+			UnabomberMap.this.startActivity(info_intent);
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -32,12 +32,11 @@ public class GameEngine {
 	private static final String LOCATIONS_CONTROLLER = "/players";
 	private static final String PLAYERS_CONTROLLER = "/players";
 	private static final String SERVER = "http://unabomber.heroku.com"; //http://10.0.2.2:3000
-	//private static final String R_SERVER = "http://unabomber.heroku.com";
 	private static final String AGENT_ARREST = "/arrest";
 	private static final String GAME_STATUS = "/status";
 	private static final String BOMBS = "/bombs";
 	
-	//
+
 	private static final String DETONATION="/detonate";
 	
 	private static final String MESSAGES_CONTROLLER = "/messages";

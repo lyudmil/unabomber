@@ -1,14 +1,13 @@
 package ui.dialogs;
 
-import java.util.ArrayList;
-
 import ui.BombsOverlay;
 import ui.UnabomberMap;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
-import engine.PlayerLocation;
+import android.location.LocationManager;
 
 public class PlaceBombDialogBuilder implements DialogBuilder {
 
@@ -27,21 +26,23 @@ public class PlaceBombDialogBuilder implements DialogBuilder {
 		.setCancelable(false)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				/*
 
-		        	   LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-		        	   Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-		        	   int bombId = activity.getEngine().placeBombAt(lastKnownLocation);
+				LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+				Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-		        	   BombsOverlay bombs = activity.getBombsOverlay();
-		        	   bombs.addBombAt(lastKnownLocation, bombId);
-		        	   bombs.showOn(activity.getMapView());
-				 */			 
+				int bombId = activity.getEngine().placeBombAt(lastKnownLocation);
+
+				BombsOverlay bombs = activity.getBombsOverlay();
+				bombs.addBombAt(lastKnownLocation, bombId);
+				bombs.showOn(activity.getMapView());
+
+
+	/*
 				Location bomb_location = null;
 				ArrayList<PlayerLocation> p_loc = activity.getEngine().getLocations();
 				for(int i=0; i<p_loc.size();i++){
-					
+
 					if(p_loc.get(i).getPlayerId()==activity.getOtherPlayersOverlay().getMyId()){
 						bomb_location=p_loc.get(i).getLocation();
 					}
@@ -51,8 +52,8 @@ public class PlaceBombDialogBuilder implements DialogBuilder {
 				BombsOverlay bombs = activity.getBombsOverlay();
 				bombs.addBombAt(bomb_location, bombId);
 				bombs.showOn(activity.getMapView());
-				
-				
+				 
+*/
 			}
 		})
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {

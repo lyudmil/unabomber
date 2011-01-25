@@ -26,8 +26,8 @@ public class Dialogs {
 		activity = newActivity;
 		builders = new HashMap<Integer, DialogBuilder>() {
 			{
-				put(PLACE_BOMB, new PlaceBombDialogBuilder(newActivity));
-				put(SEND_MESSAGE, new SendMessageDialogBuilder(newActivity));
+				put(PLACE_BOMB, new PlaceBombDialogBuilder(activity));
+				put(SEND_MESSAGE, new SendMessageDialogBuilder(activity));
 			}
 		};
 		

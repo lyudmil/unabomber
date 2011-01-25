@@ -22,6 +22,8 @@ public class HelpView extends ListActivity{
 		lv.setFocusable(true);
 		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+		
+		
 
 	}
 

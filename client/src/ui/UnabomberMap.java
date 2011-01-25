@@ -126,15 +126,13 @@ public class UnabomberMap extends MapActivity {
 			//start mixare
 
 			Intent mixare_intent = new Intent();
-			mixare_intent.setAction(Intent.ACTION_VIEW);
-			
-			mixare_intent.setDataAndType(Uri.parse("http://<server>/bombs"), "application/mixare-json");
-//			mixare_intent.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
+			mixare_intent.setAction(Intent.ACTION_VIEW);			
+			mixare_intent.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs.php"), "application/mixare-json");
 			startActivity(mixare_intent);
 
 			return true;
 		case R.id.messages:
-			//messages
+			//read messages
 
 			Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class );
 			message_intent.putExtra("messages", this.messages);
@@ -142,7 +140,7 @@ public class UnabomberMap extends MapActivity {
 			return true;
 
 		case R.id.info:
-			//help and credits
+			//read help and credits
 			Intent info_intent = new Intent(UnabomberMap.this, InfoView.class);
 			UnabomberMap.this.startActivity(info_intent);
 			

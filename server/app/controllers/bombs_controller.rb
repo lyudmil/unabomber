@@ -1,5 +1,11 @@
 class BombsController < ApplicationController
 	
+	def index
+	  @bombs = Bomb.all
+	  
+	  render :partial => 'bombs_mixare.json'
+  end
+	
 	def place
 		@bomb = Bomb.new(:player => player_with_specified_device_id, :location => location_from_parameters)
 		@bomb.save

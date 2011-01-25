@@ -1,6 +1,6 @@
 Server::Application.routes.draw do
   resources :players, :only => [:create, :show, :index]
-  resources :bombs, :only => :show
+  resources :bombs, :only => [:show, :index]
   resources :messages, :only => :show
   
   #This makes the client work, so it is necessary. It should be unnecessary and use the resource route defined above.

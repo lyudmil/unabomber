@@ -38,24 +38,24 @@ public class WorldUpdateService extends Service {
 				activity.setMessages(messages);
 				
 				
-				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());
-				
-				
-				if (gameStatus != GameStatus.STARTED) {
-					
-					//set the status of the match
-					MatchResult.gameStatus = gameStatus;
-					
-					//initiate the new intent
-					Intent myIntent = new Intent(activity, MatchResult.class);
-					
-					activity.startActivity(myIntent);
-					
-					this.cancel();
-					
-					activity.finish();
-
-				}
+//				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());
+//				
+//				
+//				if (gameStatus != GameStatus.STARTED) {
+//					
+//					//set the status of the match
+//					MatchResult.gameStatus = gameStatus;
+//					
+//					//initiate the new intent
+//					Intent myIntent = new Intent(activity, MatchResult.class);
+//					
+//					activity.startActivity(myIntent);
+//					
+//					this.cancel();
+//					
+//					activity.finish();
+//
+//				}
 				
 				
 			}

@@ -34,5 +34,34 @@ class BombsControllerTest < ActionController::TestCase
     
     post :detonate, :id => 33    
   end
+  
+  test "shows bomb locations in the appropriate format for mixare" do
+    bomb1_location = Location.new(:latitude => 44.0, :longitude => 9.0, :altitude => 50.3)
+    bomb2_location = Location.new(:latitude => 4.1, :longitude => 39.2, :altitude => 7.6)
+    bomb1 = Bomb.new(:location => bomb1_location)
+    bomb2 = Bomb.new(:location => bomb2_location)
+    flexmock(Bomb).should_receive(:all).and_return([bomb1, bomb2])
+    
+    get :index
+    
+    assert_equal [bomb1, bomb2], assigns(:bombs)
+    
+    json_response = ActiveSupport::JSON.decode(@response.body)
+    assert_equal "OK", json_response["status"]
+    assert_equal 2, json_response["num_results"]
+    
+    results = json_response["results"]
+    assert_equal 2, results.size
+    
+    assert_equal 44.0, results[0]["lat"]
+    assert_equal 9.0, results[0]["lng"]
+    assert_equal 50, results[0]["elevation"]
+    assert_equal "Bomb!", results[0]["title"]
+    
+    assert_equal 4.1, results[1]["lat"]
+    assert_equal 39.2, results[1]["lng"]
+    assert_equal 7, results[1]["elevation"]
+    assert_equal "Bomb!", results[1]["title"]
+  end
 
 end

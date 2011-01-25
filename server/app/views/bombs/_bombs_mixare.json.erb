@@ -1,0 +1,17 @@
+{
+	"status" : "OK",
+	"num_results" : <%= @bombs.size %>,
+	"results" : [
+	<% @bombs.each do |bomb| %>
+		{
+			"lat" : <%= bomb.location.latitude %>,
+			"lng" : <%= bomb.location.longitude %>,
+			"elevation" : <%= bomb.location.altitude.to_i %>,
+			"title" : "Bomb!"
+		}
+		<% unless bomb == @bombs.last %>
+			,
+		<% end %>
+	<% end %>
+	]
+}

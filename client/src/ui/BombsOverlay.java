@@ -77,6 +77,12 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 
 			mEngine.detonateBomb(targetBombID);
 
+			//remove overlayitem
+			//it still triggers the detonate bomb dialog if you tap on the location where the bomb was. it seems to be a bug of google maps
+			this.setLastFocusedIndex(-1);			
+			this.clear();
+			this.setFocus(null); 
+			
 			//feedback the results
 			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT)
 					.show();

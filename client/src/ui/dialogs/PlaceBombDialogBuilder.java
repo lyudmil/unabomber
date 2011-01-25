@@ -1,13 +1,14 @@
 package ui.dialogs;
 
+import java.util.ArrayList;
+
 import ui.BombsOverlay;
 import ui.UnabomberMap;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
-import android.location.LocationManager;
+import engine.PlayerLocation;
 
 public class PlaceBombDialogBuilder implements DialogBuilder {
 
@@ -26,8 +27,8 @@ public class PlaceBombDialogBuilder implements DialogBuilder {
 		.setCancelable(false)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
+				/*
 
-			
 		        	   LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 		        	   Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -36,21 +37,22 @@ public class PlaceBombDialogBuilder implements DialogBuilder {
 		        	   BombsOverlay bombs = activity.getBombsOverlay();
 		        	   bombs.addBombAt(lastKnownLocation, bombId);
 		        	   bombs.showOn(activity.getMapView());
-				 
-
-				/* FAKE LOCATION used to take screenshots: the app doesn't crash using it
-				Location fake = activity.getEngine().getLocations().get(0).getLocation();
-
-				int bombId = activity.getEngine().placeBombAt(fake);
+				 */			 
+				Location bomb_location = null;
+				ArrayList<PlayerLocation> p_loc = activity.getEngine().getLocations();
+				for(int i=0; i<p_loc.size();i++){
+					
+					if(p_loc.get(i).getPlayerId()==activity.getOtherPlayersOverlay().getMyId()){
+						bomb_location=p_loc.get(i).getLocation();
+					}
+				}
+				int bombId = activity.getEngine().placeBombAt(bomb_location);
 
 				BombsOverlay bombs = activity.getBombsOverlay();
-				bombs.addBombAt(fake, bombId);
+				bombs.addBombAt(bomb_location, bombId);
 				bombs.showOn(activity.getMapView());
-				*/
-
-
-				dialog.dismiss();
-
+				
+				
 			}
 		})
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {

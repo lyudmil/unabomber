@@ -127,7 +127,9 @@ public class UnabomberMap extends MapActivity {
 
 			Intent mixare_intent = new Intent();
 			mixare_intent.setAction(Intent.ACTION_VIEW);
-			mixare_intent.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
+			
+			mixare_intent.setDataAndType(Uri.parse("http://<server>/bombs"), "application/mixare-json");
+//			mixare_intent.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
 			startActivity(mixare_intent);
 
 			return true;

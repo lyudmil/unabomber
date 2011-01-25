@@ -57,7 +57,7 @@ public class UnabomberMap extends MapActivity {
 		//reachable=tester.testGCS();  //era commentata
 		showDemoAlert(this);
 
-		if(!reachable){ 
+		if(reachable){ 
 
 			setUpMap();
 			showPlayerLocation();

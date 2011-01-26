@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 
-import connectivity.GCSTester;
 import engine.GameEngine;
 import engine.PlayerData;
 import engine.PlayerMessage;
@@ -33,14 +32,7 @@ public class UnabomberMap extends MapActivity {
 	private OtherPlayersOverlay otherPlayersOverlay;
 	private PlayerData playerData;
 	private BombsOverlay bombsOverlay;
-
-
-	//server check var
-	private Boolean reachable=false;
-	private GCSTester tester;
 	private ArrayList<PlayerMessage> messages = new ArrayList<PlayerMessage>();
-
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,13 +40,9 @@ public class UnabomberMap extends MapActivity {
 		setContentView(R.layout.main);
 		Dialogs.setActivity(this);
 
-
-		tester=new GCSTester(this);
-
 		//showVideo();
 		//showVideo in not working at the moment: we need a mp4 video, swf are not supported
 		
-		//reachable=tester.testGCS();  //era commentata
 		showDemoAlert(this);
 
 		setUpMap();
@@ -69,18 +57,13 @@ public class UnabomberMap extends MapActivity {
 		UnabomberMap.this.startActivity(i);
 	}
 	
-	//start mixare code
-	public void startMixare(Context c){
-
+	public void startMixare(Context c) {
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_VIEW);
-		i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
+		i.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs"), "application/mixare-json");
 		startActivity(i);    
 	}
 
-
-
-	//demo start code
 	public void showDemoAlert(final UnabomberMap app){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
 		builder.setMessage("Welcome to Unabomber Demo! Press Play Demo to start a new game or Exit to close the application. Enjoy!")  
@@ -116,30 +99,32 @@ public class UnabomberMap extends MapActivity {
 		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.show:
-			//codice
+			//start mixare
 
-			Intent i = new Intent();
-			i.setAction(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse("http://your_server/JSONEndpoint"), "application/mixare-json");
-			startActivity(i);
+			Intent mixare_intent = new Intent();
+			mixare_intent.setAction(Intent.ACTION_VIEW);			
+			mixare_intent.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs.php"), "application/mixare-json");
+			startActivity(mixare_intent);
 
 			return true;
 		case R.id.messages:
-			//messages
+			//read messages
 
 			Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class );
 			message_intent.putExtra("messages", this.messages);
 			UnabomberMap.this.startActivity(message_intent);
+			return true;
 
-
+		case R.id.info:
+			//read help and credits
+			Intent info_intent = new Intent(UnabomberMap.this, InfoView.class);
+			UnabomberMap.this.startActivity(info_intent);
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-
-
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -150,22 +135,19 @@ public class UnabomberMap extends MapActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(reachable!=false)
-			stopFollowingPlayers();
+		stopFollowingPlayers();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if(reachable!=false)
-			stopFollowingPlayers();
+		stopFollowingPlayers();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(reachable!=false)
-			followPlayers();
+		followPlayers();
 	}
 
 	private void stopFollowingPlayers() {

@@ -24,8 +24,7 @@ public class WorldUpdateService extends Service {
 		timer.scheduleAtFixedRate(new TimerTask() {		
 			@Override
 			public void run() {
-				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
-				activity.runOnUiThread(new UpdateMap(locations));
+				updateWorld();
 				
 //				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
 //				activity.setMessages(messages);
@@ -52,6 +51,11 @@ public class WorldUpdateService extends Service {
 				
 				
 			}
+
+			private synchronized void updateWorld() {
+				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
+				activity.runOnUiThread(new UpdateMap(locations));
+			}
 		}, 0, 4000);
 	}
 	
@@ -71,7 +75,7 @@ public class WorldUpdateService extends Service {
 			this.locations = locations;
 		}
 
-		public synchronized void run() {
+		public void run() {
 			OtherPlayersOverlay otherPlayersOverlay = refreshLocationsUsing(locations);
 			otherPlayersOverlay.showOn(activity.getMapView());
 		}
@@ -79,6 +83,7 @@ public class WorldUpdateService extends Service {
 		private OtherPlayersOverlay refreshLocationsUsing(final ArrayList<PlayerLocation> locations) {
 			OtherPlayersOverlay otherPlayersOverlay = activity.getOtherPlayersOverlay();
 			otherPlayersOverlay.clear();
+			activity.getMapView().invalidate();
 			
 			for(PlayerLocation location : locations) {
 				otherPlayersOverlay.addOverlayFor(location);

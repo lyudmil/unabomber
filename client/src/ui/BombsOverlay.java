@@ -23,12 +23,12 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		this.mEngine = engine;
 	}
 
-	public void addBombAt(Location location, int bombIndex) {
+	public synchronized void addBombAt(Location location, int bombIndex) {
 		Double latitude = location.getLatitude() * 1E6;
 		Double longitude = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
 		locations.add(new OverlayItem(point, "Bomb", String.valueOf(bombIndex)));
-		populate();
+		readyToPopulate();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		return true;
 	}
 
-	protected void handleMenuOption(final int optionIndex, final int bombIndex) {
+	protected synchronized void handleMenuOption(final int optionIndex, final int bombIndex) {
 		OverlayItem bombOverlay = locations.get(bombIndex);
 		int targetBombID = Integer.parseInt(bombOverlay.getSnippet());
 

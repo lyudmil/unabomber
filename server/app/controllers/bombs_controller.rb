@@ -22,6 +22,7 @@ class BombsController < ApplicationController
 	  bomb = Bomb.find(params[:id])
 	  Player.all.each do |player|
 	      player.killed = true if player.within_range_of(bomb.location)
+	      player.save
     end
   end
 

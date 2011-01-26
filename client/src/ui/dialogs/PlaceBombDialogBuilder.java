@@ -17,43 +17,27 @@ public class PlaceBombDialogBuilder implements DialogBuilder {
 		this.activity = activity;
 	}
 
-	/* (non-Javadoc)
-	 * @see ui.dialogs.DialogBuilder#build()
-	 */
 	public Dialog build() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setMessage("Place a bomb here?")
 		.setCancelable(false)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-
-
-				LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-				Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+				Location lastKnownLocation = determineLocation();
+				if (lastKnownLocation == null) return;
 
 				int bombId = activity.getEngine().placeBombAt(lastKnownLocation);
 
 				BombsOverlay bombs = activity.getBombsOverlay();
 				bombs.addBombAt(lastKnownLocation, bombId);
 				bombs.showOn(activity.getMapView());
+			}
 
-
-	/*
-				Location bomb_location = null;
-				ArrayList<PlayerLocation> p_loc = activity.getEngine().getLocations();
-				for(int i=0; i<p_loc.size();i++){
-
-					if(p_loc.get(i).getPlayerId()==activity.getOtherPlayersOverlay().getMyId()){
-						bomb_location=p_loc.get(i).getLocation();
-					}
-				}
-				int bombId = activity.getEngine().placeBombAt(bomb_location);
-
-				BombsOverlay bombs = activity.getBombsOverlay();
-				bombs.addBombAt(bomb_location, bombId);
-				bombs.showOn(activity.getMapView());
-				 
-*/
+			private Location determineLocation() {
+				LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				if (location == null) location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+				return location;
 			}
 		})
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {

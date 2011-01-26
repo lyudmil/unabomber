@@ -32,7 +32,7 @@ public class GameEngine {
 	private static final String LOCATIONS_CONTROLLER = "/players";
 	private static final String PLAYERS_CONTROLLER = "/players";
 
-	private static final String SERVER = "http://unabomber.heroku.com"; //http://10.0.2.2:3000
+	private static final String SERVER = "http://10.0.2.2:3000";
 
 	private static final String AGENT_ARREST = "/arrest";
 	private static final String GAME_STATUS = "/status";
@@ -49,11 +49,6 @@ public class GameEngine {
 	
 	GameStatus gameStatus;
 	
-	
-	
-	
-	
-
 	public GameStatus getGameStatus() {
 		return gameStatus;
 	}
@@ -96,17 +91,12 @@ public class GameEngine {
 		httpClient.executeRequest(request);
 	}
 	
-	//
 	public void sendMessageTo(int sender, int receiver, String message){
-		
-		//code to send the message to the player; not sure about using HttpPur or HttpPost
 		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
 		request.setEntity(new PostMessageParameters(message, receiver).encode());
-		httpClient.executeRequest(request);
-		
-		
-		
+		httpClient.executeRequest(request);	
 	}
+	
 	public ArrayList<PlayerMessage> getMessages(){
 		HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
@@ -114,14 +104,11 @@ public class GameEngine {
 		
 	}
 	
-	
-	//
 	public void detonateBomb(int detonatedBomb){
 		String uri = SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
 		HttpPost request = new HttpPost(uri);
 		httpClient.executeRequest(request);
 	}
-	//
 
 	public ArrayList<PlayerLocation> getLocations() {
 		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);
@@ -130,7 +117,6 @@ public class GameEngine {
 	}
 
 	public int placeBombAt(Location currentLocation) {
-		
 		HttpPost request = new HttpPost(SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
 		request.setEntity(new PlaceBombParameters(currentLocation).encode());
 		HttpResponse response = httpClient.executeRequest(request);
@@ -143,8 +129,4 @@ public class GameEngine {
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.gameStatusFrom(response);
 	}
-	
-	
-	
-	
 }

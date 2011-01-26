@@ -45,8 +45,6 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		locations.add(new OverlayItem(point, "", ""));
 	}
 	
-	
-
 	public void showOn(MapView mapView) {
 		List<Overlay> overlays = mapView.getOverlays();
 		if(overlays.contains(this)) return;

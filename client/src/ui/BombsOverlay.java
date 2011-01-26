@@ -1,11 +1,5 @@
 package ui;
 
-
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
-
-import engine.GameEngine;
 import unabomber.client.R;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,70 +8,61 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.widget.Toast;
 
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
+
+import engine.GameEngine;
+
 public class BombsOverlay extends UnabomberItemsOverlay {
 
 	private int myPlayerId;
 	private Context mContext;
 	private GameEngine mEngine;
 
-	private boolean detonated=false;
+	private boolean detonated = false;
 
-
-
-
-	//
-	public BombsOverlay(Drawable defaultMarker, int myPlayerId, GameEngine engine,
-			Context context) {
+	public BombsOverlay(Drawable defaultMarker, int myPlayerId,
+			GameEngine engine, Context context) {
 		super(defaultMarker);
 		this.myPlayerId = myPlayerId;
 		this.mContext = context;
 		this.mEngine = engine;
 	}
-	//
-
 
 	public void addBombAt(Location location, int bombIndex) {
 		Double latitude = location.getLatitude() * 1E6;
 		Double longitude = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
-		locations.add(new OverlayItem(point, "Bomb", String.valueOf(bombIndex)));
+		locations
+				.add(new OverlayItem(point, "Bomb", String.valueOf(bombIndex)));
 		populate();
 	}
 
-	//
 	@Override
 	protected boolean onTap(final int index) {
+		// option to use as action
+		final CharSequence[] items = { "Detonate" };
 
-		if(this.detonated==false){
+		// if you have added something, change handleMenuOption
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		builder.setTitle(R.string.other_player_menu_title);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				handleMenuOption(item, index);
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 
-			// option to use as action
-			final CharSequence[] items = { "Detonate" };
-
-
-			// if you have added something, change handleMenuOption
-			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-			builder.setTitle(R.string.other_player_menu_title);
-			builder.setItems(items, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int item) {
-					handleMenuOption(item, index);
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-			
-			return true;
-		}
-		return false;
-
+		return true;
 	}
+
 	//
 	// handle the single option that a player has done
 	protected void handleMenuOption(final int optionIndex, final int bombIndex) {
 
-
-		//get target player ID
+		// get target player ID
 		int targetBombID = Integer.parseInt(locations.get(bombIndex).getSnippet());
-
 
 		// obtain the user decision
 		switch (optionIndex) {
@@ -85,18 +70,16 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 
 			mEngine.detonateBomb(targetBombID);
 
-			//remove overlayitem
+			// remove overlayitem
 			this.clear();
-			detonated=true;
+			detonated = true;
 
-			//feedback the results
-			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT)
-			.show();
+			// feedback the results
+			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT).show();
 			break;
 
 		default: // defensive programming
-			Toast.makeText(mContext, R.string.unknown_action,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, R.string.unknown_action, Toast.LENGTH_SHORT).show();
 		}
 
 	}

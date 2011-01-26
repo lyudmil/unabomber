@@ -21,8 +21,8 @@ public class PostMessageParameters extends ParameterList {
 	public ArrayList<NameValuePair> getParameters() {
 		
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("content", message));
 		params.add(new BasicNameValuePair("recepient_id", String.valueOf(senderId)));
+		params.add(new BasicNameValuePair("content", message));
 
 		
 		return params;

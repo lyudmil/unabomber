@@ -9,12 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.Location;
 import engine.GameEngine.GameStatus;
 import engine.PlayerData;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
-
-import android.location.Location;
 
 public class JSONUtil {
 

@@ -24,41 +24,16 @@ public class WorldUpdateService extends Service {
 		timer.scheduleAtFixedRate(new TimerTask() {		
 			@Override
 			public void run() {
-				updateWorld();
-				
-				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
-				activity.setMessages(messages);
-				
-				
-//				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());
-//				
-//				
-//				if (gameStatus != GameStatus.STARTED) {
-//					
-//					//set the status of the match
-//					MatchResult.gameStatus = gameStatus;
-//					
-//					//initiate the new intent
-//					Intent myIntent = new Intent(activity, MatchResult.class);
-//					
-//					activity.startActivity(myIntent);
-//					
-//					this.cancel();
-//					
-//					activity.finish();
-//
-//				}
-				
-				
-			}
-
-			private synchronized void updateWorld() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				activity.runOnUiThread(new UpdateMap(locations));
+
+				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
+				activity.setMessages(messages);
+
 			}
 		}, 0, 4000);
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		timer.cancel();
@@ -67,7 +42,7 @@ public class WorldUpdateService extends Service {
 	public static void setActivity(UnabomberMap map) {
 		activity = map;
 	}
-	
+
 	private final class UpdateMap implements Runnable {
 		private final ArrayList<PlayerLocation> locations;
 
@@ -75,7 +50,7 @@ public class WorldUpdateService extends Service {
 			this.locations = locations;
 		}
 
-		public void run() {
+		public synchronized void run() {
 			OtherPlayersOverlay otherPlayersOverlay = refreshLocationsUsing(locations);
 			otherPlayersOverlay.showOn(activity.getMapView());
 		}
@@ -83,8 +58,7 @@ public class WorldUpdateService extends Service {
 		private OtherPlayersOverlay refreshLocationsUsing(final ArrayList<PlayerLocation> locations) {
 			OtherPlayersOverlay otherPlayersOverlay = activity.getOtherPlayersOverlay();
 			otherPlayersOverlay.clear();
-			activity.getMapView().invalidate();
-			
+
 			for(PlayerLocation location : locations) {
 				otherPlayersOverlay.addOverlayFor(location);
 			}

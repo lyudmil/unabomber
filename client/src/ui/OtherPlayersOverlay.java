@@ -48,12 +48,12 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	}
 
 	// handle the single option that a player has done
-	protected void handleMenuOption(final int optionIndex, final int playerIndex) {
+	protected synchronized void handleMenuOption(final int optionIndex, final int playerIndex) {
 		
 		
 		//get target player ID
 		targetPlayerID = Integer.parseInt(locations.get(playerIndex).getSnippet());
-		
+		//targetPlayerID = mApp.getOtherPlayersOverlay().getTargetPlayerId();
 
 		// obtain the user decision
 		switch (optionIndex) {
@@ -67,7 +67,6 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 			break;
 
 		case 1: // send a message to player
-		//	mEngine.sendMessageTo(myPlayerId, targetPlayerID, );
 			mApp.showDialog(Dialogs.SEND_MESSAGE);
 			
 		default: // defensive programming
@@ -78,7 +77,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	}
 
 	//add a player on the list
-	public void addOverlayFor(PlayerLocation location) {
+	public synchronized void addOverlayFor(PlayerLocation location) {
 		
 		//if i am the player then return
 		if (displayingMyself(location)) {

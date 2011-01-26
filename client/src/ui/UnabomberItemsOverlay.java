@@ -31,6 +31,10 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 
 	@Override
 	public int size() {
+		return numberOfItems();
+	}
+
+	private synchronized int numberOfItems() {
 		return locations.size();
 	}
 
@@ -50,7 +54,7 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		locations.add(new OverlayItem(point, "", ""));
 	}
 	
-	public void showOn(MapView mapView) {
+	public synchronized void showOn(MapView mapView) {
 		List<Overlay> overlays = mapView.getOverlays();
 		if(overlays.contains(this)) return;
 		

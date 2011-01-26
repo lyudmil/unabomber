@@ -15,16 +15,12 @@ import engine.GameEngine;
 
 public class BombsOverlay extends UnabomberItemsOverlay {
 
-	private int myPlayerId;
 	private Context mContext;
 	private GameEngine mEngine;
-
-	private boolean detonated = false;
 
 	public BombsOverlay(Drawable defaultMarker, int myPlayerId,
 			GameEngine engine, Context context) {
 		super(defaultMarker);
-		this.myPlayerId = myPlayerId;
 		this.mContext = context;
 		this.mEngine = engine;
 	}
@@ -33,8 +29,7 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		Double latitude = location.getLatitude() * 1E6;
 		Double longitude = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
-		locations
-				.add(new OverlayItem(point, "Bomb", String.valueOf(bombIndex)));
+		locations.add(new OverlayItem(point, "Bomb", String.valueOf(bombIndex)));
 		populate();
 	}
 
@@ -57,31 +52,20 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		return true;
 	}
 
-	//
-	// handle the single option that a player has done
 	protected void handleMenuOption(final int optionIndex, final int bombIndex) {
+		OverlayItem bombOverlay = locations.get(bombIndex);
+		int targetBombID = Integer.parseInt(bombOverlay.getSnippet());
 
-		// get target player ID
-		int targetBombID = Integer.parseInt(locations.get(bombIndex).getSnippet());
-
-		// obtain the user decision
 		switch (optionIndex) {
-		case 0: // send another player to jail
-
+		case 0:
 			mEngine.detonateBomb(targetBombID);
-
-			// remove overlayitem
-			this.clear();
-			detonated = true;
-
-			// feedback the results
+			locations.remove(bombIndex);
 			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT).show();
 			break;
 
-		default: // defensive programming
+		default:
 			Toast.makeText(mContext, R.string.unknown_action, Toast.LENGTH_SHORT).show();
 		}
 
 	}
-	//
 }

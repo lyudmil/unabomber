@@ -9,7 +9,9 @@ public class IOUtil {
 
 	public static String convertToString(InputStream responseEntityContent) {
 		try {
-			return extractStringFrom(responseEntityContent);
+			String result = extractStringFrom(responseEntityContent);
+			responseEntityContent.close();
+			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

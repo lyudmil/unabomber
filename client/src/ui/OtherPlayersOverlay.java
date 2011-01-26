@@ -71,12 +71,11 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		// obtain the user decision
 		switch (optionIndex) {
 		case 0: // send another player to jail
-
+			locations.remove(playerIndex);
 			mEngine.sendPlayerToJail(myPlayerId, targetPlayerID);
 
 			//feedback the results
-			Toast.makeText(mContext, R.string.sent_to_jail, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(mContext, R.string.sent_to_jail, Toast.LENGTH_SHORT).show();
 			break;
 
 		case 1: // send a message to player

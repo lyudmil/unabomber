@@ -91,7 +91,7 @@ public class GameEngine {
 		httpClient.executeRequest(request);
 	}
 	
-	public void sendMessageTo(int sender, int receiver, String message){
+	public void sendMessageTo(int receiver, String message){
 		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
 		request.setEntity(new PostMessageParameters(message, receiver).encode());
 		httpClient.executeRequest(request);	

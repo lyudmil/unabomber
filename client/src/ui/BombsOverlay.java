@@ -58,8 +58,8 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 
 		switch (optionIndex) {
 		case 0:
-			mEngine.detonateBomb(targetBombID);
 			locations.remove(bombIndex);
+			mEngine.detonateBomb(targetBombID);
 			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT).show();
 			break;
 

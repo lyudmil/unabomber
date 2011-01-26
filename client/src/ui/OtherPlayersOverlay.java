@@ -68,7 +68,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 
 		case 1: // send a message to player
 			mApp.showDialog(Dialogs.SEND_MESSAGE);
-			
+			break;
 		default: // defensive programming
 			Toast.makeText(mApp, R.string.unknown_action,
 					Toast.LENGTH_SHORT).show();

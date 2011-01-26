@@ -1,7 +1,13 @@
 package engine;
 
-public class PlayerMessage {
+import java.io.Serializable;
+
+public class PlayerMessage implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String message;
 	private int sender;
 	private int receiver;

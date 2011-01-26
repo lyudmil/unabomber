@@ -12,9 +12,9 @@ public class PostMessageParameters extends ParameterList {
 	private String message;
 	private int senderId;
 	
-	public PostMessageParameters(PlayerMessage message){
-		this.message=message.getMessage();
-		this.senderId=message.getPlayer_id();
+	public PostMessageParameters(int receiver, String message){
+		this.message=message;
+		this.senderId=receiver;
 	}
 
 	@Override

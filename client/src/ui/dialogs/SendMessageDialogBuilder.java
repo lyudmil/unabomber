@@ -32,9 +32,9 @@ public class SendMessageDialogBuilder implements DialogBuilder {
 		        	  
 		        	   String message_string = input.getText().toString().trim();
 		        	   OtherPlayersOverlay others = activity.getOtherPlayersOverlay();
-		        	   PlayerMessage message = new PlayerMessage(message_string, activity.getOtherPlayersOverlay().getMyId());
+		        	//   PlayerMessage message = new PlayerMessage(message_string, others.getTargetPlayerId());
 		        	   
-		        	   activity.getEngine().sendMessageTo(others.getTargetPlayerId(), message);
+		        	   activity.getEngine().sendMessageTo(others.getTargetPlayerId(), message_string);
 		        	   dialog.dismiss();
 		           }
 		       })

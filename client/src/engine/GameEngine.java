@@ -2,11 +2,9 @@ package engine;
 
 import http.ArrestedPlayerParameters;
 import http.AuthenticateUserParameters;
-import http.PostMessageParameters;
-
 import http.PlaceBombParameters;
-
 import http.PostLocationParameters;
+import http.PostMessageParameters;
 import http.UnabomberHttpClient;
 
 import java.util.ArrayList;
@@ -93,16 +91,16 @@ public class GameEngine {
 	}
 	
 	//deviceId or receiver?
-	public void sendMessageTo(int receiver, PlayerMessage message){
-		//HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
-		HttpPut request = new HttpPut(SERVER +"/" + String.valueOf(receiver) + MESSAGES_CONTROLLER + "/create");
-		request.setEntity(new PostMessageParameters(message).encode());
+	public void sendMessageTo(int receiver, String message){
+		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
+		//HttpPut request = new HttpPut(SERVER +"/" + String.valueOf(receiver) + MESSAGES_CONTROLLER + "/create");
+		request.setEntity(new PostMessageParameters(receiver, message).encode());
 		httpClient.executeRequest(request);	
 	}
 	//getMassages
 	public ArrayList<PlayerMessage> getMessages(){
-		//HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
-		HttpGet request = new HttpGet(SERVER + "/"+ playerUrl + MESSAGES_CONTROLLER);
+		HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
+		//HttpGet request = new HttpGet(SERVER + "/"+ playerUrl + MESSAGES_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.messagesFrom(response);
 		

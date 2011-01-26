@@ -26,8 +26,10 @@ public class PlayerLocationOverlay extends MyLocationOverlay {
 
 	@Override
 	protected boolean dispatchTap() {	
-		Dialogs.setActivity(context);
-		context.showDialog(Dialogs.PLACE_BOMB);
+		//Dialogs.setActivity(context);
+		//context.showDialog(Dialogs.PLACE_BOMB);
+		context.showDialog(Dialogs.SEND_MESSAGE);
+
 		return true;
 	}
 	

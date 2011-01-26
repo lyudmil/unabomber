@@ -1,40 +1,27 @@
 package ui;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
-
 import ui.dialogs.Dialogs;
 import unabomber.client.R;
-
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
+
 import engine.GameEngine;
 import engine.PlayerLocation;
 
 public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	private int myPlayerId;
-	private Context mContext;
 	private GameEngine mEngine;
 	private UnabomberMap mApp;
-	
-	//
 	private int targetPlayerID;
 	
-	
-	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId) {
+	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId, GameEngine engine, UnabomberMap app) {
 		super(defaultMarker);
 		this.myPlayerId = myPlayerId;
-	}
-
-	//changed
-	public OtherPlayersOverlay(Drawable defaultMarker, int myPlayerId, GameEngine engine,
-			Context context, UnabomberMap app) {
-		super(defaultMarker);
-		this.myPlayerId = myPlayerId;
-		this.mContext = context;
 		this.mEngine = engine;
 		this.mApp=app;
 	}
@@ -48,7 +35,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		
 		
 		// if you have added something, change handleMenuOption
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(mApp);
 		builder.setTitle(R.string.other_player_menu_title);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
@@ -72,10 +59,11 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		switch (optionIndex) {
 		case 0: // send another player to jail
 			locations.remove(playerIndex);
+			mApp.getMapView().invalidate();
 			mEngine.sendPlayerToJail(myPlayerId, targetPlayerID);
 
 			//feedback the results
-			Toast.makeText(mContext, R.string.sent_to_jail, Toast.LENGTH_SHORT).show();
+			Toast.makeText(mApp, R.string.sent_to_jail, Toast.LENGTH_SHORT).show();
 			break;
 
 		case 1: // send a message to player
@@ -83,7 +71,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 			mApp.showDialog(Dialogs.SEND_MESSAGE);
 			
 		default: // defensive programming
-			Toast.makeText(mContext, R.string.unknown_action,
+			Toast.makeText(mApp, R.string.unknown_action,
 					Toast.LENGTH_SHORT).show();
 		}
 

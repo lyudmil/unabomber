@@ -2,7 +2,6 @@ package ui;
 
 import unabomber.client.R;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -15,13 +14,12 @@ import engine.GameEngine;
 
 public class BombsOverlay extends UnabomberItemsOverlay {
 
-	private Context mContext;
+	private UnabomberMap map;
 	private GameEngine mEngine;
 
-	public BombsOverlay(Drawable defaultMarker, int myPlayerId,
-			GameEngine engine, Context context) {
+	public BombsOverlay(Drawable defaultMarker, int myPlayerId,	GameEngine engine, UnabomberMap context) {
 		super(defaultMarker);
-		this.mContext = context;
+		this.map = context;
 		this.mEngine = engine;
 	}
 
@@ -39,7 +37,7 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		final CharSequence[] items = { "Detonate" };
 
 		// if you have added something, change handleMenuOption
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(map);
 		builder.setTitle(R.string.other_player_menu_title);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
@@ -60,11 +58,12 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 		case 0:
 			locations.remove(bombIndex);
 			mEngine.detonateBomb(targetBombID);
-			Toast.makeText(mContext, R.string.bomb_detonated, Toast.LENGTH_SHORT).show();
+			map.getMapView().invalidate();
+			Toast.makeText(map, R.string.bomb_detonated, Toast.LENGTH_SHORT).show();
 			break;
 
 		default:
-			Toast.makeText(mContext, R.string.unknown_action, Toast.LENGTH_SHORT).show();
+			Toast.makeText(map, R.string.unknown_action, Toast.LENGTH_SHORT).show();
 		}
 
 	}

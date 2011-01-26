@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
+import engine.GameEngine.GameStatus;
 
 public class WorldUpdateService extends Service {
 	private Timer timer = new Timer();
@@ -21,7 +22,7 @@ public class WorldUpdateService extends Service {
 
 	@Override
 	public void onCreate() {
-		timer.scheduleAtFixedRate(new TimerTask() {		
+		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
@@ -29,28 +30,6 @@ public class WorldUpdateService extends Service {
 
 				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
 				activity.setMessages(messages);
-				//				
-				//				
-				////				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());
-				////				
-				////				
-				////				if (gameStatus != GameStatus.STARTED) {
-				////					
-				////					//set the status of the match
-				////					MatchResult.gameStatus = gameStatus;
-				////					
-				////					//initiate the new intent
-				////					Intent myIntent = new Intent(activity, MatchResult.class);
-				////					
-				////					activity.startActivity(myIntent);
-				////					
-				////					this.cancel();
-				////					
-				////					activity.finish();
-				////
-				////				}
-				//				
-
 			}
 		}, 0, 4000);
 	}
@@ -76,11 +55,13 @@ public class WorldUpdateService extends Service {
 			otherPlayersOverlay.showOn(activity.getMapView());
 		}
 
-		private OtherPlayersOverlay refreshLocationsUsing(final ArrayList<PlayerLocation> locations) {
-			OtherPlayersOverlay otherPlayersOverlay = activity.getOtherPlayersOverlay();
+		private OtherPlayersOverlay refreshLocationsUsing(
+				final ArrayList<PlayerLocation> locations) {
+			OtherPlayersOverlay otherPlayersOverlay = activity
+					.getOtherPlayersOverlay();
 			otherPlayersOverlay.clear();
 
-			for(PlayerLocation location : locations) {
+			for (PlayerLocation location : locations) {
 				otherPlayersOverlay.addOverlayFor(location);
 			}
 			otherPlayersOverlay.readyToPopulate();

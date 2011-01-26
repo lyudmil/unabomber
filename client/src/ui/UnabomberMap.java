@@ -57,18 +57,11 @@ public class UnabomberMap extends MapActivity {
 		//reachable=tester.testGCS();  //era commentata
 		showDemoAlert(this);
 
-		if(reachable){ 
-
-			setUpMap();
-			showPlayerLocation();
-			authenticatePlayer();
-			followPlayers();
-			bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb), this.getPlayerData().getPlayerId(), this.getEngine(), this);
-		}
-
-
-
-
+		setUpMap();
+		showPlayerLocation();
+		authenticatePlayer();
+		followPlayers();
+		bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb), this.getPlayerData().getPlayerId(), this.getEngine(), this);
 	}
 	
 	public void showVideo(){

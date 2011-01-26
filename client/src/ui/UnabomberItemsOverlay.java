@@ -22,6 +22,10 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 
 	@Override
 	protected OverlayItem createItem(int i) {
+		return itemAt(i);
+	}
+
+	private synchronized OverlayItem itemAt(int i) {
 		return locations.get(i);
 	}
 
@@ -30,15 +34,16 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		return locations.size();
 	}
 
-	public void readyToPopulate() {
+	public synchronized void readyToPopulate() {
+		setLastFocusedIndex(-1);
 		populate();
 	}
 
-	public void clear() {
+	public synchronized void clear() {
 		locations.clear();
 	}
 
-	protected void addItemAt(Location location) {
+	protected synchronized void addItemAt(Location location) {
 		Double latitude = location.getLatitude() * 1E6;
 		Double longitude = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());

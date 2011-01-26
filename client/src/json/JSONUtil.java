@@ -79,9 +79,13 @@ public class JSONUtil {
 		}
 	}
 	public static ArrayList<PlayerMessage> messagesFrom(InputStream responseEntityContent) {
+		
+		
 		try {
 			String json = IOUtil.convertToString(responseEntityContent);
 			JSONArray messagesJson = new JSONArray(json);
+			
+			
 			return messagesFrom(messagesJson);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -102,10 +106,10 @@ public class JSONUtil {
 		return messages;
 	}
 	private static PlayerMessage messageFrom(JSONObject messageJson) throws JSONException {
-		String message = new String(messageJson.getString("content"));
-		int playerId = messageJson.getInt("recepient_id");
-
-		return new PlayerMessage(message, playerId);
+		String message = messageJson.getString("content");
+		int senderId = messageJson.getInt("sender_id");
+		int receiverId = messageJson.getInt("recepient_id");
+		return new PlayerMessage(message, senderId, receiverId);
 	}
 
 	//

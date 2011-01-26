@@ -42,7 +42,7 @@ public class UnabomberMap extends MapActivity {
 
 		//showVideo();
 		//showVideo in not working at the moment: we need a mp4 video, swf are not supported
-		
+
 		showDemoAlert(this);
 
 		setUpMap();
@@ -51,12 +51,12 @@ public class UnabomberMap extends MapActivity {
 		followPlayers();
 		bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb), this.getPlayerData().getPlayerId(), this.getEngine(), this);
 	}
-	
+
 	public void showVideo(){
 		Intent i = new Intent(UnabomberMap.this, VideoIntro.class);
 		UnabomberMap.this.startActivity(i);
 	}
-	
+
 	public void startMixare(Context c) {
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_VIEW);
@@ -95,7 +95,7 @@ public class UnabomberMap extends MapActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public synchronized boolean onOptionsItemSelected(MenuItem item) {
 		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.show:
@@ -111,7 +111,7 @@ public class UnabomberMap extends MapActivity {
 			//read messages
 
 			Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class );
-			message_intent.putExtra("messages", this.messages);
+			message_intent.putExtra("messages", getMessages());
 			UnabomberMap.this.startActivity(message_intent);
 			return true;
 
@@ -119,7 +119,7 @@ public class UnabomberMap extends MapActivity {
 			//read help and credits
 			Intent info_intent = new Intent(UnabomberMap.this, InfoView.class);
 			UnabomberMap.this.startActivity(info_intent);
-			
+
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -211,7 +211,12 @@ public class UnabomberMap extends MapActivity {
 		return playerData;
 	}
 
-	public void setMessages(ArrayList<PlayerMessage> messages) {
+
+	void setMessages(ArrayList<PlayerMessage> messages) {
 		this.messages = messages;
+	}
+
+	ArrayList<PlayerMessage> getMessages() {
+		return this.messages;
 	}
 }

@@ -30,7 +30,7 @@ public class MessagesView extends ListActivity{
 			ArrayList<PlayerMessage> messages = (ArrayList<PlayerMessage>) extras.get("messages"); 
 
 			for(int i=0;i<messages.size();i++){
-				playerIdMessage.add((String.valueOf((messages.get(i)).getPlayer_id()) + ": " + (messages.get(i).getMessage())));
+				playerIdMessage.add((String.valueOf((messages.get(i)).getSender()) + ": " + (messages.get(i).getMessage())));
 			}
 
 		}

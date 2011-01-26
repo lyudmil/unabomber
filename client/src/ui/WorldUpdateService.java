@@ -26,8 +26,8 @@ public class WorldUpdateService extends Service {
 			public void run() {
 				updateWorld();
 				
-//				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
-//				activity.setMessages(messages);
+				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
+				activity.setMessages(messages);
 				
 				
 //				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());

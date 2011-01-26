@@ -48,7 +48,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	}
 
 	// handle the single option that a player has done
-	protected void handleMenuOption(final int optionIndex, final int playerIndex) {
+	protected synchronized void handleMenuOption(final int optionIndex, final int playerIndex) {
 		
 		
 		//get target player ID
@@ -78,7 +78,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	}
 
 	//add a player on the list
-	public void addOverlayFor(PlayerLocation location) {
+	public synchronized void addOverlayFor(PlayerLocation location) {
 		
 		//if i am the player then return
 		if (displayingMyself(location)) {

@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.widget.EditText;
-import engine.PlayerMessage;
 
 public class SendMessageDialogBuilder implements DialogBuilder {
 	

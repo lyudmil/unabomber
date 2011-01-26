@@ -9,8 +9,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class InfoView extends ListActivity{
 
@@ -20,14 +18,11 @@ public class InfoView extends ListActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-
-
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, info));
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
 		lv.setFocusable(true);
 		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -48,8 +43,6 @@ public class InfoView extends ListActivity{
 
 			}
 		});
-
-
 	}
 
 }

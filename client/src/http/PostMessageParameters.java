@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import engine.PlayerMessage;
-
 public class PostMessageParameters extends ParameterList {
 	
 	private String message;

@@ -9,16 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import engine.PlayerMessage;
 
-
-
-
-
 public class MessagesView extends ListActivity{
 	private ArrayList<String> playerIdMessage= new ArrayList<String>();
 
-
-
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,8 +34,6 @@ public class MessagesView extends ListActivity{
 		lv.setTextFilterEnabled(true);
 		lv.setFocusable(true);
 		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-	
-
 	}
 
 }

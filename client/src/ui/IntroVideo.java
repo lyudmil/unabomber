@@ -1,6 +1,5 @@
 package ui;
 
-import ui.dialogs.Dialogs;
 import unabomber.client.R;
 import android.app.Activity;
 import android.os.Bundle;

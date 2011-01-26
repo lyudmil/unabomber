@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.widget.Toast;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
-import engine.GameEngine.GameStatus;
 
 public class WorldUpdateService extends Service {
 	private Timer timer = new Timer();

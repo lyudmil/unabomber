@@ -65,8 +65,7 @@ public class WorldUpdateService extends Service {
 
 		private OtherPlayersOverlay refreshLocationsUsing(
 				final ArrayList<PlayerLocation> locations) {
-			OtherPlayersOverlay otherPlayersOverlay = activity
-					.getOtherPlayersOverlay();
+			OtherPlayersOverlay otherPlayersOverlay = activity.getOtherPlayersOverlay();
 			otherPlayersOverlay.clear();
 
 			for (PlayerLocation location : locations) {

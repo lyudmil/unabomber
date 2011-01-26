@@ -45,6 +45,7 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 
 	public synchronized void clear() {
 		locations.clear();
+		readyToPopulate();
 	}
 
 	protected synchronized void addItemAt(Location location) {
@@ -52,6 +53,7 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		Double longitude = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
 		locations.add(new OverlayItem(point, "", ""));
+		readyToPopulate();
 	}
 	
 	public synchronized void showOn(MapView mapView) {
@@ -59,6 +61,11 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 		if(overlays.contains(this)) return;
 		
 		overlays.add(this);
+	}
+
+	protected void removeItemAt(final int bombIndex) {
+		locations.remove(bombIndex);
+		readyToPopulate();
 	}
 
 }

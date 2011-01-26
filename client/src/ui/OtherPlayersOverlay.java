@@ -49,8 +49,6 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 
 	// handle the single option that a player has done
 	protected synchronized void handleMenuOption(final int optionIndex, final int playerIndex) {
-		
-		
 		//get target player ID
 		targetPlayerID = Integer.parseInt(locations.get(playerIndex).getSnippet());
 		//targetPlayerID = mApp.getOtherPlayersOverlay().getTargetPlayerId();
@@ -58,8 +56,9 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		// obtain the user decision
 		switch (optionIndex) {
 		case 0: // send another player to jail
-			locations.remove(playerIndex);
+			removeItemAt(playerIndex);
 			mApp.getMapView().invalidate();
+			
 			mEngine.sendPlayerToJail(myPlayerId, targetPlayerID);
 
 			//feedback the results
@@ -70,8 +69,7 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 			mApp.showDialog(Dialogs.SEND_MESSAGE);
 			break;
 		default: // defensive programming
-			Toast.makeText(mApp, R.string.unknown_action,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(mApp, R.string.unknown_action, Toast.LENGTH_SHORT).show();
 		}
 
 	}
@@ -90,14 +88,9 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 		Double longitude = location.getLocation().getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(latitude.intValue(), longitude.intValue());
 		
-		
-		
-		
-		
-		
-		
 		//add the playerID as message of the overlay item
 		locations.add(new OverlayItem(point, "Player", String.valueOf(location.getPlayerId())));
+		readyToPopulate();
 	}
 
 	private boolean displayingMyself(PlayerLocation location) {

@@ -19,8 +19,6 @@ import org.apache.http.client.methods.HttpPut;
 import android.location.Location;
 
 
-
-
 public class GameEngine {
 	
 	//define the enum

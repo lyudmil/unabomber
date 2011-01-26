@@ -110,9 +110,9 @@ public class UnabomberMap extends MapActivity {
 		case R.id.messages:
 			//read messages
 
-			Intent message_intent = new Intent(UnabomberMap.this, MessagesView.class );
-			message_intent.putExtra("messages", getMessages());
-			UnabomberMap.this.startActivity(message_intent);
+			Intent messageIntent = new Intent(UnabomberMap.this, MessagesView.class );
+			messageIntent.putExtra("messages", getMessages());
+			UnabomberMap.this.startActivity(messageIntent);
 			return true;
 
 		case R.id.info:
@@ -212,11 +212,11 @@ public class UnabomberMap extends MapActivity {
 	}
 
 
-	void setMessages(ArrayList<PlayerMessage> messages) {
+	public synchronized void setMessages(ArrayList<PlayerMessage> messages) {
 		this.messages = messages;
 	}
 
-	ArrayList<PlayerMessage> getMessages() {
+	public synchronized ArrayList<PlayerMessage> getMessages() {
 		return this.messages;
 	}
 }

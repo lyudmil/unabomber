@@ -33,8 +33,8 @@ public class WorldUpdateService extends Service {
 
 			private void handleMessages() {
 				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
-				if(activity.getMessages()!=null){
-					if(activity.getMessages().size()<messages.size()){
+				if(activity.getMessages() != null){
+					if(activity.getMessages().size() < messages.size()){
 						activity.runOnUiThread(new DisplayMessageNotification(activity));
 					}
 				}

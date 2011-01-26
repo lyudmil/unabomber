@@ -66,7 +66,7 @@ public class UnabomberMap extends MapActivity {
 
 	public void showDemoAlert(final UnabomberMap app){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
-		builder.setMessage("Welcome to Unabomber Demo! Press Play Demo to start a new game or Exit to close the application. Enjoy!")  
+		builder.setMessage("Welcome to Unabomber! Now you will start a demo game to let you test all of the game features. You can place bombs, detonate them, send people to jail and send messages to other players. Enjoy!")  
 		.setCancelable(false)  
 		.setPositiveButton("Play Demo",  
 				new DialogInterface.OnClickListener(){  

@@ -1,16 +1,12 @@
 package ui.dialogs;
 
-import engine.PlayerMessage;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.location.Location;
-import android.location.LocationManager;
-import android.widget.EditText;
-import ui.BombsOverlay;
 import ui.OtherPlayersOverlay;
 import ui.UnabomberMap;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.widget.EditText;
+import engine.PlayerMessage;
 
 public class SendMessageDialogBuilder implements DialogBuilder {
 	
@@ -31,10 +27,10 @@ public class SendMessageDialogBuilder implements DialogBuilder {
 		           public void onClick(DialogInterface dialog, int id) {
 		        	  
 		        	   String message_string = input.getText().toString().trim();
-		        	   OtherPlayersOverlay others = activity.getOtherPlayersOverlay();
 		        	   PlayerMessage message = new PlayerMessage(message_string, activity.getOtherPlayersOverlay().getMyId());
 		        	   
-		        	   activity.getEngine().sendMessageTo(others.getTargetPlayerId(), message);
+		        	   
+		        	   activity.getEngine().sendMessageTo(message);
 		        	   dialog.dismiss();
 		           }
 		       })

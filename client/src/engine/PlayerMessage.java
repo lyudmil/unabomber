@@ -9,7 +9,6 @@ public class PlayerMessage {
 		this.setMessage(message);
 		this.setPlayer_id(sender_id);
 	}
-
 	public void setMessage(String message) {
 		this.message = message;
 	}

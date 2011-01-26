@@ -12,17 +12,17 @@ public class PostMessageParameters extends ParameterList {
 	private String message;
 	private int senderId;
 	
-	public PostMessageParameters(PlayerMessage message){
-		this.message=message.getMessage();
-		this.senderId=message.getPlayer_id();
+	public PostMessageParameters(String message, int playerId){
+		this.message=message;
+		this.senderId=playerId;
 	}
 
 	@Override
 	public ArrayList<NameValuePair> getParameters() {
 		
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("content", message));
 		params.add(new BasicNameValuePair("recepient_id", String.valueOf(senderId)));
+		params.add(new BasicNameValuePair("content", message));
 
 		
 		return params;

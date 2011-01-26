@@ -19,13 +19,13 @@ public class PlayerLocationOverlay extends MyLocationOverlay {
 
 	@Override
 	public synchronized void onLocationChanged(Location location) {
+		if (location == null) return;
 		super.onLocationChanged(location);
 		engine.sendLocation(location);
 	}
 
 	@Override
-	protected boolean dispatchTap() {
-		
+	protected boolean dispatchTap() {	
 		Dialogs.setActivity(context);
 		context.showDialog(Dialogs.PLACE_BOMB);
 		return true;

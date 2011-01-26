@@ -93,7 +93,7 @@ public class GameEngine {
 	}
 	
 	//deviceId or receiver?
-	public void sendMessageTo(int sender, int receiver, String message){
+	public void sendMessageTo(int receiver, String message){
 		//HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
 		HttpPut request = new HttpPut(SERVER +"/" + String.valueOf(receiver) + MESSAGES_CONTROLLER + "/create");
 		request.setEntity(new PostMessageParameters(message, receiver).encode());

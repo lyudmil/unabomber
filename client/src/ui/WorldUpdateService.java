@@ -1,16 +1,12 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.widget.Toast;
-import engine.GameEngine.GameStatus;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
 
@@ -28,14 +24,11 @@ public class WorldUpdateService extends Service {
 		timer.scheduleAtFixedRate(new TimerTask() {		
 			@Override
 			public void run() {
-				
-
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
-		
 				activity.runOnUiThread(new UpdateMap(locations));
 				
-				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
-				activity.setMessages(messages);
+//				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
+//				activity.setMessages(messages);
 				
 				
 //				final GameStatus gameStatus = activity.getEngine().updateGameStatus(activity.getPlayerData().getDeviceId());
@@ -78,7 +71,7 @@ public class WorldUpdateService extends Service {
 			this.locations = locations;
 		}
 
-		public void run() {
+		public synchronized void run() {
 			OtherPlayersOverlay otherPlayersOverlay = refreshLocationsUsing(locations);
 			otherPlayersOverlay.showOn(activity.getMapView());
 		}
@@ -92,30 +85,6 @@ public class WorldUpdateService extends Service {
 			}
 			otherPlayersOverlay.readyToPopulate();
 			return otherPlayersOverlay;
-		}
-	}
-	
-	//update messages
-	private final class UpdateMessages{
-		private final ArrayList<String> messages;
-		
-		private UpdateMessages(ArrayList<String> messages){
-			//add some code to check for new messages
-
-			if(this.messages!=messages){
-	
-				CharSequence text = "You have new message/s, check the menu to read it/them";
-				int duration = Toast.LENGTH_SHORT;
-
-				Toast toast = Toast.makeText(activity, text, duration);
-				toast.show();
-			}
-			
-			
-			this.messages=messages;
-			
-			
-			
 		}
 	}
 }

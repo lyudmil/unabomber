@@ -68,7 +68,6 @@ public class JSONUtil {
 	}
 
 	//code to receive messages
-	//it gets all the messages
 	public static ArrayList<PlayerMessage> messagesFrom(HttpResponse response){
 		try {
 			return messagesFrom(response.getEntity().getContent());
@@ -84,7 +83,6 @@ public class JSONUtil {
 		try {
 			String json = IOUtil.convertToString(responseEntityContent);
 			JSONArray messagesJson = new JSONArray(json);
-			//	JSONArray locationsJson = new JSONArray(json);
 			return messagesFrom(messagesJson);
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -27,17 +27,16 @@ public class InfoView extends ListActivity{
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// When clicked, show a toast with the TextView text
-			
+
 				switch (position){
 				case 0:
-					
 					Intent help_intent = new Intent(InfoView.this, HelpView.class );
 					InfoView.this.startActivity(help_intent);
 					return;
 
 				case 1:
-
+					Intent credits_intent = new Intent(InfoView.this, CreditsView.class);
+					InfoView.this.startActivity(credits_intent);
 					return;
 				}
 

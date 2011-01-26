@@ -1,5 +1,6 @@
 package ui.dialogs;
 
+import engine.PlayerMessage;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -29,8 +30,10 @@ public class SendMessageDialogBuilder implements DialogBuilder {
 		       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		        	  
-		        	   String message = input.getText().toString().trim();
+		        	   String message_string = input.getText().toString().trim();
 		        	   OtherPlayersOverlay others = activity.getOtherPlayersOverlay();
+		        	   PlayerMessage message = new PlayerMessage(message_string, activity.getOtherPlayersOverlay().getMyId());
+		        	   
 		        	   activity.getEngine().sendMessageTo(others.getTargetPlayerId(), message);
 		        	   dialog.dismiss();
 		           }

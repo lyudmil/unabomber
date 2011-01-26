@@ -34,6 +34,8 @@ class BombsControllerTest < ActionController::TestCase
     
     flexmock(Player).should_receive(:all).and_return([dead_man, survivor])
     
+    bomb.should_receive(:destroy).once
+    
     post :detonate, :id => 33    
   end
   

@@ -24,6 +24,8 @@ class BombsController < ApplicationController
 	      player.killed = true if player.within_range_of(bomb.location)
 	      player.save
     end
+    
+    bomb.destroy
   end
 
 end

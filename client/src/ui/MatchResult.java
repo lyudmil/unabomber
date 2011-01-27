@@ -1,7 +1,6 @@
 package ui;
 
 
-import engine.GameEngine.GameStatus;
 import unabomber.client.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.widget.Gallery;
 import android.widget.Gallery.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import engine.GameStatus;
 
 public class MatchResult extends Activity {
 	

@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
+import engine.GameStatus;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
 
@@ -27,10 +28,23 @@ public class WorldUpdateService extends Service {
 			public void run() {
 				final ArrayList<PlayerLocation> locations = activity.getEngine().getLocations();
 				activity.runOnUiThread(new UpdateMap(locations));
-				handleMessages();
+				checkMessages();
+				checkGameStatus();
 			}
 
-			private void handleMessages() {
+			private void checkGameStatus() {
+				final GameStatus gameStatus = activity.getEngine().getStatusOfTheGame();
+				if (gameStatus != GameStatus.STARTED) {
+					activity.runOnUiThread(new Runnable() {
+						
+						public void run() {
+							activity.showDialog(gameStatus.dialogId());
+						}
+					});
+				}
+			}
+
+			private void checkMessages() {
 				final ArrayList<PlayerMessage> messages = activity.getEngine().getMessages();
 				if(activity.getMessages() != null){
 					if(activity.getMessages().size() < messages.size()){

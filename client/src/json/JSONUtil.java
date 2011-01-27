@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.location.Location;
-import engine.GameEngine.GameStatus;
+import engine.GameStatus;
 import engine.PlayerData;
 import engine.PlayerLocation;
 import engine.PlayerMessage;
@@ -129,15 +129,12 @@ public class JSONUtil {
 	public static GameStatus gameStatusFrom(InputStream responseEntityContent) {
 		String json = IOUtil.convertToString(responseEntityContent);
 		
-		if (json.equals("started")) {return GameStatus.STARTED;}
 		if (json.equals("finished-win")) {return GameStatus.FINISHEDWIN;}
 		if (json.equals("finished-lose")) {return GameStatus.FINISHEDLOSE;}
 		if (json.equals("finished-killed")) {return GameStatus.FINISHEDKILLED;}
-		if (json.equals("finished-jail")) {return GameStatus.FINISHEDKILLED;}
+		if (json.equals("finished-jail")) {return GameStatus.FINISHEDJAILED;}
 		
-		System.out.println("Quello che ho " + json);
-		
-		return null;
+		return GameStatus.STARTED;
 	}
 	
 	public static int bombIndexFrom(InputStream responseEntityContent) {

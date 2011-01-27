@@ -52,7 +52,6 @@ public class BombsOverlay extends UnabomberItemsOverlay {
 
 	protected synchronized void handleMenuOption(final int optionIndex, final int bombIndex) {
 		OverlayItem bombOverlay = locations.get(bombIndex);
-		if (bombOverlay == null) return;
 		int targetBombID = Integer.parseInt(bombOverlay.getSnippet());
 
 		switch (optionIndex) {

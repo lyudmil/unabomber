@@ -18,6 +18,7 @@ public abstract class UnabomberItemsOverlay extends	ItemizedOverlay<OverlayItem>
 
 	public UnabomberItemsOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
+		readyToPopulate();
 	}
 
 	@Override

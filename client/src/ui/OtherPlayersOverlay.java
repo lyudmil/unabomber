@@ -50,7 +50,10 @@ public class OtherPlayersOverlay extends UnabomberItemsOverlay {
 	// handle the single option that a player has done
 	protected synchronized void handleMenuOption(final int optionIndex, final int playerIndex) {
 		//get target player ID
-		targetPlayerID = Integer.parseInt(locations.get(playerIndex).getSnippet());
+		OverlayItem overlayItem = locations.get(playerIndex);
+		if (overlayItem == null) return;
+		
+		targetPlayerID = Integer.parseInt(overlayItem.getSnippet());
 		//targetPlayerID = mApp.getOtherPlayersOverlay().getTargetPlayerId();
 
 		// obtain the user decision

@@ -50,7 +50,7 @@ public class GameEngine {
 		return gameStatus;
 	}
 
-	public GameStatus updateGameStatus(String deviceId) {
+	public synchronized GameStatus updateGameStatus(String deviceId) {
 		this.gameStatus = getStatusOfTheGame(deviceId);
 		return this.getGameStatus();
 	}
@@ -68,7 +68,7 @@ public class GameEngine {
 		this(new UnabomberHttpClient(), deviceId);
 	}
 
-	public void sendLocation(Location currentLocation) {
+	public synchronized void sendLocation(Location currentLocation) {
 		HttpPut request = new HttpPut(SERVER + PLAYERS_CONTROLLER + playerUrl + "/update");
 		request.setEntity(new PostLocationParameters(currentLocation).encode());
 		httpClient.executeRequest(request);
@@ -81,7 +81,7 @@ public class GameEngine {
 		return JSONUtil.playerDataFrom(response);
 	}
 	
-	public void sendPlayerToJail(int agentPlayer, int arrestedPlayer) {
+	public synchronized void sendPlayerToJail(int agentPlayer, int arrestedPlayer) {
 		String uri = SERVER + PLAYERS_CONTROLLER + "/" + String.valueOf(agentPlayer) + AGENT_ARREST;
 		HttpPost request = new HttpPost(uri);
 		request.setEntity(new ArrestedPlayerParameters(String.valueOf(arrestedPlayer)).encode());
@@ -89,14 +89,14 @@ public class GameEngine {
 	}
 	
 	//deviceId or receiver?
-	public void sendMessageTo(int receiver, String message){
+	public synchronized void sendMessageTo(int receiver, String message){
 		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
 		//HttpPut request = new HttpPut(SERVER +"/" + String.valueOf(receiver) + MESSAGES_CONTROLLER + "/create");
 		request.setEntity(new PostMessageParameters(receiver, message).encode());
 		httpClient.executeRequest(request);	
 	}
 	//getMassages
-	public ArrayList<PlayerMessage> getMessages(){
+	public synchronized ArrayList<PlayerMessage> getMessages(){
 		HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
 		//HttpGet request = new HttpGet(SERVER + "/"+ playerUrl + MESSAGES_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
@@ -104,19 +104,19 @@ public class GameEngine {
 		
 	}
 	
-	public void detonateBomb(int detonatedBomb){
+	public synchronized void detonateBomb(int detonatedBomb){
 		String uri = SERVER + BOMBS + "/" + String.valueOf(detonatedBomb) +  DETONATION;
 		HttpPost request = new HttpPost(uri);
 		httpClient.executeRequest(request);
 	}
 
-	public ArrayList<PlayerLocation> getLocations() {
+	public synchronized ArrayList<PlayerLocation> getLocations() {
 		HttpGet request = new HttpGet(SERVER + LOCATIONS_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.locationsFrom(response);
 	}
 
-	public int placeBombAt(Location currentLocation) {
+	public synchronized int placeBombAt(Location currentLocation) {
 		HttpPost request = new HttpPost(SERVER + "/" + deviceId + PLACE_BOMBS_ACTION);
 		request.setEntity(new PlaceBombParameters(currentLocation).encode());
 		HttpResponse response = httpClient.executeRequest(request);
@@ -124,7 +124,7 @@ public class GameEngine {
 	}
 	
 	
-	public GameStatus getStatusOfTheGame(String deviceId) {
+	public synchronized GameStatus getStatusOfTheGame(String deviceId) {
 		HttpGet request = new HttpGet(SERVER + "/" + deviceId + GAME_STATUS);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.gameStatusFrom(response);

@@ -7,9 +7,18 @@ class StatusControllerTest < ActionController::TestCase
     flexmock(Player).should_receive(:find_by_device_id).with('333').and_return(@player)
   end
   
+  test "game just started if fewer than three players" do
+    flexmock(Player).should_receive(:count).and_return(2)
+    
+    get :index, :device_id => '333'
+    
+    assert_equal 'started', @response.body
+  end
+  
   test "can tell if a player has been killed" do
     player = flexmock(:model, Player, :killed? => true, :arrested? => false)
     flexmock(Player).should_receive(:find_by_device_id).with('111').and_return(player)
+    flexmock(Player).should_receive(:count).and_return(3)
     
     get :index, :device_id => '111'
     
@@ -19,6 +28,7 @@ class StatusControllerTest < ActionController::TestCase
   test "can tell if a player has been arrested" do
     player = flexmock(:model, Player, :arrested? => true, :killed? => false)
     flexmock(Player).should_receive(:find_by_device_id).with('222').and_return(player)
+    flexmock(Player).should_receive(:count).and_return(3)
     
     get :index, :device_id => '222'
     
@@ -28,6 +38,8 @@ class StatusControllerTest < ActionController::TestCase
   test "can tell if a citizen has won" do
     @player.should_receive(:role).and_return('citizen')
     flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([@player])
+    flexmock(Player).should_receive(:count).and_return(3)
+    
     no_unabombers
     
     get :index, :device_id => '333'
@@ -38,6 +50,7 @@ class StatusControllerTest < ActionController::TestCase
   test "can tell if a cop has won" do
     @player.should_receive(:role).and_return('policeman')
     flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([flexmock(:model, Player, :active? => true)])
+    flexmock(Player).should_receive(:count).and_return(3)
     no_unabombers
     
     get :index, :device_id => '333'
@@ -49,6 +62,7 @@ class StatusControllerTest < ActionController::TestCase
     @player.should_receive(:role).and_return('policeman')
     no_citizens
     flexmock(Player).should_receive(:where).with(:role => 'unabomber').and_return([flexmock(:model, Player, :active? => true)])
+    flexmock(Player).should_receive(:count).and_return(3)
     
     get :index, :device_id => '333'
     
@@ -56,6 +70,7 @@ class StatusControllerTest < ActionController::TestCase
   end
   
   test "can tell if a unabomber has won" do
+    flexmock(Player).should_receive(:count).and_return(3)
     @player.should_receive(:role).and_return('unabomber')
     no_citizens
     
@@ -69,6 +84,7 @@ class StatusControllerTest < ActionController::TestCase
     @player.should_receive(:role).and_return(:citizen)
     flexmock(Player).should_receive(:where).with(:role => 'citizen').and_return([@player, flexmock(:model, Player, :active? => true)])
     flexmock(Player).should_receive(:where).with(:role => 'unabomber').and_return([flexmock(:model, Player, :active? => true)])
+    flexmock(Player).should_receive(:count).and_return(3)
     
     get :index, :device_id => '333'
     

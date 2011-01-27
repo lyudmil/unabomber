@@ -6,6 +6,10 @@ class StatusController < ApplicationController
     
     @citizens = Player.where(:role => 'citizen').select { |citizen| citizen.active? }
     
+    if Player.count < 3
+      render :text => @status and return
+    end
+    
     if @player.killed?
       render :text => 'finished-killed' and return
     end

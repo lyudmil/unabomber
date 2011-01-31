@@ -9,28 +9,28 @@ public enum GameStatus {
 			return -1;
 		}
 	},
-	FINISHEDWIN {
+	WIN {
 
 		@Override
 		public int dialogId() {
 			return Dialogs.WON_GAME;
 		}
 	}, 
-	FINISHEDLOSE {
+	LOSE {
 
 		@Override
 		public int dialogId() {
 			return Dialogs.LOST_GAME;
 		}
 	}, 
-	FINISHEDKILLED {
+	KILLED {
 
 		@Override
 		public int dialogId() {
 			return Dialogs.GOT_KILLED;
 		}
 	}, 
-	FINISHEDJAILED {
+	JAILED {
 
 		@Override
 		public int dialogId() {
@@ -39,4 +39,17 @@ public enum GameStatus {
 	};
 
 	public abstract int dialogId();
+
+	public boolean gameEnded() {
+		return this != GameStatus.STARTED;
+	}
+
+	public static GameStatus match(String serverSideStatus) {
+		if (serverSideStatus.equals("finished-win")) return WIN;
+		if (serverSideStatus.equals("finished-lose")) return LOSE;
+		if (serverSideStatus.equals("finished-killed")) return KILLED;
+		if (serverSideStatus.equals("finished-jail")) return JAILED;
+		
+		return STARTED;
+	}
 }

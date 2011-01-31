@@ -73,20 +73,16 @@ public class GameEngine {
 		httpClient.executeRequest(request);
 	}
 	
-	//deviceId or receiver?
 	public synchronized void sendMessageTo(int receiver, String message){
 		HttpPut request = new HttpPut(SERVER +"/" + deviceId + MESSAGES_CONTROLLER + "/create");
-		//HttpPut request = new HttpPut(SERVER +"/" + String.valueOf(receiver) + MESSAGES_CONTROLLER + "/create");
 		request.setEntity(new PostMessageParameters(receiver, message).encode());
 		httpClient.executeRequest(request);	
 	}
-	//getMassages
+
 	public synchronized ArrayList<PlayerMessage> getMessages(){
 		HttpGet request = new HttpGet(SERVER + "/"+ deviceId + MESSAGES_CONTROLLER);
-		//HttpGet request = new HttpGet(SERVER + "/"+ playerUrl + MESSAGES_CONTROLLER);
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.messagesFrom(response);
-		
 	}
 	
 	public synchronized void detonateBomb(int detonatedBomb){
@@ -107,7 +103,6 @@ public class GameEngine {
 		HttpResponse response = httpClient.executeRequest(request);
 		return JSONUtil.bombIndexFrom(response);
 	}
-	
 	
 	public synchronized GameStatus getStatusOfTheGame() {
 		HttpGet request = new HttpGet(SERVER + "/" + this.deviceId + GAME_STATUS);

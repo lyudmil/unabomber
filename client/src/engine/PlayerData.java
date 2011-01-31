@@ -36,7 +36,4 @@ public class PlayerData {
 			throw new RuntimeException(e);
 		}
 	}
-	
-
-
 }

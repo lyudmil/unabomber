@@ -3,20 +3,15 @@ package engine;
 import java.io.Serializable;
 
 public class PlayerMessage implements Serializable {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String message;
 	private int sender;
 	private int receiver;
 	
-	public PlayerMessage(String message, int sender_id, int receiver_id){
+	public PlayerMessage(String message, int senderId, int receiverId){
 		this.message = message;
-		this.sender = sender_id;
-		this.receiver = receiver_id;
-		
+		this.sender = senderId;
+		this.receiver = receiverId;
 	}
 
 	public int getSender() {
@@ -39,7 +34,7 @@ public class PlayerMessage implements Serializable {
 		this.message = message;
 	}
 
-	public String getMessage() {
+	public String getContent() {
 		return message;
 	}
 }

@@ -7,23 +7,20 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class PostMessageParameters extends ParameterList {
 	
-	private String message;
-	private int senderId;
+	private String content;
+	private int recepientId;
 	
-	public PostMessageParameters(int receiver, String message){
-		this.message=message;
-		this.senderId=receiver;
+	public PostMessageParameters(int recepient, String content){
+		this.recepientId = recepient;
+		this.content = content;
 	}
 
 	@Override
 	public ArrayList<NameValuePair> getParameters() {
-		
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("recepient_id", String.valueOf(senderId)));
-		params.add(new BasicNameValuePair("content", message));
+		params.add(new BasicNameValuePair("recepient_id", String.valueOf(recepientId)));
+		params.add(new BasicNameValuePair("content", content));
 
-		
 		return params;
 	}
-
 }

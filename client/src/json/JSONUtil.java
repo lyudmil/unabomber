@@ -78,14 +78,10 @@ public class JSONUtil {
 			throw new RuntimeException(e);
 		}
 	}
-	public static ArrayList<PlayerMessage> messagesFrom(InputStream responseEntityContent) {
-		
-		
+	public static ArrayList<PlayerMessage> messagesFrom(InputStream responseEntityContent) {	
 		try {
 			String json = IOUtil.convertToString(responseEntityContent);
 			JSONArray messagesJson = new JSONArray(json);
-			
-			
 			return messagesFrom(messagesJson);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -127,16 +123,11 @@ public class JSONUtil {
 	}
 
 	public static GameStatus gameStatusFrom(InputStream responseEntityContent) {
-		String json = IOUtil.convertToString(responseEntityContent);
+		String serverSideStatus = IOUtil.convertToString(responseEntityContent);
 		
-		if (json.equals("finished-win")) {return GameStatus.FINISHEDWIN;}
-		if (json.equals("finished-lose")) {return GameStatus.FINISHEDLOSE;}
-		if (json.equals("finished-killed")) {return GameStatus.FINISHEDKILLED;}
-		if (json.equals("finished-jail")) {return GameStatus.FINISHEDJAILED;}
-		
-		return GameStatus.STARTED;
+		return GameStatus.match(serverSideStatus);
 	}
-	
+
 	public static int bombIndexFrom(InputStream responseEntityContent) {
 		String json = IOUtil.convertToString(responseEntityContent);
 		try {
@@ -149,10 +140,7 @@ public class JSONUtil {
 		}
 		
 	}
-	
-	
-	
-	
+		
 	public static synchronized ArrayList<PlayerLocation> locationsFrom(InputStream responseEntityContent) {
 		try {
 			String json = IOUtil.convertToString(responseEntityContent);
@@ -164,8 +152,6 @@ public class JSONUtil {
 		}
 	}
 	
-	
-
 	private static ArrayList<PlayerLocation> locationsFrom(JSONArray locationsJson) throws JSONException {
 		ArrayList<PlayerLocation> locations = new ArrayList<PlayerLocation>();
 

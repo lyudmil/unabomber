@@ -1,7 +1,7 @@
 package ui.dialogs;
 
-import ui.OtherPlayersOverlay;
 import ui.UnabomberMap;
+import ui.overlays.OtherPlayersOverlay;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;

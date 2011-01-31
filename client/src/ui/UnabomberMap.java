@@ -3,11 +3,15 @@ package ui;
 import java.util.ArrayList;
 
 import ui.dialogs.Dialogs;
+import ui.overlays.BombsOverlay;
+import ui.overlays.OtherPlayersOverlay;
+import ui.overlays.PlayerLocationOverlay;
+import ui.views.InfoView;
+import ui.views.MessagesView;
 import unabomber.client.R;
-import android.app.AlertDialog;
+import update.WorldUpdateService;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -40,21 +44,11 @@ public class UnabomberMap extends MapActivity {
 		setContentView(R.layout.main);
 		Dialogs.setActivity(this);
 
-		//showVideo();
-		//showVideo in not working at the moment: we need a mp4 video, swf are not supported
-
-		showDemoAlert(this);
-
 		setUpMap();
 		showPlayerLocation();
 		authenticatePlayer();
 		followPlayers();
-		bombsOverlay = new BombsOverlay(getResources().getDrawable(R.drawable.bomb), this.getPlayerData().getPlayerId(), this.getEngine(), this);
-	}
-
-	public void showVideo(){
-		Intent i = new Intent(UnabomberMap.this, VideoIntro.class);
-		UnabomberMap.this.startActivity(i);
+		bombsOverlay = new BombsOverlay(this);
 	}
 
 	public void startMixare(Context c) {
@@ -63,32 +57,7 @@ public class UnabomberMap extends MapActivity {
 		i.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs"), "application/mixare-json");
 		startActivity(i);    
 	}
-
-	public void showDemoAlert(final UnabomberMap app){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);  
-		builder.setMessage("Welcome to Unabomber! Now you will start a demo game to let you test all of the game features. You can place bombs, detonate them, send people to jail and send messages to other players. Enjoy!")  
-		.setCancelable(false)  
-		.setPositiveButton("Play Demo",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){ 
-
-				dialog.cancel();
-			}  
-		});  
-		builder.setNegativeButton("Exit",  
-				new DialogInterface.OnClickListener(){  
-			public void onClick(DialogInterface dialog, int id){  
-
-				app.finish();
-
-			}  
-		});  
-		AlertDialog alert = builder.create();  
-		alert.show();  
-	}
-
-
-	//menu
+	
 	public boolean onCreateOptionsMenu(Menu menu){
 		MenuInflater inflater=getMenuInflater();
 		inflater.inflate(R.menu.game_menu, menu);
@@ -96,30 +65,22 @@ public class UnabomberMap extends MapActivity {
 	}
 
 	public synchronized boolean onOptionsItemSelected(MenuItem item) {
-		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.show:
-			//start mixare
-
 			Intent mixare_intent = new Intent();
 			mixare_intent.setAction(Intent.ACTION_VIEW);			
 			mixare_intent.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs.php"), "application/mixare-json");
 			startActivity(mixare_intent);
-
 			return true;
+			
 		case R.id.messages:
-			//read messages
-
-			Intent messageIntent = new Intent(UnabomberMap.this, MessagesView.class );
-			messageIntent.putExtra("messages", getMessages());
-			UnabomberMap.this.startActivity(messageIntent);
+			Intent messages = new Intent(UnabomberMap.this, MessagesView.class );
+			messages.putExtra("messages", getMessages());
+			startActivity(messages);
 			return true;
-
 		case R.id.info:
-			//read help and credits
-			Intent info_intent = new Intent(UnabomberMap.this, InfoView.class);
-			UnabomberMap.this.startActivity(info_intent);
-
+			Intent info = new Intent(UnabomberMap.this, InfoView.class);
+			UnabomberMap.this.startActivity(info);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

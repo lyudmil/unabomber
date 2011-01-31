@@ -1,7 +1,7 @@
 package ui.dialogs;
 
-import ui.BombsOverlay;
 import ui.UnabomberMap;
+import ui.overlays.BombsOverlay;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;

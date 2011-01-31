@@ -69,7 +69,7 @@ public class UnabomberMap extends MapActivity {
 		case R.id.show:
 			Intent mixare_intent = new Intent();
 			mixare_intent.setAction(Intent.ACTION_VIEW);			
-			mixare_intent.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs.php"), "application/mixare-json");
+			mixare_intent.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs"), "application/mixare-json");
 			startActivity(mixare_intent);
 			return true;
 			

@@ -15,26 +15,11 @@
             </intent-filter>
         </activity>
         
-		<activity android:name="ui.MessagesView" android:label="@string/app_name" android:screenOrientation="portrait">
-		
-		</activity>
-        
-        <activity android:name="ui.InfoView" android:label="@string/app_name" android:screenOrientation="portrait">
-		</activity>
-        
-         <activity android:name="ui.HelpView" android:label="@string/app_name" android:screenOrientation="portrait">
-		</activity>
-		
-		<activity android:name="ui.CreditsView" android:label="@string/app_name" android:screenOrientation="portrait">
-		</activity>
-        
-        <activity android:name="ui.VideoIntro" android:label="@string/app_name" android:screenOrientation="portrait">
-		</activity>
-        
-        <service android:name="ui.WorldUpdateService"/>
-
-        <activity android:name="ui.MatchResult" android:label="@string/app_name">
-		</activity>
+		<activity android:name="ui.views.MessagesView" android:label="@string/app_name" android:screenOrientation="portrait"/>
+        <activity android:name="ui.views.InfoView" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name="ui.views.HelpView" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name="ui.views.CreditsView" android:label="@string/app_name" android:screenOrientation="portrait"/>
+        <service android:name="update.WorldUpdateService"/>
     
 </application>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>

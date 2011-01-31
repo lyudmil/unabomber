@@ -122,7 +122,20 @@ class PlayerTest < ActiveSupport::TestCase
     
     explosion = Location.new(:longitude => 9.0006, :latitude => 39.0000991, :altitude => 400.4)
     
-    assert_equal true, player.within_range_of(explosion)
+    assert player.within_range_of(explosion)
+  end
+  
+  test "not within range if location unknown" do
+    player = Player.new(:device_id => '111', :location => nil)
+    explosion = Location.new(:longitude => 9.0006, :latitude => 39.0000991, :altitude => 400.4)
+    
+    assert (not player.within_range_of(explosion))
+  end
+  
+  test "not within range of a nil location" do
+    player = Player.new(:device_id => '111', :location => flexmock(:model, Location))
+    
+    assert (not player.within_range_of(nil))
   end
   
 end

@@ -5,6 +5,7 @@ class Player < ActiveRecord::Base
 	has_many :sent_messages, :class_name => 'Message', :foreign_key => 'sender_id'
 	
 	def within_range_of explosion
+	  return false unless self.location and explosion
 	  distance = self.location.distance_to(explosion) * 1000
 	  distance <= 20
   end

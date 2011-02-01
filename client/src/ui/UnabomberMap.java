@@ -13,7 +13,8 @@ import update.WorldUpdateService;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -58,28 +59,29 @@ public class UnabomberMap extends MapActivity {
 		startActivity(i);    
 	}
 	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
-		MenuInflater inflater=getMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.game_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
 	public synchronized boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.show:
-			Intent mixare_intent = new Intent();
-			mixare_intent.setAction(Intent.ACTION_VIEW);			
-			mixare_intent.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs"), "application/mixare-json");
-			startActivity(mixare_intent);
+			Intent mixare = new Intent();
+			mixare.setAction(Intent.ACTION_VIEW);			
+			mixare.setDataAndType(Uri.parse("http://unabomber.heroku.com/bombs"), "application/mixare-json");
+			startActivity(mixare);
 			return true;
-			
 		case R.id.messages:
-			Intent messages = new Intent(UnabomberMap.this, MessagesView.class );
+			Intent messages = new Intent(this, MessagesView.class);
 			messages.putExtra("messages", getMessages());
 			startActivity(messages);
 			return true;
 		case R.id.info:
-			Intent info = new Intent(UnabomberMap.this, InfoView.class);
+			Intent info = new Intent(this, InfoView.class);
 			UnabomberMap.this.startActivity(info);
 			return true;
 		default:
@@ -116,9 +118,7 @@ public class UnabomberMap extends MapActivity {
 	}
 
 	private void followPlayers() {
-		Drawable defaultMarker = getResources().getDrawable(R.drawable.androidmarker);
-		int playerId = playerData.getPlayerId();
-		otherPlayersOverlay = new OtherPlayersOverlay(defaultMarker, playerId, this.gameEngine, this);
+		otherPlayersOverlay = new OtherPlayersOverlay(this);
 
 		WorldUpdateService.setActivity(this);
 		worldUpdateIntent = new Intent(this, WorldUpdateService.class);
@@ -178,5 +178,28 @@ public class UnabomberMap extends MapActivity {
 
 	public synchronized ArrayList<PlayerMessage> getMessages() {
 		return this.messages;
+	}
+
+	public void placeBomb() {
+		Location lastKnownLocation = determineLocation();
+		if (lastKnownLocation == null) return;
+	
+		int bombId = getEngine().placeBombAt(lastKnownLocation);
+	
+		BombsOverlay bombs = getBombsOverlay();
+		bombs.addBombAt(lastKnownLocation, bombId);
+		bombs.showOn(getMapView());
+	}
+
+	private Location determineLocation() {
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (lastKnownLocation == null) lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		return lastKnownLocation;
+	}
+
+	public void sendMessage(String content) {
+		OtherPlayersOverlay others = getOtherPlayersOverlay();
+		getEngine().sendMessageTo(others.getTargetPlayerId(), content);
 	}
 }
